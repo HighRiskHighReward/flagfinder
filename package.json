@@ -3,9 +3,11 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@10.28.0",
-  "engines": { "node": ">=22.12.0" },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
-    "typecheck": "pnpm -r --parallel typecheck",
+    "typecheck": "pnpm -r --parallel typecheck && tsc -p .",
     "lint": "eslint .",
     "test": "vitest run",
     "test:e2e": "pnpm --filter @ff/web e2e",
@@ -26,6 +28,8 @@
     "tsx": "4.23.15",
     "typescript": "6.0.3",
     "typescript-eslint": "8.72.1",
-    "vitest": "5.1.0"
+    "vitest": "5.1.0",
+    "pg": "8.23.1",
+    "@types/pg": "8.15.6"
   }
 }

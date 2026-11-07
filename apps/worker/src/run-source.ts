@@ -6,6 +6,12 @@ import { DEAD_LETTER, type JobQueue } from "./queue";
 import { createLogger, newCorrelationId, reportError, type Logger } from "./log";
 
 export const MAX_ATTEMPTS = 4;
+
+/** Test/demo only: lets the worker reach a local fixture server. Ignored (false) in production. */
+export function loopbackAllowedForDemo(): boolean {
+  const prod = process.env.APP_ENV === "production" || process.env.NODE_ENV === "production";
+  return !prod && process.env.FETCH_ALLOW_LOOPBACK_FOR_TESTS === "1";
+}
 export const RETRY_BASE_MS = 30_000;
 export const RETRY_CAP_MS = 30 * 60_000;
 
@@ -67,7 +73,7 @@ export async function runSourceJob(deps: RunDeps, job: RefreshJob): Promise<RunR
 
   const ctx: ConnectorContext = {
     sourceId: src.id, sourceKey: src.key, config: src.config, now: startedAt, log: (e, d) => log(e, d ?? {}),
-    http: (deps.httpFor ?? ((s) => createPoliteHttp({ ratePerMinute: s.rate_limit_per_minute })))(src),
+    http: (deps.httpFor ?? ((s) => createPoliteHttp({ ratePerMinute: s.rate_limit_per_minute, fetchOptions: { unsafeAllowLoopback: loopbackAllowedForDemo() } })))(src),
   };
   const stats = { refs: 0, fetched: 0, notModified: 0, candidates: 0, created: 0, updated: 0, unchanged: 0, attached: 0, rejected: 0, missing: 0 };
   let failure: Failure | null = null;

@@ -29,6 +29,13 @@ export async function startBoss(connectionString: string, opts: { schedule: bool
 
 export function bossQueue(boss: PgBoss): JobQueue {
   return {
-    send: (queue, data, o = {}) => boss.send(queue, data, { singletonKey: o.singletonKey, startAfter: o.startAfterSeconds, priority: o.priority }),
+    // pg-boss rejects explicitly-undefined options (e.g. priority: undefined) — only pass what's set.
+    send: (queue, data, o = {}) => {
+      const opts: Record<string, string | number> = {};
+      if (o.singletonKey !== undefined) opts.singletonKey = o.singletonKey;
+      if (o.startAfterSeconds !== undefined) opts.startAfter = Math.max(0, Math.round(o.startAfterSeconds));
+      if (o.priority !== undefined) opts.priority = Math.round(o.priority);
+      return boss.send(queue, data, opts);
+    },
   };
 }

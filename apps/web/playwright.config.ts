@@ -15,7 +15,8 @@ export default defineConfig({
     { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: { width: 1366, height: 900 } } },
     { name: "mobile", use: { ...devices["Pixel 7"] } },
   ],
-  webServer: {
+  // When E2E_BASE_URL is given (e.g. by demo:verify), use that server as-is.
+  webServer: process.env.E2E_BASE_URL ? undefined : {
     command: "pnpm build && pnpm start",
     url: "http://localhost:3000/api/health",
     reuseExistingServer: true,
