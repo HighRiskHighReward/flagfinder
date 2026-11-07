@@ -13,4 +13,10 @@ export default tseslint.config(
       "no-restricted-syntax": ["error", { selector: "CallExpression[callee.name='eval']", message: "eval is forbidden" }],
     },
   },
+  {
+    // Node CommonJS measurement script; code inside page.evaluate/addInitScript runs in the browser.
+    files: ["scripts/*.cjs"],
+    languageOptions: { sourceType: "commonjs", globals: { require: "readonly", module: "readonly", process: "readonly", console: "readonly", window: "readonly", PerformanceObserver: "readonly" } },
+    rules: { "@typescript-eslint/no-require-imports": "off" },
+  },
 );

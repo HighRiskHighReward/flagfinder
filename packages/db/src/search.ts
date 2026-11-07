@@ -26,7 +26,7 @@ interface Built { where: string[]; params: unknown[]; divWhere: string[]; anchor
 
 function p(b: { params: unknown[] }, v: unknown): string { b.params.push(v); return `$${b.params.length}`; }
 
-export async function searchEvents(db: pg.Pool, state: SearchState, opts: { showSynthetic: boolean; timeZone?: string; now?: Date } ): Promise<SearchResponse> {
+export async function searchEvents(db: pg.Pool, state: SearchState, opts: { showSynthetic: boolean; timeZone?: string; now?: Date; explain?: (plan: string) => void } ): Promise<SearchResponse> {
   const today = todayIn(opts.timeZone ?? "America/Chicago", opts.now);
   const r = resolveSearch(state, today);
   const b: Built = { where: [`e.publish_state = 'published'`, `e.status <> 'completed'`], params: [], divWhere: [], anchorSql: null };
@@ -156,6 +156,7 @@ export async function searchEvents(db: pg.Pool, state: SearchState, opts: { show
     SELECT e.*, count(*) OVER() AS total_count FROM scored e
     ORDER BY ${orderBy[r.sort]}
     LIMIT ${MAX_RESULTS + 1}`;
+  if (opts.explain) opts.explain((await db.query(`EXPLAIN (ANALYZE, BUFFERS, COSTS OFF) ${sql}`, b.params)).rows.map((r) => r["QUERY PLAN"]).join("\n"));
   const rows = (await db.query(sql, b.params)).rows;
   const truncated = rows.length > MAX_RESULTS;
   const page = rows.slice(0, MAX_RESULTS);

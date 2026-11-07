@@ -2,8 +2,16 @@
   "name": "@ff/providers",
   "private": true,
   "type": "module",
-  "exports": { ".": "./src/index.ts", "./email": "./src/email.ts", "./llm": "./src/llm.ts", "./mapkit": "./src/mapkit.ts", "./storage": "./src/storage.ts" },
-  "scripts": { "typecheck": "tsc -p ." },
+  "exports": {
+    ".": "./src/index.ts",
+    "./email": "./src/email.ts",
+    "./llm": "./src/llm.ts",
+    "./mapkit": "./src/mapkit.ts",
+    "./storage": "./src/storage.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p ."
+  },
   "dependencies": {
     "@anthropic-ai/sdk": "1.6.0",
     "@ff/config": "workspace:*",
@@ -13,5 +21,10 @@
     "pg": "8.23.1",
     "zod": "4.6.7"
   },
-  "devDependencies": { "@types/nodemailer": "8.0.2", "@types/pg": "8.15.6" }
+  "devDependencies": {
+    "@types/nodemailer": "8.0.2",
+    "@types/pg": "8.15.6",
+    "smtp-server": "3.21.3",
+    "@types/smtp-server": "3.5.13"
+  }
 }

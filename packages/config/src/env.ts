@@ -43,6 +43,9 @@ export const envSchema = z.object({
   SOURCE_FAILURE_ALERT_THRESHOLD: z.coerce.number().int().positive().default(5),
   STORAGE_DIR: z.string().default(".data/uploads"),
   NEXT_PUBLIC_MAP_PROVIDER: z.enum(["auto", "google", "apple", "none", "test-dom"]).default("auto"),
+  SHOW_DEMO_DATA: z.enum(["on", "off"]).default("on"),
+  SCHEDULER_TICK_SECONDS: z.coerce.number().int().min(10).default(60),
+  SCHEDULER_HOURLY_CAPACITY: z.coerce.number().int().min(1).default(120),
 });
 
 export type Env = z.infer<typeof envSchema> & { appEnv: "development" | "test" | "staging" | "production" };

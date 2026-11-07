@@ -10,6 +10,7 @@ test-results
 playwright-report
 .data
 !artifacts/.gitkeep
-apps/web/.env.local
+
 apps/web/next-env.d.ts
 *.tsbuildinfo
+apps/web/.env.local

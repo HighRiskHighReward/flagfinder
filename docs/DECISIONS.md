@@ -27,3 +27,19 @@ Each entry: decision · alternatives · why · reversibility.
 **ADR-012 Dedup: absent signals are neutral.** A missing registration URL or organizer scores 0.5 rather than 0 so that sparse records can still reach the review band. Editions/date windows are hard blocks.
 
 **ADR-013 Gender "girls" chip = girls divisions only** (see ADR-010).
+
+**ADR-014 `APP_ENV` separate from `NODE_ENV`.** Next.js forces `NODE_ENV=production` for every build, so production-only behavior (seed refusal, email transport, demo data, test renderer refusal) keys off `APP_ENV` (default: `NODE_ENV`). The seed refuses if either says production.
+
+**ADR-015 Test-only map renderer (`test-dom`).** Map/list sync must be testable without provider keys. A DOM renderer draws pins and clusters with no basemap. It is labeled "TEST RENDERER" on screen and refused in production by env validation. Users without keys see the list plus directions links, never a placeholder map.
+
+**ADR-016 Retries are owned by our handler, not pg-boss.** This gives full-jitter exponential backoff, Retry-After for 429/503, and dead-lettering after `MAX_ATTEMPTS`, all testable. pg-boss's own retry and dead-letter queue still catch process crashes. Exactly-once per (source, job type, window) is enforced by a unique index on `ingestion_runs`, because pg-boss's standard policy doesn't dedupe on `singletonKey` alone.
+
+**ADR-017 Robots.txt and terms decide enablement; public ≠ permitted.** The CivicPlus city calendars disallow `/common/modules/icalendar/` and `/RSS.aspx`, so they are `blocked` even though `/calendar.aspx` HTML is allowed for `*`. The site owners clearly don't want feeds or aggregator crawling. NFL FLAG has no robots.txt, but its terms forbid republishing.
+
+**ADR-018 Reserved `.invalid` URLs never satisfy Invariant 6.** Flyer submissions without a link get a placeholder; a moderator must attach a real source URL before publishing.
+
+**ADR-019 Submissions are processed by the worker on a one-minute cron.** The web app only inserts rows (no third-party fetches and no queue client in web).
+
+**ADR-020 LLM extraction uses `claude-opus-5-5` by default (configurable via `LLM_MODEL`)** with low effort, structured JSON output, server-side refusal fallbacks, no tools, and zod re-validation. Its output only suggests fields; it can never set status, verification or publication.
+
+**ADR-021 Flyer "OCR" via the LLM's vision input when a key is configured**; otherwise flyers go to manual review. PDFs always go to manual review (never parsed in the web process).

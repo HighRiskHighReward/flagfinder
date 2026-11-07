@@ -41,9 +41,18 @@ pnpm db:reset           # drop + migrate (refuses in production)
 pnpm dev                # web on :3000
 pnpm worker             # long-running job worker
 pnpm scheduler          # long-running scheduler
-pnpm demo:verify        # §14 completion demo
+pnpm demo:verify        # §14 completion demo (needs a web build)
+pnpm --filter @ff/db grant-role <email> admin   # make an admin after sign-up
+node scripts/perf.cjs http://localhost:3000     # lab perf → artifacts/perf.json
+pnpm tsx scripts/design-doc.ts                  # regenerate docs/DESIGN.md contrast table
+pnpm tsx scripts/explain-search.ts              # regenerate docs/SEARCH_EXPLAIN.md
 ```
+Env: production behavior keys off `APP_ENV` (Next builds always set NODE_ENV=production). E2E uses `NEXT_PUBLIC_MAP_PROVIDER=test-dom` (test-only, refused in production).
 Local Postgres (no Docker in the build sandbox): `service postgresql start`; DBs `flagfinder`, `flagfinder_test`, user/pass `flagfinder`. Docker users: `docker compose up -d`.
+
+## Status pointers
+- Real sources: none enabled; evidence in docs/SOURCE_ACCESS.md. Organizer submissions are the live intake.
+- Gaps: docs/LIMITATIONS.md. Stage status + next action: PROGRESS.md.
 
 ## Working rules
 - Before every commit: typecheck, lint, relevant tests. Never commit red.
