@@ -1,0 +1,12 @@
+node_modules
+.next
+.env
+.env.local
+*.log
+coverage
+artifacts/*.png
+artifacts/*.json
+test-results
+playwright-report
+.data
+!artifacts/.gitkeep

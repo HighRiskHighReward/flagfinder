@@ -1,0 +1,31 @@
+{
+  "name": "flagfinder",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": { "node": ">=22.12.0" },
+  "scripts": {
+    "typecheck": "pnpm -r --parallel typecheck",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:e2e": "pnpm --filter @ff/web e2e",
+    "db:migrate": "pnpm --filter @ff/db migrate",
+    "db:seed": "pnpm --filter @ff/db seed",
+    "db:reset": "pnpm --filter @ff/db reset",
+    "dev": "pnpm --filter @ff/web dev",
+    "build": "pnpm --filter @ff/web build",
+    "start": "pnpm --filter @ff/web start",
+    "worker": "pnpm --filter @ff/worker worker",
+    "scheduler": "pnpm --filter @ff/worker scheduler",
+    "demo:verify": "tsx scripts/demo-verify.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "22.19.1",
+    "eslint": "10.14.0",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.1",
+    "vitest": "5.1.0"
+  }
+}

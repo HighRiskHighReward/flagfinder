@@ -1,0 +1,14 @@
+{
+  "name": "@ff/db",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": {
+    "typecheck": "tsc -p .",
+    "migrate": "tsx src/migrate-cli.ts",
+    "seed": "tsx src/seed-cli.ts",
+    "reset": "tsx src/reset-cli.ts"
+  },
+  "dependencies": { "@ff/config": "workspace:*", "@ff/core": "workspace:*", "pg": "8.23.1" },
+  "devDependencies": { "@types/pg": "8.15.6" }
+}

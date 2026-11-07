@@ -1,0 +1,8 @@
+{
+  "name": "@ff/config",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts", "./brand": "./src/brand.ts", "./env": "./src/env.ts" },
+  "scripts": { "typecheck": "tsc -p ." },
+  "dependencies": { "zod": "4.6.7" }
+}
