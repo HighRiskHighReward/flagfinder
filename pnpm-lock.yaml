@@ -87,6 +87,9 @@ importers:
       '@types/google.maps':
         specifier: 3.66.10
         version: 3.66.10
+      '@types/pg':
+        specifier: 8.15.6
+        version: 8.15.6
       '@types/react':
         specifier: 19.3.0
         version: 19.3.0

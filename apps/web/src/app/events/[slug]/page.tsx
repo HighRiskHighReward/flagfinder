@@ -13,6 +13,7 @@ import { ShareButton } from "@/components/event/share-button";
 import { SaveButton } from "@/components/event/save-button";
 import { ReportForm } from "@/components/event/report-form";
 import { eventJsonLd } from "@/lib/jsonld";
+import { CompareLink } from "@/components/event/compare-link";
 
 export const dynamic = "force-dynamic";
 
@@ -142,7 +143,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
             <a className="tap inline-flex items-center rounded-lg border border-line-strong px-3 no-underline" href={`/events/${e.slug}/ics`} download>Download .ics</a>
             {gcal && <a className="tap inline-flex items-center rounded-lg border border-line-strong px-3 no-underline" href={gcal} target="_blank" rel="noopener noreferrer">Google Calendar</a>}
             {ocal && <a className="tap inline-flex items-center rounded-lg border border-line-strong px-3 no-underline" href={ocal} target="_blank" rel="noopener noreferrer">Outlook</a>}
-            <Link className="tap inline-flex items-center rounded-lg border border-line-strong px-3 no-underline" href={`/compare?ids=${e.id}`}>Compare</Link>
+            <CompareLink eventId={e.id} />
           </div>
         )}
       </Section>

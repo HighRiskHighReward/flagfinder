@@ -32,6 +32,8 @@ export async function tick(now = new Date()) {
     await queue.send(QUEUES.refresh.name, { sourceId: d.sourceId, jobType: "refresh", window: d.window }, { singletonKey: `refresh:${d.sourceId}:${d.window}`, startAfterSeconds: d.startAfterSeconds, priority: d.priority });
     await db.query(`UPDATE sources SET next_scheduled_at = now() + make_interval(secs => $2) WHERE id=$1`, [d.sourceId, d.startAfterSeconds]);
   }
+  const reparse = (await db.query(`UPDATE sources SET config = config - 'reparseRequestedAt' WHERE config ? 'reparseRequestedAt' RETURNING id`)).rows;
+  for (const r of reparse) await queue.send(QUEUES.reparse.name, { sourceId: r.id }, { singletonKey: `reparse:${r.id}` });
   await db.query(`INSERT INTO scheduler_heartbeats (process, beat_at, details) VALUES ('scheduler', now(), $1) ON CONFLICT (process) DO UPDATE SET beat_at=now(), details=EXCLUDED.details`, [JSON.stringify({ enabledSources: sources.length, planned: due.length })]);
   log("scheduler_tick", { enabledSources: sources.length, planned: due.length });
 }

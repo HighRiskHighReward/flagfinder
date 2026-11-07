@@ -20,6 +20,7 @@ const config: NextConfig = {
   serverExternalPackages: ["pg", "pg-boss"],
   poweredByHeader: false,
   typedRoutes: false,
+  experimental: { authInterrupts: true },
   async headers() {
     return [{
       source: "/:path*",

@@ -9,6 +9,7 @@ import { ResultCard } from "./result-card";
 import { MoreFilters } from "./more-filters";
 import { MapPanel, type MapClientConfig } from "./map-panel";
 import { EmptyState } from "./empty-state";
+import { SaveSearchButton } from "./save-search";
 import type { Viewport } from "@/map/types";
 
 const CHIP_LABEL: Record<Chip, string> = { weekend: "This weekend", next30: "Next 30 days", girls: "Girls flag", youth: "Youth", closing: "Registration closing soon", leagues: "Nearby leagues" };
@@ -171,6 +172,8 @@ export function SearchView({ state, data, regions, map }: { state: SearchState; 
           <select id="sort" data-testid="sort" className="tap rounded-lg border border-line-strong bg-bg px-2 text-sm" value={state.sort ?? "soonest"} onChange={(e) => update({ sort: e.target.value as Sort })}>
             {(Object.keys(SORT_LABEL) as Sort[]).map((s) => <option key={s} value={s}>{SORT_LABEL[s]}</option>)}
           </select>
+          <SaveSearchButton query={serializeSearchState(state)} />
+          <a href={`/calendar?${serializeSearchState(state)}`} className="tap hidden items-center px-2 text-sm sm:inline-flex">Calendar view</a>
           {(state.sort === "best") && <button type="button" className="tap flex items-center gap-1 text-sm underline" onClick={() => setWhyOpen(true)}><Info size={16} aria-hidden="true" />Why this order?</button>}
         </div>
       </div>
