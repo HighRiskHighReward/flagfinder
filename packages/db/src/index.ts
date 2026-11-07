@@ -7,3 +7,4 @@ export * from "./snapshot";
 export * from "./events";
 export * from "./ratelimit";
 export * from "./coverage";
+export * from "./admin";

@@ -20,6 +20,7 @@ const HOURLY_CAPACITY = Number(process.env.SCHEDULER_HOURLY_CAPACITY ?? 120);
 await boss.schedule(QUEUES.sweep.name, "7 * * * *", {}, { tz: "UTC" });
 await boss.schedule(QUEUES.deadline.name, "23 */6 * * *", {}, { tz: "UTC" });
 await boss.schedule(QUEUES.alerts.name, "*/5 * * * *", {}, { tz: "UTC" });
+await boss.schedule(QUEUES.submissions.name, "* * * * *", {}, { tz: "UTC" });
 
 export async function tick(now = new Date()) {
   const sources = (await db.query(`SELECT id, priority_bucket, refresh_cadence_minutes FROM sources WHERE status='enabled' AND NOT paused AND NOT is_synthetic AND connector_key NOT IN ('submission','none')

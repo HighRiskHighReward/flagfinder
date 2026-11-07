@@ -7,7 +7,7 @@ export const db = () => getPool(TEST_DATABASE_URL);
 export async function truncateAll() {
   await db().query(`TRUNCATE events, organizers, event_series, event_editions, venues, sources, source_records, raw_payloads, review_items,
     dedup_candidates, merges, conflicts, ingestion_runs, submissions, uploads, email_outbox, alert_deliveries, favorites, saved_searches,
-    alert_preferences, planner_plans, organizer_claims, corrections, "user", rate_limits, provider_usage RESTART IDENTITY CASCADE`);
+    alert_preferences, planner_plans, organizer_claims, corrections, "user", rate_limits, provider_usage, dead_letters, fetch_state RESTART IDENTITY CASCADE`);
 }
 
 export async function makeSource(key: string, opts: { synthetic?: boolean; status?: string; access?: string } = {}) {

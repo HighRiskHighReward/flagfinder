@@ -5,6 +5,8 @@ import { createLogger } from "./log";
 import { runSourceJob, type RefreshJob } from "./run-source";
 import { deadlineCheck, reparseSource, reviewSweep } from "./jobs";
 import { processAlerts } from "./alerts";
+import { processPendingSubmissions } from "./submissions";
+import { createExtractionProvider } from "@ff/providers";
 
 /** Long-running worker process. Runs independently of the web app (no HTTP server here). */
 const env = loadEnv();
@@ -25,6 +27,8 @@ await boss.work(QUEUES.deadline.name, { localConcurrency: 1 }, async () => deadl
 await boss.work(QUEUES.sweep.name, { localConcurrency: 1 }, async () => reviewSweep(db, log));
 await boss.work<{ sourceId: string }>(QUEUES.reparse.name, { localConcurrency: 1 }, async ([job]) => reparseSource(db, job!.data.sourceId, log));
 await boss.work(QUEUES.alerts.name, { localConcurrency: 1 }, async () => processAlerts(db, log));
+const llm = createExtractionProvider(env, db);
+await boss.work(QUEUES.submissions.name, { localConcurrency: 1 }, async () => processPendingSubmissions(db, { llm, storageDir: env.STORAGE_DIR, log }));
 
 setInterval(() => {
   db.query(`INSERT INTO scheduler_heartbeats (process, beat_at, details) VALUES ('worker', now(), '{}') ON CONFLICT (process) DO UPDATE SET beat_at=now()`).catch(() => {});

@@ -86,7 +86,7 @@ describe("end-to-end ingestion through the real fetch path (synthetic fixture co
     await runSourceJob(deps(), { sourceId: sid, jobType: "refresh", window: "w1" });
     feed = FIXTURE.replace(/BEGIN:VEVENT\nUID:synthetic-1001[\s\S]*?END:VEVENT\n/, "");
     await runSourceJob(deps(), { sourceId: sid, jobType: "refresh", window: "w2" });
-    const e = (await db().query(`SELECT e.status FROM events e JOIN source_records sr ON sr.event_id=e.id WHERE sr.external_id='synthetic-1001@example.invalid'`)).rows[0];
+    const e = (await db().query(`SELECT e.status FROM events e JOIN source_records sr ON sr.event_id=e.id WHERE sr.external_id='synthetic-1001@example.org'`)).rows[0];
     expect(e.status).toBe("source_missing");
   });
 
@@ -220,7 +220,7 @@ describe("alerts (dev catcher)", () => {
   it("a material change to a saved event emails confirmed subscribers once (dedupe), never unconfirmed ones", async () => {
     const sid = await makeIcalSource();
     await runSourceJob(deps(), { sourceId: sid, jobType: "refresh", window: "w1" });
-    const ev = (await db().query(`SELECT e.id FROM events e JOIN source_records sr ON sr.event_id=e.id WHERE sr.external_id='synthetic-1001@example.invalid'`)).rows[0].id;
+    const ev = (await db().query(`SELECT e.id FROM events e JOIN source_records sr ON sr.event_id=e.id WHERE sr.external_id='synthetic-1001@example.org'`)).rows[0].id;
     await db().query(`INSERT INTO "user" (id, name, email, "emailVerified") VALUES ('u1','Coach','coach@example.test',true), ('u2','Parent','parent@example.test',true)`);
     await db().query(`INSERT INTO alert_preferences (user_id, frequency, confirmed_at) VALUES ('u1','instant',now()), ('u2','instant',NULL)`);
     await db().query(`INSERT INTO favorites (user_id, event_id) VALUES ('u1',$1), ('u2',$1)`, [ev]);

@@ -170,3 +170,26 @@ describe("venues", () => {
     expect((await db().query(`SELECT count(*)::int n FROM venues`)).rows[0].n).toBe(2);
   });
 });
+
+describe("admin merge/unmerge and publish", () => {
+  it("merge keeps all source records and provenance; unmerge restores both events", async () => {
+    const { mergeEvents, unmergeEvents } = await import("../src/admin");
+    const s1 = await makeSource("s1");
+    const s2 = await makeSource("s2");
+    const a = await ingestCandidate(db(), { source: s1, candidate: candidate(), parserVersion: "1" }) as { eventId: string };
+    const b = await ingestCandidate(db(), { source: s2, candidate: candidate({ externalId: "z", url: "https://other.example.org/z", name: "Totally Different Name", startDate: "2027-05-01", endDate: null, registrationUrl: null }), parserVersion: "1" }) as { eventId: string };
+    const mid = await mergeEvents(db(), a.eventId, b.eventId, "admin@test");
+    expect((await db().query(`SELECT count(*)::int n FROM source_records WHERE event_id=$1`, [a.eventId])).rows[0].n).toBe(2);
+    expect((await ev(b.eventId)).publish_state).toBe("merged");
+    await unmergeEvents(db(), mid, "admin@test");
+    expect((await ev(b.eventId)).publish_state).toBe("published");
+    expect((await db().query(`SELECT count(*)::int n FROM source_records WHERE event_id=$1`, [b.eventId])).rows[0].n).toBe(1);
+    expect((await db().query(`SELECT action FROM audit_log ORDER BY id`)).rows.map((r) => r.action)).toEqual(["merge_events", "unmerge_events"]);
+  });
+  it("audit log is append-only", async () => {
+    const { audit } = await import("../src/admin");
+    await audit(db(), "a", "x", null, null);
+    await expect(db().query(`UPDATE audit_log SET actor='b'`)).rejects.toThrow(/append-only/);
+    await expect(db().query(`DELETE FROM audit_log`)).rejects.toThrow(/append-only/);
+  });
+});

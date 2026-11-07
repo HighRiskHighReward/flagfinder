@@ -7,7 +7,7 @@ import { createPoliteHttp, icalConnector, isBlockedAddress, jsonLdConnector, par
 
 const fx = (p: string) => readFileSync(fileURLToPath(new URL(`../fixtures/${p}`, import.meta.url)), "utf8");
 const NOW = new Date("2027-03-01T12:00:00Z");
-const icalCfg = { feedUrl: "https://city.example.invalid/cal.ics", timezone: "America/Chicago", countryCode: "US", adminArea: "TX", organizerName: "SYNTHETIC City Parks", knownLocalities: ["Plano", "Frisco", "Allen"] };
+const icalCfg = { feedUrl: "https://city.example.org/cal.ics", timezone: "America/Chicago", countryCode: "US", adminArea: "TX", organizerName: "SYNTHETIC City Parks", knownLocalities: ["Plano", "Frisco", "Allen"] };
 const ok = (body: string, url = "https://x.invalid/") => ({ kind: "ok" as const, url, status: 200, contentType: "text/calendar", body, etag: null, lastModified: null, fetchedAt: NOW });
 
 describe("iCal connector (synthetic fixture)", () => {
@@ -16,7 +16,7 @@ describe("iCal connector (synthetic fixture)", () => {
     expect(parsed).toHaveLength(6);
     const c = await icalConnector.normalize(parsed, { config: icalCfg, now: NOW });
     // "Story Time" and the tackle camp don't mention flag football → filtered out before ingest.
-    expect(c.map((x) => x.externalId)).toEqual(["synthetic-1001@example.invalid", "synthetic-1002@example.invalid", "synthetic-1005@example.invalid", "synthetic-1006@example.invalid"]);
+    expect(c.map((x) => x.externalId)).toEqual(["synthetic-1001@example.org", "synthetic-1002@example.org", "synthetic-1005@example.org", "synthetic-1006@example.org"]);
     // stable across runs
     expect(await icalConnector.normalize(await icalConnector.parse(ok(fx("ical/synthetic-city-calendar.ics")), { config: icalCfg, now: NOW }), { config: icalCfg, now: NOW })).toEqual(c);
   });
@@ -35,7 +35,7 @@ describe("iCal connector (synthetic fixture)", () => {
   it("tackle is classified out of scope; CANCELLED is explicit evidence; RRULE → review", async () => {
     const broad = { ...icalCfg, includeKeywords: ["football"] };
     const all = await icalConnector.normalize(await icalConnector.parse(ok(fx("ical/synthetic-city-calendar.ics")), { config: broad, now: NOW }), { config: broad, now: NOW });
-    expect(all.find((x) => x.externalId === "synthetic-1003@example.invalid")!.sportScope).toBe("tackle");
+    expect(all.find((x) => x.externalId === "synthetic-1003@example.org")!.sportScope).toBe("tackle");
     const c = await icalConnector.normalize(await icalConnector.parse(ok(fx("ical/synthetic-city-calendar.ics")), { config: icalCfg, now: NOW }), { config: icalCfg, now: NOW });
     expect(c[2]!.statusSignal?.schemaEventStatus).toMatch(/EventCancelled/);
     expect(c[2]!.ambiguities?.map((a) => a.field)).toContain("venue.locality");
@@ -48,12 +48,12 @@ describe("iCal connector (synthetic fixture)", () => {
 });
 
 describe("JSON-LD connector (synthetic fixture)", () => {
-  const cfg = { pageUrls: ["https://league.example.invalid/e/77"], timezone: "America/Chicago", countryCode: "US" };
+  const cfg = { pageUrls: ["https://league.example.org/e/77"], timezone: "America/Chicago", countryCode: "US" };
   it("extracts schema.org events from @graph, ignores malformed blocks, converts offsets to local dates", async () => {
     const parsed = await jsonLdConnector.parse({ ...ok(fx("jsonld/synthetic-event-page.html")), contentType: "text/html" }, { config: cfg, now: NOW });
     expect(parsed).toHaveLength(1);
     const [c] = await jsonLdConnector.normalize(parsed, { config: cfg, now: NOW });
-    expect(c).toMatchObject({ startDate: "2027-03-13", endDate: "2027-03-14", startTime: "08:00", sportScope: "flag", registrationUrl: "https://league.example.invalid/register/77" });
+    expect(c).toMatchObject({ startDate: "2027-03-13", endDate: "2027-03-14", startTime: "08:00", sportScope: "flag", registrationUrl: "https://league.example.org/register/77" });
     expect(c!.venues![0]).toMatchObject({ locality: "Plano", postalCode: "75000", lat: 33.031 });
     expect(c!.divisions!.map((d) => d.name)).toEqual(["12U", "14U"]);
     // price is published but not mapped to divisions/basis → review, not guessed
@@ -130,5 +130,16 @@ describe("SSRF protection", () => {
     expect(first).toMatchObject({ kind: "ok", etag: '"v1"' });
     expect(await http.get(`http://127.0.0.1:${port}/cal`, { etag: '"v1"' })).toMatchObject({ kind: "not_modified" });
     expect(await http.get(`http://127.0.0.1:${port}/nope`)).toMatchObject({ kind: "missing", status: 404 });
+  });
+});
+
+describe("recorded real robots.txt excerpt (CivicPlus city sites, observed 2026-11-07)", () => {
+  it("iCal export and RSS feeds are disallowed for our bot; crawl-delay is 10s; Baidu/Yandex fully blocked", () => {
+    const rules = parseRobots(fx("recorded/robots/civicplus-user-agent-star-excerpt.txt"));
+    const ua = "FlagFinderBot/0.1 (+https://flagfinder.example/about/bot)";
+    expect(robotsVerdict(rules, ua, "/common/modules/icalendar/getICS.aspx?CID=1").allowed).toBe(false);
+    expect(robotsVerdict(rules, ua, "/RSS.aspx").allowed).toBe(false);
+    expect(robotsVerdict(rules, ua, "/").crawlDelay).toBe(10);
+    expect(robotsVerdict(rules, "Baiduspider", "/anything").allowed).toBe(false);
   });
 });

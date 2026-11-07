@@ -1,0 +1,8 @@
+{
+  "synthetic": false,
+  "excerpt": true,
+  "observedUrls": ["https://www.friscotexas.gov/robots.txt", "https://grapevinetexas.gov/robots.txt", "https://dallasparks.org/robots.txt"],
+  "capturedAt": "2026-11-07T04:30Z (approx.)",
+  "httpStatus": 200,
+  "note": "Verbatim leading lines (through the User-agent: * group) observed identically on all three hosts. The files continue with a named AI/SEO-crawler group that additionally disallows /calendar.aspx and /RSSFeed.aspx; that group is not reproduced here because the full file was not retained before host access was removed from the build environment."
+}

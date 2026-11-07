@@ -7,6 +7,7 @@ export const QUEUES = {
   sweep: { name: "review-sweep", concurrency: 1 },
   alerts: { name: "alerts", concurrency: 1 },
   reparse: { name: "reparse", concurrency: 1 },
+  submissions: { name: "submissions", concurrency: 1 },
 } as const;
 export const DEAD_LETTER = "dead-letter";
 
