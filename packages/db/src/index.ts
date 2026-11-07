@@ -4,3 +4,6 @@ export * from "./ingest";
 export * from "./search";
 export * from "./seed";
 export * from "./snapshot";
+export * from "./events";
+export * from "./ratelimit";
+export * from "./coverage";

@@ -174,8 +174,14 @@ async function writeChildren(tx: Tx, eventId: string, c: NormalizedCandidate, sy
   let first = true;
   for (const v of c.venues) {
     const found = await tx.query<{ id: string }>(
-      `SELECT id FROM venues WHERE lower(name)=lower($1) AND coalesce(lower(address_line1),'')=coalesce(lower($2),'') AND country_code=$3 AND is_synthetic=$4 LIMIT 1`,
-      [v.name, v.addressLine1, v.countryCode, synthetic],
+      // Same name alone is not enough ("Central Park" exists in many cities): require same locality and
+      // address, and when both sides have coordinates, that they are within 250 m.
+      `SELECT id FROM venues WHERE lower(name)=lower($1) AND coalesce(lower(address_line1),'')=coalesce(lower($2),'') AND country_code=$3 AND is_synthetic=$4
+         AND coalesce(lower(locality),'')=coalesce(lower($5),'')
+         AND (location IS NULL) = ($6::float8 IS NULL)
+         AND ($6::float8 IS NULL OR ST_DWithin(location, ST_SetSRID(ST_MakePoint($7::float8,$6::float8),4326)::geography, 250))
+       LIMIT 1`,
+      [v.name, v.addressLine1, v.countryCode, synthetic, v.locality, v.lat, v.lon],
     );
     let venueId = found.rows[0]?.id;
     if (!venueId) {

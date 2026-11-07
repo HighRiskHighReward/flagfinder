@@ -1,0 +1,57 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+
+@theme inline {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-surface-2: var(--c-surface-2);
+  --color-fg: var(--c-text);
+  --color-muted: var(--c-muted);
+  --color-line: var(--c-border);
+  --color-line-strong: var(--c-border-strong);
+  --color-primary: var(--c-primary);
+  --color-primary-hover: var(--c-primary-hover);
+  --color-on-primary: var(--c-on-primary);
+  --color-primary-text: var(--c-primary-text);
+  --color-accent: var(--c-accent);
+  --color-on-accent: var(--c-on-accent);
+  --color-accent-text: var(--c-accent-text);
+  --color-success: var(--c-success);
+  --color-warning: var(--c-warning);
+  --color-danger: var(--c-danger);
+  --color-info: var(--c-info);
+  --color-demo-bg: var(--c-demo-bg);
+  --color-demo-text: var(--c-demo-text);
+  /* Type scale (1.2 minor third) */
+  --text-xs: 0.75rem; --text-sm: 0.875rem; --text-base: 1rem; --text-lg: 1.125rem; --text-xl: 1.35rem; --text-2xl: 1.62rem; --text-3xl: 1.95rem;
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body { background: var(--c-bg); color: var(--c-text); font-family: var(--font-sans); font-feature-settings: "cv11", "ss01"; }
+  /* Links are underlined by default (distinguishable without color); utilities can opt out for buttons/nav. */
+  a { color: var(--c-primary-text); text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 3px solid var(--c-focus); outline-offset: 2px; border-radius: 6px; }
+}
+.skip-link { position: absolute; left: -9999px; top: 0; z-index: 100; }
+.skip-link:focus { left: 12px; top: 12px; background: var(--c-bg); padding: 10px 14px; border: 2px solid var(--c-focus); }
+.tap { min-height: 44px; min-width: 44px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}
+
+/* Test-only map renderer */
+.testdom-map { position: relative; overflow: hidden; background: repeating-linear-gradient(45deg, var(--c-surface), var(--c-surface) 12px, var(--c-surface-2) 12px, var(--c-surface-2) 24px); touch-action: none; }
+.testdom-layer { position: absolute; inset: 0; }
+.testdom-pin, .testdom-cluster { position: absolute; transform: translate(-50%, -50%); border-radius: 9999px; border: 2px solid var(--c-text); cursor: pointer; }
+.testdom-pin { width: 22px; height: 22px; background: var(--c-primary); }
+.testdom-pin.approx { background: var(--c-bg); border-style: dashed; }
+.testdom-pin.active { width: 30px; height: 30px; border: 4px solid var(--c-accent); z-index: 5; }
+.testdom-cluster { min-width: 32px; height: 32px; padding: 0 6px; background: var(--c-text); color: var(--c-bg); font-weight: 700; }
+.testdom-controls { position: absolute; right: 10px; top: 10px; display: flex; flex-direction: column; gap: 6px; }
+.testdom-controls button { width: 44px; height: 44px; background: var(--c-bg); border: 1px solid var(--c-border-strong); border-radius: 8px; font-size: 20px; }
+
+/* Bottom sheet (mobile map view) */
+.sheet { transition: height 180ms ease; }

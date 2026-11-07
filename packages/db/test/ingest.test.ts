@@ -32,7 +32,8 @@ describe("Invariant 6: published real events link to a source", () => {
 describe("Invariant 2: synthetic quarantine", () => {
   it("seed throws in production", () => {
     expect(() => assertSeedAllowed("production")).toThrow(/production/);
-    expect(() => assertSeedAllowed("development")).not.toThrow();
+    expect(() => assertSeedAllowed("development", "production")).toThrow(/production/);
+    expect(() => assertSeedAllowed("development", undefined)).not.toThrow();
   });
   it("a synthetic source record cannot attach to a real event", async () => {
     const real = await makeSource("real");
@@ -156,5 +157,16 @@ describe("unknowns stay unknown", () => {
     const s1 = await makeSource("s1");
     const o = await ingestCandidate(db(), { source: s1, candidate: candidate({ ambiguities: [{ field: "startDate", reason: "numeric_without_year", evidence: "3/4" }] }), parserVersion: "1" });
     expect(o).toMatchObject({ kind: "created", published: false });
+  });
+});
+
+describe("venues", () => {
+  it("same venue name in different cities stays separate", async () => {
+    const s1 = await makeSource("s1");
+    const mk = (id: string, city: string, lat: number) => candidate({ externalId: id, startDate: id === "a" ? "2027-03-13" : "2027-04-13", endDate: null, registrationUrl: null,
+      venues: [{ name: "Central Park", locality: city, adminArea: "TX", countryCode: "US", lat, lon: -96.7, geoPrecision: "street", geocodeProvider: "source_published", geocodeLicense: "source_published" }] });
+    await ingestCandidate(db(), { source: s1, candidate: mk("a", "Plano", 33.0), parserVersion: "1" });
+    await ingestCandidate(db(), { source: s1, candidate: mk("b", "Denton", 33.2), parserVersion: "1" });
+    expect((await db().query(`SELECT count(*)::int n FROM venues`)).rows[0].n).toBe(2);
   });
 });

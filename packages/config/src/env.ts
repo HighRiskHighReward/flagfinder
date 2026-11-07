@@ -8,6 +8,9 @@ const optional = z.string().trim().min(1).optional();
 
 export const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+  /** Deployment environment. Next.js forces NODE_ENV=production for any build, so production-only
+   *  behavior keys off APP_ENV (defaults to NODE_ENV). Set APP_ENV=production in real deployments. */
+  APP_ENV: z.enum(["development", "test", "staging", "production"]).optional(),
   DATABASE_URL: z.string().url().default("postgres://flagfinder:flagfinder@localhost:5432/flagfinder"),
   APP_BASE_URL: z.string().url().default("http://localhost:3000"),
   AUTH_SECRET: optional,
@@ -24,7 +27,7 @@ export const envSchema = z.object({
   SEARCH_API_KEY: optional,
   // LLM extraction
   ANTHROPIC_API_KEY: optional,
-  LLM_MODEL: z.string().default("claude-haiku-5-5"),
+  LLM_MODEL: z.string().default("claude-opus-5-5"),
   LLM_MONTHLY_BUDGET_USD: z.coerce.number().nonnegative().default(25),
   LLM_MAX_TOKENS_PER_CALL: z.coerce.number().int().positive().default(2000),
   // Email
@@ -42,7 +45,7 @@ export const envSchema = z.object({
   NEXT_PUBLIC_MAP_PROVIDER: z.enum(["auto", "google", "apple", "none", "test-dom"]).default("auto"),
 });
 
-export type Env = z.infer<typeof envSchema>;
+export type Env = z.infer<typeof envSchema> & { appEnv: "development" | "test" | "staging" | "production" };
 
 export interface IntegrationStatus {
   name: string;
@@ -60,11 +63,11 @@ export function loadEnv(source: Record<string, string | undefined> = process.env
     const msg = parsed.error.issues.map((i) => `  - ${i.path.join(".")}: ${i.message}`).join("\n");
     throw new Error(`Invalid environment configuration:\n${msg}`);
   }
-  const env = parsed.data;
-  if (env.NODE_ENV === "production" && env.NEXT_PUBLIC_MAP_PROVIDER === "test-dom") {
+  const env: Env = { ...parsed.data, appEnv: parsed.data.APP_ENV ?? parsed.data.NODE_ENV };
+  if (env.appEnv === "production" && env.NEXT_PUBLIC_MAP_PROVIDER === "test-dom") {
     throw new Error("NEXT_PUBLIC_MAP_PROVIDER=test-dom is a test-only renderer and is refused in production.");
   }
-  if (env.NODE_ENV === "production" && !env.AUTH_SECRET) {
+  if (env.appEnv === "production" && !env.AUTH_SECRET) {
     throw new Error("AUTH_SECRET is required in production.");
   }
   if (source === process.env) cached = env;

@@ -8,8 +8,8 @@ import { ingestCandidate } from "./ingest";
  * venues are invented placeholders and deliberately labeled "Demo" so they can never be
  * mistaken for a real program. Refuses to run in production (Invariant 2).
  */
-export function assertSeedAllowed(nodeEnv = process.env.NODE_ENV) {
-  if (nodeEnv === "production") throw new Error("Refusing to seed synthetic data with NODE_ENV=production");
+export function assertSeedAllowed(nodeEnv = process.env.NODE_ENV, appEnv = process.env.APP_ENV) {
+  if (nodeEnv === "production" || appEnv === "production") throw new Error("Refusing to seed synthetic data with NODE_ENV/APP_ENV=production");
 }
 
 const CITIES: [string, number, number][] = [
