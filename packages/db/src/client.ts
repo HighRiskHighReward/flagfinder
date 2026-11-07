@@ -15,7 +15,7 @@ const pools = new Map<string, pg.Pool>();
 export function getPool(url = loadEnv().DATABASE_URL): pg.Pool {
   let pool = pools.get(url);
   if (!pool) {
-    pool = new pg.Pool({ connectionString: url, max: 10 });
+    pool = new pg.Pool({ connectionString: url, max: loadEnv().DB_POOL_MAX });
     pools.set(url, pool);
   }
   return pool;

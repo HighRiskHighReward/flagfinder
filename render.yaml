@@ -1,34 +1,16 @@
-# Render blueprint: web + long-running worker + single scheduler + managed Postgres (enable PostGIS).
-databases:
-  - name: flagfinder-db
-    plan: basic-1gb
-    postgresMajorVersion: "16"
+# Render blueprint — FREE plan (ADR-022). One web service runs the site plus the
+# combined worker+scheduler. The database is external (Supabase free tier, PostGIS).
+# Paid, fully separated layout: render.paid.yaml.
 services:
   - type: web
-    name: flagfinder-web
+    name: flagfinder
+    plan: free
     runtime: docker
-    dockerfilePath: ./Dockerfile.web
+    dockerfilePath: ./Dockerfile.free
     healthCheckPath: /api/health
-    preDeployCommand: pnpm db:migrate
     envVars:
-      - { key: DATABASE_URL, fromDatabase: { name: flagfinder-db, property: connectionString } }
-      - { key: APP_ENV, value: production }
+      - { key: DATABASE_URL, sync: false }   # Supabase "Session pooler" URI + ?sslmode=no-verify
+      - { key: APP_BASE_URL, sync: false }   # e.g. https://flagfinder.onrender.com
       - { key: AUTH_SECRET, generateValue: true }
-      - { key: APP_BASE_URL, sync: false }
-  - type: worker
-    name: flagfinder-worker
-    runtime: docker
-    dockerfilePath: ./Dockerfile.worker
-    dockerCommand: pnpm worker
-    envVars:
-      - { key: DATABASE_URL, fromDatabase: { name: flagfinder-db, property: connectionString } }
       - { key: APP_ENV, value: production }
-  - type: worker
-    name: flagfinder-scheduler
-    runtime: docker
-    dockerfilePath: ./Dockerfile.worker
-    dockerCommand: pnpm scheduler
-    numInstances: 1
-    envVars:
-      - { key: DATABASE_URL, fromDatabase: { name: flagfinder-db, property: connectionString } }
-      - { key: APP_ENV, value: production }
+      - { key: DB_POOL_MAX, value: "3" }

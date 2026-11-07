@@ -42,6 +42,8 @@ export const envSchema = z.object({
   SENTRY_DSN: optional,
   SOURCE_FAILURE_ALERT_THRESHOLD: z.coerce.number().int().positive().default(5),
   STORAGE_DIR: z.string().default(".data/uploads"),
+  /** Max connections per pool (web, worker, pg-boss each open one). Lower it (e.g. 3) on free hosted Postgres. */
+  DB_POOL_MAX: z.coerce.number().int().positive().default(10),
   NEXT_PUBLIC_MAP_PROVIDER: z.enum(["auto", "google", "apple", "none", "test-dom"]).default("auto"),
   SHOW_DEMO_DATA: z.enum(["on", "off"]).default("on"),
   SCHEDULER_TICK_SECONDS: z.coerce.number().int().min(10).default(60),

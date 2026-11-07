@@ -19,6 +19,7 @@
     "start": "pnpm --filter @ff/web start",
     "worker": "pnpm --filter @ff/worker worker",
     "scheduler": "pnpm --filter @ff/worker scheduler",
+    "background": "pnpm --filter @ff/worker background",
     "demo:verify": "tsx scripts/demo-verify.ts"
   },
   "devDependencies": {

@@ -1,3 +1,4 @@
+import { loadEnv } from "@ff/config";
 import { PgBoss } from "pg-boss";
 
 export const QUEUES = {
@@ -15,7 +16,7 @@ export interface SendOpts { singletonKey?: string; startAfterSeconds?: number; p
 export interface JobQueue { send(queue: string, data: object, opts?: SendOpts): Promise<string | null> }
 
 export async function startBoss(connectionString: string, opts: { schedule: boolean }): Promise<PgBoss> {
-  const boss = new PgBoss({ connectionString, schedule: opts.schedule, application_name: opts.schedule ? "flagfinder-scheduler" : "flagfinder-worker" });
+  const boss = new PgBoss({ connectionString, max: loadEnv().DB_POOL_MAX, schedule: opts.schedule, application_name: opts.schedule ? "flagfinder-scheduler" : "flagfinder-worker" });
   boss.on("error", (e) => process.stderr.write(JSON.stringify({ level: "error", event: "pgboss_error", message: e.message }) + "\n"));
   await boss.start();
   await boss.createQueue(DEAD_LETTER).catch(() => {});

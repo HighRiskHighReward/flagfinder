@@ -43,3 +43,6 @@ Each entry: decision · alternatives · why · reversibility.
 **ADR-020 LLM extraction uses `claude-opus-5-5` by default (configurable via `LLM_MODEL`)** with low effort, structured JSON output, server-side refusal fallbacks, no tools, and zod re-validation. Its output only suggests fields; it can never set status, verification or publication.
 
 **ADR-021 Flyer "OCR" via the LLM's vision input when a key is configured**; otherwise flyers go to manual review. PDFs always go to manual review (never parsed in the web process).
+
+**ADR-022 Free-tier single-container mode.** The owner's budget is $0, and the paid layout of three services plus managed Postgres costs about $40 a month. `Dockerfile.free` + `scripts/start-all.sh` run the web app and one background process, which imports both the worker and the scheduler, in a single container, with the database on Supabase's free tier. Jobs still go through pg-boss in Postgres, so durability and per-window uniqueness are unchanged. Jobs simply pause while the free instance sleeps and resume when it wakes. `DB_POOL_MAX` (default 10, free 3) bounds connections for the Supabase session pooler. The paid, separated layout stays in `render.paid.yaml`.
+

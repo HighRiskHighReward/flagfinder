@@ -19,6 +19,8 @@
 - **Bot friction:** honeypot, rate limits and same-origin checks only; no CAPTCHA.
 - **Performance:** lab measurements only (see TEST_RESULTS.md), against localhost with synthetic data, so no CDN, realistic data volume or field data.
 
+- **Free-tier hosting (ADR-022):** the app sleeps when idle unless pinged; flyer uploads are lost on restart (no object storage yet); background jobs pause while asleep.
+
 ## Operating cost drivers
 | Driver | Unit | Control |
 |---|---|---|

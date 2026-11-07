@@ -1,0 +1,34 @@
+# Render blueprint: web + long-running worker + single scheduler + managed Postgres (enable PostGIS).
+databases:
+  - name: flagfinder-db
+    plan: basic-1gb
+    postgresMajorVersion: "16"
+services:
+  - type: web
+    name: flagfinder-web
+    runtime: docker
+    dockerfilePath: ./Dockerfile.web
+    healthCheckPath: /api/health
+    preDeployCommand: pnpm db:migrate
+    envVars:
+      - { key: DATABASE_URL, fromDatabase: { name: flagfinder-db, property: connectionString } }
+      - { key: APP_ENV, value: production }
+      - { key: AUTH_SECRET, generateValue: true }
+      - { key: APP_BASE_URL, sync: false }
+  - type: worker
+    name: flagfinder-worker
+    runtime: docker
+    dockerfilePath: ./Dockerfile.worker
+    dockerCommand: pnpm worker
+    envVars:
+      - { key: DATABASE_URL, fromDatabase: { name: flagfinder-db, property: connectionString } }
+      - { key: APP_ENV, value: production }
+  - type: worker
+    name: flagfinder-scheduler
+    runtime: docker
+    dockerfilePath: ./Dockerfile.worker
+    dockerCommand: pnpm scheduler
+    numInstances: 1
+    envVars:
+      - { key: DATABASE_URL, fromDatabase: { name: flagfinder-db, property: connectionString } }
+      - { key: APP_ENV, value: production }
