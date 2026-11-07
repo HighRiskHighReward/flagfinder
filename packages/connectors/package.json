@@ -1,0 +1,8 @@
+{
+  "name": "@ff/connectors",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": { "typecheck": "tsc -p ." },
+  "dependencies": { "@ff/config": "workspace:*", "@ff/core": "workspace:*", "ical.js": "2.2.1", "undici": "8.12.4", "zod": "4.6.7" }
+}

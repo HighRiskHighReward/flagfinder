@@ -384,7 +384,7 @@ async function findDuplicate(tx: Tx, c: NormalizedCandidate, synthetic: boolean)
 }
 
 /** Mark records a source no longer lists (or that 404) as missing: source_missing + review, never cancelled. */
-export async function markRecordMissing(db: pg.Pool, sourceId: string, externalKey: string, httpStatus: number, now = new Date()) {
+export async function markRecordMissing(db: pg.Pool, sourceId: string, externalKey: string, httpStatus: number, now = new Date(), reason?: string) {
   return withTx(db, async (tx) => {
     const r = await tx.query<{ id: string; event_id: string | null }>(
       `UPDATE source_records SET record_status='missing', missing_since=COALESCE(missing_since,$3) WHERE source_id=$1 AND external_key=$2 RETURNING id, event_id`,
@@ -399,7 +399,7 @@ export async function markRecordMissing(db: pg.Pool, sourceId: string, externalK
       await tx.query(`INSERT INTO event_changes (event_id, field, old_value, new_value, material, source_record_id) VALUES ($1,'status',$2,$3,false,$4)`,
         [rec.event_id, JSON.stringify(ev.rows[0]!.status), JSON.stringify(st.status), rec.id]);
     }
-    await openReview(tx, { kind: "source_missing", eventId: rec.event_id, sourceId, reason: `Source returned HTTP ${httpStatus}; listing not found` });
+    await openReview(tx, { kind: "source_missing", eventId: rec.event_id, sourceId, reason: reason ?? `Source returned HTTP ${httpStatus}; listing not found` });
     return rec.event_id;
   });
 }

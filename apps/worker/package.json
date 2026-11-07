@@ -1,0 +1,20 @@
+{
+  "name": "@ff/worker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p .",
+    "worker": "tsx src/worker.ts",
+    "scheduler": "tsx src/scheduler.ts"
+  },
+  "dependencies": {
+    "@ff/config": "workspace:*",
+    "@ff/connectors": "workspace:*",
+    "@ff/core": "workspace:*",
+    "@ff/db": "workspace:*",
+    "@ff/providers": "workspace:*",
+    "pg": "8.23.1",
+    "pg-boss": "12.38.1"
+  },
+  "devDependencies": { "@types/pg": "8.15.6" }
+}
