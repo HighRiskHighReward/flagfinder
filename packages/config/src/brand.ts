@@ -5,6 +5,6 @@ export const brand = {
   shortTagline: "Flag football tournaments & leagues, kept current.",
   domain: "flagfinder.example",
   defaultRegionSlug: "dfw",
-  userAgent: "FlagFinderBot/0.1 (+https://flagfinder.example/about/bot)",
+  userAgent: "FlagFinderBot/1.0 (+https://flagfinder.onrender.com/coverage)",
 } as const;
 export type Brand = typeof brand;
