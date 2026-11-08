@@ -114,3 +114,63 @@ dates, I'm happy to use that instead.
 
 Thank you,
 [Your name] · [Your email] · [Your phone]
+
+---
+
+## 6. i9 Sports — program data feed (DFW franchises)
+**To:** i9 Sports corporate (contact form at https://www.i9sports.com) and/or the DFW franchise owners (South Frisco, Allen/McKinney)
+**Subject:** Listing your DFW flag football programs on FlagFinder
+
+Hello,
+
+I run FlagFinder (https://flagfinder.onrender.com), a free site that helps Dallas–Fort Worth
+families find flag football leagues and tournaments. Your DFW flag football programs are exactly
+what parents are searching for.
+
+Your program dates and fees load from your site's internal system, which we don't access without
+permission. Do you offer a feed or API, or would you be willing to share program listings (season,
+ages, dates, fee, location, registration link)? Every listing would send families straight to your
+registration page.
+
+Thank you,
+[Your name] · [Your email] · [Your phone]
+
+---
+
+## 7. Local organizers on platforms that require permission (RISE, Lone Star SSC, PremierEventsUSA, and similar)
+**To:** the organizer's contact email or form
+**Subject:** Free listing for your flag football program on FlagFinder
+
+Hi [Organizer name],
+
+I run FlagFinder (https://flagfinder.onrender.com), a free search site for flag football
+tournaments and leagues in Dallas–Fort Worth.
+
+I'd love to list [program/event name]. Your registration platform's terms don't allow automated
+collection, so I'm asking you directly. Two easy options:
+1. Reply "yes, you may list our public season details." We'll show your dates, location,
+   divisions and fee, and link every listing to your registration page.
+2. Or submit your events yourself at https://flagfinder.onrender.com/submit. It takes about a
+   minute, and you can attach a flyer.
+
+Either way, it's free, and we'll update or remove anything on request.
+
+Thanks,
+[Your name] · [Your email] · [Your phone]
+
+---
+
+## 8. Community post for DFW flag football Facebook groups and pages
+Post this yourself (from your own account, following each group's rules). It asks organizers and
+parents to share events. Nothing is collected automatically from Facebook.
+
+> **Free for DFW flag football organizers and parents** 🏈
+> I built **FlagFinder** (https://flagfinder.onrender.com), a free site to find flag football
+> tournaments and leagues around Dallas–Fort Worth by date, age, girls/boys/coed and distance.
+>
+> **Running a league or tournament?** List it free at https://flagfinder.onrender.com/submit.
+> Paste your link or upload your flyer.
+> **Saw a flyer you liked?** Share it there too, and we'll verify the details with the source
+> before it goes live.
+>
+> Every listing links back to the organizer for registration. Comments and suggestions welcome!

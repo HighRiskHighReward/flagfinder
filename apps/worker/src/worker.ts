@@ -6,6 +6,7 @@ import { runSourceJob, type RefreshJob } from "./run-source";
 import { deadlineCheck, reparseSource, reviewSweep } from "./jobs";
 import { processAlerts } from "./alerts";
 import { processPendingSubmissions } from "./submissions";
+import { watchPages } from "./watch";
 import { createExtractionProvider } from "@ff/providers";
 
 /** Long-running worker process. Runs independently of the web app (no HTTP server here). */
@@ -28,6 +29,7 @@ await boss.work(QUEUES.sweep.name, { localConcurrency: 1 }, async () => reviewSw
 await boss.work<{ sourceId: string }>(QUEUES.reparse.name, { localConcurrency: 1 }, async ([job]) => reparseSource(db, job!.data.sourceId, log));
 await boss.work(QUEUES.alerts.name, { localConcurrency: 1 }, async () => processAlerts(db, log));
 const llm = createExtractionProvider(env, db);
+await boss.work(QUEUES.watch.name, { localConcurrency: 1 }, async () => watchPages(db, { log }));
 await boss.work(QUEUES.submissions.name, { localConcurrency: 1 }, async () => processPendingSubmissions(db, { llm, storageDir: env.STORAGE_DIR, log }));
 
 setInterval(() => {

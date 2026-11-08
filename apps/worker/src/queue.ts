@@ -9,6 +9,7 @@ export const QUEUES = {
   alerts: { name: "alerts", concurrency: 1 },
   reparse: { name: "reparse", concurrency: 1 },
   submissions: { name: "submissions", concurrency: 1 },
+  watch: { name: "watch-pages", concurrency: 1 },
 } as const;
 export const DEAD_LETTER = "dead-letter";
 
