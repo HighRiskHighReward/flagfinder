@@ -72,7 +72,10 @@ export function loadEnv(source: Record<string, string | undefined> = process.env
   if (env.appEnv === "production" && env.NEXT_PUBLIC_MAP_PROVIDER === "test-dom") {
     throw new Error("NEXT_PUBLIC_MAP_PROVIDER=test-dom is a test-only renderer and is refused in production.");
   }
-  if (env.appEnv === "production" && !env.AUTH_SECRET) {
+  // Next.js evaluates route modules while building (`next build`), when hosts such as Render
+  // don't expose runtime secrets. Enforce at runtime only; the server still refuses to serve without it.
+  const building = source.NEXT_PHASE === "phase-production-build";
+  if (env.appEnv === "production" && !env.AUTH_SECRET && !building) {
     throw new Error("AUTH_SECRET is required in production.");
   }
   if (source === process.env) cached = env;
