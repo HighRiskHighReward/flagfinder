@@ -204,6 +204,28 @@ describe("scheduler guarantees", () => {
     expect(firstMinute.filter((d) => sources.find((s) => s.id === d.sourceId)!.priority_bucket === "dfw").length).toBeLessThanOrEqual(6);
     expect(firstMinute.filter((d) => sources.find((s) => s.id === d.sourceId)!.priority_bucket === "intl").length).toBeLessThanOrEqual(1);
   });
+
+  it("catches up a daily source whose slot passed while the process was asleep (ADR-024)", () => {
+    const opts = { tickSeconds: 60, weights: { dfw: 0.6, us: 0.25, intl: 0.15 }, hourlyCapacity: 100, runsLastHour: {}, rand: () => 0 };
+    const id = "00000000-0000-0000-0000-000000000007";
+    const now = new Date("2027-03-02T12:00:00Z");
+    const daily = { id, priority_bucket: "us" as const, refresh_cadence_minutes: 1440 };
+    // Without catch-up fields: behaves as before (slot already passed → nothing).
+    const slotNow = planDue([daily], now, opts);
+    const isSlot = slotNow.length === 1;
+    if (!isSlot) expect(slotNow).toEqual([]);
+    // Never succeeded, never attempted → runs now, with the current window's key.
+    const due = planDue([{ ...daily, last_success_at: null, last_attempt_at: null, next_scheduled_at: null }], now, opts);
+    expect(due).toHaveLength(1);
+    expect(due[0]!.window).toMatch(/^1440m:\d+$/);
+    // Succeeded earlier in this same window → nothing.
+    expect(planDue([{ ...daily, last_success_at: new Date(now.getTime() - 60_000), last_attempt_at: null, next_scheduled_at: null }], now, opts)).toHaveLength(isSlot ? 1 : 0);
+    // Attempted 10 minutes ago (e.g. failed) → wait for the 30-minute gap; after it → retry.
+    expect(planDue([{ ...daily, last_success_at: null, last_attempt_at: new Date(now.getTime() - 10 * 60_000), next_scheduled_at: null }], now, opts)).toHaveLength(isSlot ? 1 : 0);
+    expect(planDue([{ ...daily, last_success_at: null, last_attempt_at: new Date(now.getTime() - 31 * 60_000), next_scheduled_at: null }], now, opts)).toHaveLength(1);
+    // Planned 5 minutes ago and still queued → don't plan again.
+    expect(planDue([{ ...daily, last_success_at: null, last_attempt_at: null, next_scheduled_at: new Date(now.getTime() - 5 * 60_000) }], now, opts)).toHaveLength(isSlot ? 1 : 0);
+  });
 });
 
 describe("review sweep", () => {

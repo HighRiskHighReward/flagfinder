@@ -23,7 +23,7 @@ await boss.schedule(QUEUES.alerts.name, "*/5 * * * *", {}, { tz: "UTC" });
 await boss.schedule(QUEUES.submissions.name, "* * * * *", {}, { tz: "UTC" });
 
 export async function tick(now = new Date()) {
-  const sources = (await db.query(`SELECT id, priority_bucket, refresh_cadence_minutes FROM sources WHERE status='enabled' AND NOT paused AND NOT is_synthetic AND connector_key NOT IN ('submission','none')
+  const sources = (await db.query(`SELECT id, priority_bucket, refresh_cadence_minutes, last_success_at, last_attempt_at, next_scheduled_at FROM sources WHERE status='enabled' AND NOT paused AND NOT is_synthetic AND connector_key NOT IN ('submission','none')
                                     AND (circuit_open_until IS NULL OR circuit_open_until < now())`)).rows;
   const weights = Object.fromEntries((await db.query(`SELECT bucket, weight::float8 AS weight FROM crawl_budget`)).rows.map((r) => [r.bucket, r.weight]));
   const runs = Object.fromEntries((await db.query(`SELECT s.priority_bucket AS b, count(*)::int AS n FROM ingestion_runs r JOIN sources s ON s.id=r.source_id WHERE r.started_at > now() - interval '1 hour' GROUP BY 1`)).rows.map((r) => [r.b, r.n]));

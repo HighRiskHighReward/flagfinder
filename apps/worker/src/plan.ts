@@ -1,6 +1,13 @@
 import { hourOffsetSeconds } from "@ff/core";
 
-export interface PlannableSource { id: string; priority_bucket: "dfw" | "us" | "intl"; refresh_cadence_minutes: number }
+export interface PlannableSource {
+  id: string; priority_bucket: "dfw" | "us" | "intl"; refresh_cadence_minutes: number;
+  /** Optional, for catch-up (ADR-024): a source with no success in its current window runs as soon as we're awake. */
+  last_success_at?: Date | null; last_attempt_at?: Date | null; next_scheduled_at?: Date | null;
+}
+
+/** Minimum gap between catch-up attempts for the same source, so a failing source isn't hammered. */
+export const CATCH_UP_GAP_SECONDS = 30 * 60;
 export interface PlannedJob { sourceId: string; window: string; startAfterSeconds: number; priority: number }
 
 /**
@@ -21,7 +28,18 @@ export function planDue(sources: PlannableSource[], now: Date, opts: { tickSecon
     const offset = Math.floor((hourOffsetSeconds(s.id) / 3600) * period);
     const windowIndex = Math.floor((nowS - offset) / period);
     const slotStart = windowIndex * period + offset;
-    if (nowS - slotStart >= opts.tickSeconds) continue; // slot started earlier than this tick → already planned
+    if (nowS - slotStart >= opts.tickSeconds) {
+      // Slot started before this tick. Normally it was planned then — but on hosts that sleep
+      // (free tier, ADR-024) the process may have been down. Catch up if this window has no
+      // success yet and we haven't attempted or planned it recently. Same window key, so the
+      // per-window uniqueness still guarantees at most one successful run per window.
+      const sec = (d?: Date | null) => (d ? Math.floor(d.getTime() / 1000) : null);
+      if (s.last_success_at === undefined) continue; // caller didn't opt in to catch-up
+      const lastOk = sec(s.last_success_at), lastTry = sec(s.last_attempt_at), lastPlan = sec(s.next_scheduled_at);
+      const succeededThisWindow = lastOk !== null && lastOk >= slotStart;
+      const recentlyTouched = [lastTry, lastPlan].some((t) => t !== null && nowS - t < CATCH_UP_GAP_SECONDS);
+      if (succeededThisWindow || recentlyTouched) continue;
+    }
     if ((remaining[s.priority_bucket] ?? 0) <= 0) continue;
     remaining[s.priority_bucket]!--;
     due.push({ sourceId: s.id, window: `${s.refresh_cadence_minutes}m:${windowIndex}`, startAfterSeconds: Math.floor(rand() * 60), priority: Math.round((opts.weights[s.priority_bucket] ?? 0) * 100) });
