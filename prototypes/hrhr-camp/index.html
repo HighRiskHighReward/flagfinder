@@ -1,0 +1,723 @@
+<title>HRHR Camp Tracker</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Saira+Condensed:wght@500;700;800&display=swap">
+<style>
+/* Layout: sticky scoreboard header with role tabs; one column on phones, a two-column dashboard from 900px. Dark-first "stadium lights" palette. */
+:root{
+  --bg:#0A1120; --surface:#111A2C; --surface-2:#18233A; --line:#26324D;
+  --fg:#EDF1F8; --muted:#97A3BC;
+  --red:#E8333D; --on-red:#FFFFFF; --gold:#F3B53A;
+  --turf:#1B6E40; --turf-hi:#2DB566; --turf-dim:#14492C;
+  --gA:#3CCB7F; --gB:#57AEF2; --gC:#F3B53A; --gD:#F08A3C; --gF:#F05A67;
+  --shadow:0 12px 32px rgba(0,0,0,.4);
+  --scrim:rgba(4,8,16,.7);
+  --f-display:"Saira Condensed","Arial Narrow","Roboto Condensed",system-ui,sans-serif;
+  --f-body:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2F4F8; --surface:#FFFFFF; --surface-2:#E9EEF5; --line:#D3DAE6;
+    --fg:#0D1526; --muted:#55617A;
+    --red:#C81E29; --on-red:#FFFFFF; --gold:#9C6700;
+    --turf:#25854D; --turf-hi:#39B06A; --turf-dim:#B9DCC6;
+    --gA:#16884C; --gB:#1D6FBD; --gC:#946300; --gD:#B8520F; --gF:#C42B3A;
+    --shadow:0 10px 26px rgba(20,32,60,.12);
+    --scrim:rgba(13,21,38,.45);
+    color-scheme:light;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2F4F8; --surface:#FFFFFF; --surface-2:#E9EEF5; --line:#D3DAE6;
+  --fg:#0D1526; --muted:#55617A;
+  --red:#C81E29; --on-red:#FFFFFF; --gold:#9C6700;
+  --turf:#25854D; --turf-hi:#39B06A; --turf-dim:#B9DCC6;
+  --gA:#16884C; --gB:#1D6FBD; --gC:#946300; --gD:#B8520F; --gF:#C42B3A;
+  --shadow:0 10px 26px rgba(20,32,60,.12);
+  --scrim:rgba(13,21,38,.45);
+  color-scheme:light;
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.05;letter-spacing:.01em}
+h2{font-size:1.45rem;font-weight:700;text-transform:uppercase}
+h3{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+p{margin:0}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:6px}
+.num{font-family:var(--f-display);font-variant-numeric:tabular-nums}
+.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* Header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand svg{flex:none}
+.brand b{display:block;font-family:var(--f-display);font-weight:800;font-size:1.15rem;letter-spacing:.04em;line-height:1}
+.brand span{display:block;font-size:.72rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.roles{display:flex;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}
+.roles a{color:var(--muted);text-decoration:none;font-weight:700;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;padding:7px 14px;border-radius:999px}
+.roles a[aria-current="page"]{background:var(--red);color:var(--on-red)}
+.demo{background:var(--surface-2);border-bottom:1px solid var(--line);font-size:.8rem;color:var(--muted)}
+.demo .wrap{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-block:6px}
+.tag-demo{font-weight:800;letter-spacing:.12em;color:var(--gold);margin-right:6px}
+.linkbtn{background:none;border:0;color:var(--fg);text-decoration:underline;padding:4px 0;font-size:.8rem}
+
+main{padding-block:20px 56px}
+.stack{display:grid;gap:16px}
+.stack>*{min-width:0}
+.grid2{display:grid;gap:16px;grid-template-columns:1fr}
+.grid2>*{min-width:0}
+@media (min-width:900px){.grid2{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);align-items:start}}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px}
+.card-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+
+/* Buttons + controls */
+.btn{border:1px solid var(--line);background:var(--surface-2);border-radius:10px;padding:10px 16px;font-weight:700;letter-spacing:.03em}
+.btn:hover{border-color:var(--muted)}
+.btn-red{background:var(--red);border-color:var(--red);color:var(--on-red)}
+.btn-red:hover{filter:brightness(1.08);border-color:var(--red)}
+.btn[disabled]{opacity:.55;cursor:default;filter:none}
+.seg{display:inline-flex;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{border:0;background:none;border-radius:8px;padding:6px 12px;font-weight:700;font-size:.85rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 0 var(--line)}
+select{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-weight:600;max-width:100%}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:.78rem;font-weight:700;background:var(--surface-2)}
+.chip.ok{color:var(--gA);border-color:currentColor}
+.chip.warn{color:var(--gC);border-color:currentColor}
+.chip.off{color:var(--muted)}
+.chip.live{color:var(--red);border-color:currentColor}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+
+/* Grade colors */
+.gA{color:var(--gA)} .gB{color:var(--gB)} .gC{color:var(--gC)} .gD{color:var(--gD)} .gF{color:var(--gF)}
+.bgA{background:var(--gA)} .bgB{background:var(--gB)} .bgC{background:var(--gC)} .bgD{background:var(--gD)} .bgF{background:var(--gF)}
+
+/* Coach */
+.ctl{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.ctl-l{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.stepper{display:flex;align-items:center;gap:8px}
+.stepper button{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);font-size:1.2rem;font-weight:700}
+.sess-title{font-family:var(--f-display);font-weight:800;font-size:2rem;text-transform:uppercase;line-height:1}
+.sess-sub{color:var(--muted);font-weight:600}
+.progress{height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.progress i{display:block;height:100%;background:var(--turf-hi)}
+.roster{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr))}
+.ath{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
+.ath:hover{border-color:var(--muted)}
+.jersey{width:46px;height:46px;border-radius:10px;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--line);font-family:var(--f-display);font-weight:800;font-size:1.35rem}
+.ath b{display:block;font-weight:700}
+.ath small{color:var(--muted);font-size:.78rem}
+.ath .sc{font-family:var(--f-display);font-weight:800;font-size:1.4rem;text-align:right;line-height:1}
+.ath .sc small{display:block;font-family:var(--f-body);font-weight:600;font-size:.7rem;margin-top:3px}
+.list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.list li{display:flex;justify-content:space-between;gap:10px;align-items:center;border-bottom:1px dashed var(--line);padding-bottom:8px}
+.list li:last-child{border-bottom:0;padding-bottom:0}
+
+/* Sheet */
+.sheet{position:fixed;inset:0;z-index:40;background:var(--scrim);display:flex;justify-content:center;align-items:flex-end}
+@media (min-width:760px){.sheet{align-items:center}}
+.sheet-p{background:var(--bg);width:100%;max-width:680px;max-height:92%;overflow:auto;border-radius:18px 18px 0 0;border:1px solid var(--line);box-shadow:var(--shadow);padding:0 max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+@media (min-width:760px){.sheet-p{border-radius:18px;max-height:88%}}
+.sheet-h{position:sticky;top:0;background:var(--bg);display:flex;gap:12px;align-items:center;justify-content:space-between;padding-block:14px;border-bottom:1px solid var(--line);z-index:1}
+.sheet-sec{padding-top:18px;display:grid;gap:12px}
+.rate{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:8px}
+.rate-h{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline}
+.rate-h b{font-weight:700}
+.rate-h span{color:var(--muted);font-size:.82rem}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.scale button{height:44px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);font-family:var(--f-display);font-weight:800;font-size:1.2rem}
+.scale button.on{background:var(--red);border-color:var(--red);color:var(--on-red)}
+.rub{font-size:.85rem;color:var(--muted);min-height:1.3em}
+.rub b{color:var(--fg)}
+.tests{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr))}
+.field{display:grid;gap:4px}
+.field label{font-weight:700;font-size:.85rem}
+.field input,.field textarea{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+.field textarea{min-height:76px;resize:vertical}
+.field small{color:var(--muted);font-size:.75rem}
+.tagbtn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-weight:600;font-size:.85rem}
+.tagbtn[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.toggle{display:flex;align-items:center;gap:10px;font-weight:700}
+.sw{width:52px;height:30px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);position:relative;padding:0}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--muted);transition:left .15s}
+.sw[aria-checked="true"]{background:var(--turf-hi);border-color:var(--turf-hi)}
+.sw[aria-checked="true"]::after{left:25px;background:#fff}
+
+/* Parent hero */
+.hero{display:grid;gap:18px;grid-template-columns:1fr;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-40px;top:-40px;width:220px;height:220px;border-radius:50%;border:26px solid var(--red);opacity:.08;pointer-events:none}
+@media (min-width:640px){.hero{grid-template-columns:1fr auto}}
+.hero h1{font-size:clamp(2.2rem,7vw,3.4rem);font-weight:800;text-transform:uppercase}
+.hero .meta{display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--muted);font-weight:600;margin-top:6px}
+.ringbox{display:grid;justify-items:center;gap:8px}
+.ring{position:relative;width:150px;height:150px}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .val{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.ring .val b{font-family:var(--f-display);font-weight:800;font-size:3rem;line-height:.9}
+.ring .val small{display:block;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ring-track{stroke:var(--surface-2)}
+.ring-bar{stroke:currentColor;transition:stroke-dashoffset .6s ease}
+
+.update{border-left:4px solid var(--red)}
+.quote{font-size:1.08rem;font-weight:500;border-radius:12px;background:var(--surface-2);padding:14px 16px;margin-top:6px}
+.quote cite{display:block;font-style:normal;font-size:.8rem;color:var(--muted);margin-top:6px;font-weight:700}
+.kv{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));margin-top:14px}
+.kv div{min-width:0}
+.kv p{font-weight:600}
+.mission{display:flex;gap:12px;align-items:flex-start;background:var(--surface-2);border:1px dashed var(--gold);border-radius:12px;padding:12px 14px;margin-top:14px}
+.mission svg{flex:none;color:var(--gold)}
+
+/* Drive chart: the camp as a football field */
+.field-wrap{overflow-x:auto}
+.drive{display:grid;grid-template-columns:.7fr repeat(8,1fr) .7fr;min-width:520px;height:96px;border-radius:10px;overflow:hidden;background:var(--turf);position:relative}
+.ez{display:grid;place-items:center;color:#fff;font-family:var(--f-display);font-weight:800;letter-spacing:.12em;font-size:.72rem;writing-mode:vertical-rl;transform:rotate(180deg);background:var(--red)}
+.ez.home{background:#0F2A1B;color:rgba(255,255,255,.75)}
+.yd{position:relative;border-left:2px solid rgba(255,255,255,.55);display:grid;align-content:space-between;justify-items:center;padding:6px 2px;color:#fff;background:var(--turf)}
+.yd.done{background:var(--turf-hi)}
+.yd.miss{background:repeating-linear-gradient(135deg,var(--turf) 0 6px,#16593A 6px 12px)}
+.yd.future{background:var(--turf);opacity:.55}
+.yd span{font-family:var(--f-display);font-weight:800;font-size:.95rem;line-height:1}
+.yd small{font-size:.62rem;font-weight:700;letter-spacing:.08em;opacity:.9}
+.yd .ball{width:30px;height:18px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.78rem;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:6px}
+
+/* Pillars */
+.pillars{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+.pillar{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:4px}
+.pillar .g{font-family:var(--f-display);font-weight:800;font-size:2.6rem;line-height:1}
+.pillar .w{font-weight:700}
+.delta{font-size:.8rem;font-weight:700}
+.up{color:var(--gA)} .down{color:var(--gF)} .flat{color:var(--muted)}
+
+.bars{display:grid;gap:10px}
+.bar{display:grid;grid-template-columns:minmax(0,9.5em) 1fr 3.2em;gap:10px;align-items:center}
+.bar b{font-weight:600;font-size:.9rem}
+.bar .t{height:10px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.bar .t i{display:block;height:100%;border-radius:99px}
+.bar .v{font-family:var(--f-display);font-weight:800;text-align:right;font-size:1.05rem}
+
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:440px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}
+th{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+td .num{font-size:1.1rem;font-weight:700}
+td small{display:block;color:var(--muted);font-size:.75rem}
+
+.chart text{fill:var(--muted);font-family:var(--f-body);font-size:17px}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.chart .line{stroke:var(--red);stroke-width:3;fill:none;stroke-linejoin:round;stroke-linecap:round}
+.chart .area{fill:var(--red);opacity:.12}
+.chart .dot{fill:var(--surface);stroke:var(--red);stroke-width:2.5}
+.chart .dot.end{fill:var(--red)}
+.chart .endlbl{fill:var(--fg);font-family:var(--f-display);font-weight:800;font-size:22px}
+
+.hist{display:grid;gap:10px}
+.hist details{background:var(--surface-2);border-radius:10px;padding:10px 14px}
+.hist summary{cursor:pointer;font-weight:700;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.hist p{margin-top:8px}
+
+/* Athlete portal */
+.pcard{position:relative;overflow:hidden;border-radius:18px;padding:22px;background:linear-gradient(160deg,var(--surface) 0%,var(--surface-2) 100%);border:1px solid var(--line)}
+.pcard .bignum{position:absolute;right:-6px;bottom:-34px;font-family:var(--f-display);font-weight:800;font-size:11rem;line-height:1;color:var(--red);opacity:.16;pointer-events:none}
+.pcard h1{font-size:clamp(2.2rem,8vw,3.6rem);font-weight:800;text-transform:uppercase}
+.lvl{display:inline-flex;align-items:center;gap:8px;background:var(--red);color:var(--on-red);font-family:var(--f-display);font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:6px;font-size:1rem}
+.xp{margin-top:16px;display:grid;gap:6px;max-width:520px;position:relative}
+.xp .progress{height:14px}
+.xp .progress i{background:linear-gradient(90deg,var(--gold),var(--red))}
+.xp-row{display:flex;justify-content:space-between;font-weight:700;font-size:.85rem}
+.dots{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;position:relative}
+.dots span{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:.85rem;border:1px solid var(--line);background:var(--surface)}
+.dots span.on{background:var(--turf-hi);border-color:var(--turf-hi);color:#062314}
+.dots span.miss{color:var(--muted);text-decoration:line-through}
+.pbs{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))}
+.pb{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:2px}
+.pb .q{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.pb .v{font-family:var(--f-display);font-weight:800;font-size:2.2rem;line-height:1}
+.pb .v small{font-size:1rem;color:var(--muted);margin-left:2px}
+.badges{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}
+.badge{display:grid;justify-items:center;text-align:center;gap:6px}
+.badge svg{width:64px;height:72px}
+.badge b{font-size:.82rem;line-height:1.2}
+.badge small{font-size:.7rem;color:var(--muted);line-height:1.25}
+.badge.locked svg{opacity:.35}
+.badge .hex{fill:var(--surface-2);stroke:var(--line);stroke-width:2}
+.badge.got .hex{fill:var(--red);stroke:var(--gold);stroke-width:3}
+.badge .code{font-family:var(--f-display);font-weight:800;font-size:22px;fill:var(--muted)}
+.badge.got .code{fill:var(--on-red)}
+.power{display:grid;gap:8px}
+.power div{display:flex;align-items:center;gap:10px;background:var(--surface-2);border-radius:10px;padding:10px 12px;font-weight:700}
+.power div i{font-style:normal;font-family:var(--f-display);font-weight:800;color:var(--gold);font-size:1.2rem;width:1.4em}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--fg);color:var(--bg);font-weight:700;padding:10px 18px;border-radius:999px;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+.note{font-size:.8rem;color:var(--muted)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="6" width="28" height="28" rx="4" transform="rotate(45 20 20)" fill="var(--red)"/><text x="20" y="25" text-anchor="middle" font-family="Saira Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="15" fill="var(--on-red)">HR²</text></svg>
+      <div><b>HIGH RISK HIGH REWARD</b><span>Summer Camp Tracker</span></div>
+    </div>
+    <nav class="roles" aria-label="Portal">
+      <a href="#coach" data-role="coach">Coach</a>
+      <a href="#parent" data-role="parent">Parent</a>
+      <a href="#athlete" data-role="athlete">Athlete</a>
+    </nav>
+  </div>
+</header>
+<div class="demo"><div class="wrap">
+  <span><span class="tag-demo">DEMO</span>Fictional athletes. Changes are saved on this device only.</span>
+  <button class="linkbtn" type="button" data-act="reset" id="resetBtn">Reset demo data</button>
+</div></div>
+<main class="wrap" id="app"></main>
+<div class="sheet" id="sheet" hidden><div class="sheet-p" id="sheetP" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div></div>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script>
+(function(){
+'use strict';
+var $ = function(s){return document.querySelector(s);};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function avg(a){return a.length? a.reduce(function(x,y){return x+y;},0)/a.length : null;}
+
+/* ---------- Camp program ---------- */
+var SITES={prosper:{name:'Prosper Rec Center',short:'Prosper'},plano:{name:'Plano Oak Point Rec Center',short:'Plano Oak Point'}};
+var GROUPS={'8-9':'Rookies 8–9','10-11':'Juniors 10–11'};
+var SESS=[
+ {n:1,date:'Tue Jun 8',wk:1,theme:'Baseline Day',focus:'Testing, athletic stance and starts',test:true,mission:'Wall drill: 3 sets of 20 seconds. Fast knees, tall posture, drive the arms.'},
+ {n:2,date:'Thu Jun 10',wk:1,theme:'Speed Mechanics',focus:'Arm drive, first three steps, acceleration posture',mission:'A-skips down the driveway and back, 3 rounds. Then 4 fast 10-yard starts.'},
+ {n:3,date:'Tue Jun 15',wk:2,theme:'Change of Direction',focus:'Plant foot, sink the hips, explode out of the cut',mission:'Set two shoes 5 yards apart. 5 figure-8s each direction, low hips the whole way.'},
+ {n:4,date:'Thu Jun 17',wk:2,theme:'Midpoint Testing + Ball Skills',focus:'Re-test, then hands: eyes to the tuck',test:true,mission:'50 catches with a parent or against a wall. Watch the ball all the way into your hands.'},
+ {n:5,date:'Tue Jun 22',wk:3,theme:'Position Day',focus:'QB, WR, RB, DB and LB stations',mission:'Teach someone at home one thing you learned at your position today.'},
+ {n:6,date:'Thu Jun 24',wk:3,theme:'Defense & Pursuit',focus:'Backpedal, breaking on the ball, pursuit angles, safe flag pulls',mission:'Backpedal 10 yards, turn and sprint 10 yards. 6 reps with full rest.'},
+ {n:7,date:'Tue Jun 29',wk:4,theme:'Team & Leadership',focus:'Captains, huddles, calling plays, picking up teammates',mission:'Do one helpful thing at home without being asked. Tell your coach about it.'},
+ {n:8,date:'Thu Jul 1',wk:4,theme:'Final Testing + Camp Bowl',focus:'Final testing, the Camp Bowl and awards',test:true,mission:'Keep the HRHR habit: 3 sprint days a week for the rest of the summer.'}
+];
+var TRAITS=[
+ {id:'compete',p:'char',name:'Compete',d:'Effort and will to win',r:['Goes through the motions','Competes when it is fun or easy','Solid effort on most reps','Competes hard on nearly every rep','Max effort every rep; wins and loses with class']},
+ {id:'coach',p:'char',name:'Coachability',d:'Listens and applies feedback',r:['Repeats the same mistakes','Listens but rarely adjusts','Adjusts after a few reminders','Fixes it on the very next rep','Asks questions and seeks out coaching']},
+ {id:'team',p:'char',name:'Teamwork',d:'Plays for the group',r:['Plays for self','Gets along, stays in own lane','Good teammate when things go well','Encourages others and shares the ball','Lifts the whole group; celebrates others first']},
+ {id:'lead',p:'char',name:'Leadership',d:'Sets the standard',r:['Follows only when told','Leads by example sometimes','Leads by example consistently','Speaks up and organizes others','Others follow them; sets the standard']},
+ {id:'tough',p:'char',name:'Toughness',d:'Pushes through hard moments',r:['Shuts down when tired or after mistakes','Needs encouragement to push through','Pushes through most hard moments','Bounces back fast from mistakes','Gets better when it gets hard']},
+ {id:'love',p:'char',name:'Love of the Game',d:'Interest and energy',r:['Seems checked out','Interested in parts of practice','Engaged and having fun','Excited and eager for the next drill','Lives for it; asks for extra work']},
+ {id:'feet',p:'skill',name:'Footwork',d:'Stance, starts, balance, cuts',r:['Off balance, heavy feet','Gets there, but slow or upright','Balanced; decent stance and starts','Quick, low and controlled in cuts','Elite balance; sharp and explosive']},
+ {id:'hands',p:'skill',name:'Ball Skills',d:'Catch, carry, throw',r:['Struggles to catch or carry','Catches easy balls, often with the body','Reliable hands on routine balls','Catches away from the body and secures it','Makes the tough catch look easy']},
+ {id:'iq',p:'skill',name:'Football IQ',d:'Assignments and awareness',r:['Unsure where to line up','Knows the drill once shown','Understands assignments','Anticipates plays and adjusts','Sees the field; helps teammates line up']},
+ {id:'tech',p:'skill',name:'Position Technique',d:'Fundamentals at speed',r:['Basic technique not there yet','Learning the fundamentals','Fundamentals show up in drills','Technique holds up at full speed','Holds up in live play; can demo it']}
+];
+var TESTS=[
+ {id:'dash',name:'20-Yard Dash',q:'Speed',unit:'s',lower:true,b:{'8-9':[4.8,3.6],'10-11':[4.5,3.4]}},
+ {id:'shuttle',name:'5-10-5 Shuttle',q:'Agility',unit:'s',lower:true,b:{'8-9':[7.2,5.4],'10-11':[6.8,5.1]}},
+ {id:'broad',name:'Broad Jump',q:'Power',unit:'in',lower:false,b:{'8-9':[36,72],'10-11':[44,84]}},
+ {id:'push',name:'Push-ups (30 s)',q:'Strength',unit:'reps',lower:false,b:{'8-9':[3,25],'10-11':[5,30]}}
+];
+var TAGS=['Hustle','Great teammate','Listened first time','Encouraged others','Fought through fatigue','Big play','Led a drill','Needs more focus'];
+var LEVELS=[[0,'Rookie'],[700,'Starter'],[1500,'Playmaker'],[2500,'Captain'],[3600,'HRHR Elite']];
+
+/* ---------- Demo data (fictional) ---------- */
+var DEFS=[
+ ['Mason T.','prosper','10-11',7],['Ava R.','prosper','8-9',12],['Jayden W.','prosper','10-11',22],['Liam K.','prosper','8-9',3],
+ ['Zoe M.','prosper','10-11',11],['Carter B.','prosper','8-9',5],['Elijah P.','prosper','10-11',24],['Harper S.','prosper','8-9',9],
+ ['Noah D.','plano','10-11',1],['Mia L.','plano','8-9',14],['Josiah F.','plano','10-11',33],['Kai N.','plano','8-9',8],
+ ['Isaiah G.','plano','10-11',2],['Ella J.','plano','8-9',18]
+];
+var SHOUTS=[
+ '{n} won the get-off race three times in a row. Explosive first step today.',
+ '{n} picked up a teammate after a dropped ball without being asked. That is leadership.',
+ '{n} heard the coaching point once and nailed the cut on the very next rep.',
+ '{n} kept sprinting through the final rep when the whole group was tired. Real toughness.',
+ '{n} called out the coverage before the snap. The football IQ is showing up.',
+ '{n} brought the loudest voice in the huddle and the best energy on the field.',
+ '{n} made the catch of the day on a contested ball. Strong, soft hands.'
+];
+var FOCUS=['Eyes on the ball all the way into the hands.','Stay low out of the breaks: chest over toes.','Talk more on defense so teammates know where you are.','Finish every rep through the cone, not at it.','Drive the arms, cheek to cheek, on every start.','Reset fast after a mistake. Next play.'];
+
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function makeDemo(){
+  var R=rng(2027), athletes=[], records={};
+  DEFS.forEach(function(d,i){
+    var a={id:'a'+(i+1),name:d[0],site:d[1],band:d[2],num:d[3],pick:''};
+    athletes.push(a); records[a.id]={};
+    var base={}; TRAITS.forEach(function(t){base[t.id]=1.7+R()*2.1;});
+    var growth=0.1+R()*0.24, tn={}; TESTS.forEach(function(t){tn[t.id]=0.12+R()*0.5;});
+    var last=a.site==='prosper'?6:5;
+    for(var n=1;n<=last;n++){
+      if(n===6 && i%2===1) continue;
+      var present=!(n!==1 && R()<0.07);
+      var rec={present:present,r:{},t:{},tags:[],shout:'',focus:''};
+      if(present){
+        TRAITS.forEach(function(t){rec.r[t.id]=clamp(Math.round(base[t.id]+growth*(n-1)+(R()-.5)*0.9),1,5);});
+        if(SESS[n-1].test){
+          TESTS.forEach(function(t){
+            var fc=t.b[a.band], gain=n===1?0:(n===4?0.06+R()*0.1:0.14+R()*0.14);
+            var v=fc[0]+(fc[1]-fc[0])*Math.min(.97,tn[t.id]+gain);
+            rec.t[t.id]=t.unit==='s'?Math.round(v*100)/100:Math.round(v);
+          });
+        }
+        var first=a.name.split(' ')[0];
+        if(R()<0.75) rec.shout=SHOUTS[Math.floor(R()*SHOUTS.length)].replace('{n}',first);
+        rec.focus=FOCUS[Math.floor(R()*FOCUS.length)];
+        rec.tags=[TAGS[Math.floor(R()*7)]];
+      }
+      records[a.id][n]=rec;
+    }
+  });
+  return {v:1,athletes:athletes,records:records,published:{prosper:[1,2,3,4,5],plano:[1,2,3,4,5]},current:{prosper:6,plano:6},
+    gradeFormat:'letter',site:'prosper',group:'all',parentChild:'a1',athleteChild:'a1'};
+}
+var KEY='hrhr-camp-demo-v1', state=null;
+try{state=JSON.parse(localStorage.getItem(KEY));}catch(e){state=null;}
+if(!state||state.v!==1||!state.athletes) state=makeDemo();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function byId(id){return state.athletes.filter(function(a){return a.id===id;})[0]||state.athletes[0];}
+function rec(a,n){var r=state.records[a.id]; return r?r[n]:null;}
+
+/* ---------- Scoring ---------- */
+// Ratings 1–5 map onto the 100-point scale: 1≈55 (F), 2≈66 (D), 3≈76 (C), 4≈87 (B+), 5=98 (A+).
+function rScore(r){return 44+10.8*r;}
+// Tests: the age-band "developing" floor scores 55, the "elite" ceiling scores 98.
+function tScore(t,v,band){if(v==null||v==='')return null;var fc=t.b[band];return 55+43*clamp((v-fc[0])/(fc[1]-fc[0]),0,1);}
+function pres(a,ss){return ss.map(function(n){return [n,rec(a,n)];}).filter(function(x){return x[1]&&x[1].present;});}
+function traitNow(a,tid,ss){var v=pres(a,ss).map(function(x){return x[1].r[tid];}).filter(function(x){return x!=null;});return v.length?avg(v.slice(-2)):null;}
+function pillar(a,p,ss){var v=TRAITS.filter(function(t){return t.p===p;}).map(function(t){return traitNow(a,t.id,ss);}).filter(function(x){return x!=null;});return v.length?rScore(avg(v)):null;}
+function tests(a,ss){
+  var out={};
+  TESTS.forEach(function(t){
+    var vals=pres(a,ss).filter(function(x){return x[1].t&&x[1].t[t.id]!=null&&x[1].t[t.id]!=='';}).map(function(x){return {n:x[0],v:+x[1].t[t.id]};});
+    var best=null; vals.forEach(function(x){if(!best||(t.lower?x.v<best.v:x.v>best.v))best=x;});
+    out[t.id]={vals:vals,base:vals[0]||null,latest:vals[vals.length-1]||null,best:best};
+  });
+  return out;
+}
+function athletic(a,ss){var T=tests(a,ss);var v=TESTS.map(function(t){return T[t.id].latest?tScore(t,T[t.id].latest.v,a.band):null;}).filter(function(x){return x!=null;});return v.length?avg(v):null;}
+function overall(a,ss){
+  var parts=[[athletic(a,ss),.35],[pillar(a,'skill',ss),.30],[pillar(a,'char',ss),.35]].filter(function(p){return p[0]!=null;});
+  if(!parts.length)return null;
+  var w=parts.reduce(function(s,p){return s+p[1];},0);
+  return parts.reduce(function(s,p){return s+p[0]*p[1];},0)/w;
+}
+function series(a,ss,fn){fn=fn||overall;return pres(a,ss).map(function(x){var n=x[0];return {n:n,v:fn(a,ss.filter(function(s){return s<=n;}))};});}
+function improvement(tt,lower){if(!tt.base||!tt.latest||tt.base.n===tt.latest.n)return 0;return lower?tt.base.v-tt.latest.v:tt.latest.v-tt.base.v;}
+var LET=[[97,'A+'],[93,'A'],[90,'A-'],[87,'B+'],[83,'B'],[80,'B-'],[77,'C+'],[73,'C'],[70,'C-'],[67,'D+'],[63,'D'],[60,'D-'],[0,'F']];
+function letter(s){for(var i=0;i<LET.length;i++){if(s>=LET[i][0])return LET[i][1];}return 'F';}
+function gc(s){return s==null?'':s>=90?'gA':s>=80?'gB':s>=70?'gC':s>=60?'gD':'gF';}
+function word(s){return s==null?'No data yet':s>=90?'Elite':s>=80?'Strong':s>=70?'Solid':s>=60?'Developing':'Building';}
+function fmt(s,f){f=f||state.gradeFormat;if(s==null)return '—';return f==='letter'?letter(s):f==='100'?String(Math.round(s)):(s/10).toFixed(1);}
+function unitLabel(){return state.gradeFormat==='100'?'out of 100':state.gradeFormat==='10'?'out of 10':'grade';}
+function pubOf(a){return (state.published[a.site]||[]).slice().sort(function(x,y){return x-y;});}
+function coachSS(a){var c=state.current[a.site];return [1,2,3,4,5,6,7,8].filter(function(n){return n<=c;});}
+function delta(now,then){
+  if(now==null||then==null)return '';
+  var d=now-then, f=state.gradeFormat==='10'?(d/10).toFixed(1):Math.round(d);
+  if(Math.abs(d)<0.5)return '<span class="delta flat">Steady since Day 1</span>';
+  return d>0?'<span class="delta up">▲ +'+f+' pts since Day 1</span>':'<span class="delta down">▼ '+f+' pts since Day 1</span>';
+}
+function xpOf(a,ss){
+  var x=0;
+  pres(a,ss).forEach(function(p){x+=100;TRAITS.forEach(function(t){x+=(p[1].r[t.id]||0)*8;});if(p[1].shout)x+=50;});
+  var T=tests(a,ss);
+  TESTS.forEach(function(t){var v=T[t.id].vals;for(var i=1;i<v.length;i++){if(t.lower?v[i].v<v[i-1].v:v[i].v>v[i-1].v)x+=75;}});
+  return x;
+}
+function levelOf(x){var cur=LEVELS[0],next=null;for(var i=0;i<LEVELS.length;i++){if(x>=LEVELS[i][0]){cur=LEVELS[i];next=LEVELS[i+1]||null;}}return {cur:cur,next:next};}
+function countTrait(a,ss,tid,min){return pres(a,ss).filter(function(p){return (p[1].r[tid]||0)>=min;}).length;}
+var BADGES=[
+ {code:'LI',name:'Locked In',how:'Make every session',ok:function(a,ss){return ss.length>0&&ss.every(function(n){var r=rec(a,n);return r&&r.present;});}},
+ {code:'SD',name:'Speed Demon',how:'Cut 0.15 s off your 20-yard dash',ok:function(a,ss,T){return improvement(T.dash,true)>=0.15;}},
+ {code:'QC',name:'Quick Cuts',how:'Cut 0.20 s off your shuttle',ok:function(a,ss,T){return improvement(T.shuttle,true)>=0.2;}},
+ {code:'LP',name:'Launch Pad',how:'Add 4 inches to your broad jump',ok:function(a,ss,T){return improvement(T.broad,false)>=4;}},
+ {code:'IA',name:'Iron Arms',how:'Add 4 push-ups',ok:function(a,ss,T){return improvement(T.push,false)>=4;}},
+ {code:'C',name:'Captain Material',how:'Earn a 5 in Leadership',ok:function(a,ss){return countTrait(a,ss,'lead',5)>0;}},
+ {code:'IW',name:'Iron Will',how:'Toughness 4+ in three sessions',ok:function(a,ss){return countTrait(a,ss,'tough',4)>=3;}},
+ {code:'GT',name:'Great Teammate',how:'Earn a 5 in Teamwork',ok:function(a,ss){return countTrait(a,ss,'team',5)>0;}},
+ {code:'SO',name:'Coach Shout-out',how:'Get a shout-out from a coach',ok:function(a,ss){return pres(a,ss).some(function(p){return !!p[1].shout;});}},
+ {code:'FR',name:'Film Room',how:'Football IQ 4+ in two sessions',ok:function(a,ss){return countTrait(a,ss,'iq',4)>=2;}},
+ {code:'PR',name:'PR Machine',how:'Improve in all four tests',ok:function(a,ss,T){return TESTS.every(function(t){return improvement(T[t.id],t.lower)>0;});}},
+ {code:'A',name:'Camp Champion',how:'Reach an overall score of 90',ok:function(a,ss){var o=overall(a,ss);return o!=null&&o>=90;}}
+];
+function positionRead(a,ss){
+  var T=tests(a,ss);
+  function ts(id){var x=T[id].latest;var t=TESTS.filter(function(z){return z.id===id;})[0];return x?(tScore(t,x.v,a.band)-55)/43:.5;}
+  function tr(id){var v=traitNow(a,id,ss);return v==null?.5:(v-1)/4;}
+  var sp=ts('dash'),ag=ts('shuttle'),pw=ts('broad'),st=ts('push');
+  return [
+    ['QB','Quarterback',tr('iq')*.35+tr('lead')*.25+tr('hands')*.2+tr('coach')*.2,'Decision-making, leadership, accuracy'],
+    ['WR','Wide Receiver',sp*.3+tr('hands')*.35+ag*.2+tr('feet')*.15,'Speed, hands, sharp cuts'],
+    ['RB','Running Back',ag*.3+pw*.25+tr('tough')*.25+sp*.2,'Agility, power, toughness'],
+    ['DB','Defensive Back',sp*.3+ag*.3+tr('feet')*.2+tr('iq')*.2,'Speed, hips, reading the QB'],
+    ['LB','Linebacker',tr('tough')*.3+pw*.25+tr('compete')*.25+tr('iq')*.2,'Toughness, power, pursuit'],
+    ['OL/DL','Line / Rusher',st*.4+tr('tough')*.3+pw*.3,'Strength, power, leverage']
+  ].map(function(p){return {k:p[0],n:p[1],v:Math.round(40+60*p[2]),why:p[3]};}).sort(function(x,y){return y.v-x.v;});
+}
+
+/* ---------- Shared pieces ---------- */
+function ring(score,label){
+  var C=2*Math.PI*52, pct=score==null?0:clamp((score-50)/50,0,1);
+  return '<div class="ringbox"><div class="ring '+gc(score)+'"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="ring-track" cx="60" cy="60" r="52" fill="none" stroke-width="12"/><circle class="ring-bar" cx="60" cy="60" r="52" fill="none" stroke-width="12" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+(C*(1-pct)).toFixed(1)+'"/></svg><div class="val"><div><b>'+fmt(score)+'</b><small>'+esc(label)+'</small></div></div></div></div>';
+}
+function fmtSeg(){
+  var o=[['letter','A–F'],['100','1–100'],['10','1–10']];
+  return '<div class="seg" role="group" aria-label="Grade scale">'+o.map(function(x){return '<button type="button" data-act="fmt" data-f="'+x[0]+'" aria-pressed="'+(state.gradeFormat===x[0])+'">'+x[1]+'</button>';}).join('')+'</div>';
+}
+function childPicker(id,selected){
+  return '<label class="eyebrow" for="'+id+'">Demo: switch family</label> <select id="'+id+'" data-pick="'+id+'">'+state.athletes.map(function(a){return '<option value="'+a.id+'"'+(a.id===selected?' selected':'')+'>'+esc(a.name)+' · #'+a.num+' · '+esc(SITES[a.site].short)+'</option>';}).join('')+'</select>';
+}
+function drive(a,ss){
+  var cells='';
+  var latest=ss[ss.length-1]||0;
+  for(var n=1;n<=8;n++){
+    var r=rec(a,n), cls='future', lbl='';
+    if(ss.indexOf(n)>=0){cls=r&&r.present?'done':'miss';lbl=r&&r.present?'':'MISSED';}
+    var ball=n===latest?'<svg class="ball" viewBox="0 0 30 18" aria-hidden="true"><ellipse cx="15" cy="9" rx="14" ry="8" fill="#7A3B1A" stroke="#fff" stroke-width="1.2"/><path d="M9 9h12M12 7v4M15 7v4M18 7v4" stroke="#fff" stroke-width="1.2"/></svg>':'<small>'+lbl+'</small>';
+    cells+='<div class="yd '+cls+'" title="Session '+n+' · '+esc(SESS[n-1].theme)+'"><span>S'+n+'</span>'+ball+'<small>WK'+SESS[n-1].wk+'</small></div>';
+  }
+  var att=pres(a,ss).length;
+  return '<div class="card"><div class="card-h"><h3>Camp Drive</h3><span class="muted">'+ss.length+' of 8 sessions · '+att+' attended</span></div>'+
+    '<div class="field-wrap"><div class="drive" role="img" aria-label="Camp progress: '+ss.length+' of 8 sessions complete, '+att+' attended"><div class="ez home">KICKOFF</div>'+cells+'<div class="ez">CAMP BOWL</div></div></div>'+
+    '<div class="legend"><span><i style="background:var(--turf-hi)"></i>Attended</span><span><i style="background:repeating-linear-gradient(135deg,var(--turf) 0 3px,#16593A 3px 6px)"></i>Missed</span><span><i style="background:var(--turf);opacity:.55"></i>Coming up</span></div></div>';
+}
+function trendChart(pts){
+  var W=600,H=250,pl=44,pr=34,pt=30,pb=34;
+  function x(n){return pl+(n-1)*(W-pl-pr)/7;}
+  function y(v){return pt+(100-clamp(v,50,100))*(H-pt-pb)/50;}
+  var g='';
+  [[60,'D'],[70,'C'],[80,'B'],[90,'A'],[100,'']].forEach(function(l){g+='<line class="grid" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y(l[0])+'" y2="'+y(l[0])+'"/><text x="'+(pl-6)+'" y="'+(y(l[0])+4)+'" text-anchor="end">'+l[0]+'</text>'+(l[1]?'<text x="'+(W-pr+8)+'" y="'+(y(l[0]-5)+4)+'">'+l[1]+'</text>':'');});
+  for(var n=1;n<=8;n++)g+='<text x="'+x(n)+'" y="'+(H-8)+'" text-anchor="middle">S'+n+'</text>';
+  pts=pts.filter(function(p){return p.v!=null;});
+  if(!pts.length)return '<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="No scores yet">'+g+'</svg>';
+  var line=pts.map(function(p,i){return (i?'L':'M')+x(p.n).toFixed(1)+' '+y(p.v).toFixed(1);}).join(' ');
+  var area=line+' L'+x(pts[pts.length-1].n).toFixed(1)+' '+y(50)+' L'+x(pts[0].n).toFixed(1)+' '+y(50)+' Z';
+  var dots=pts.map(function(p,i){return '<circle class="dot'+(i===pts.length-1?' end':'')+'" cx="'+x(p.n)+'" cy="'+y(p.v)+'" r="'+(i===pts.length-1?6:4)+'"/>';}).join('');
+  var e=pts[pts.length-1];
+  var lbl='<text class="endlbl" x="'+x(e.n)+'" y="'+(y(e.v)-12)+'" text-anchor="middle">'+fmt(e.v)+'</text>';
+  return '<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Overall score by session, latest '+fmt(e.v)+'">'+g+'<path class="area" d="'+area+'"/><path class="line" d="'+line+'"/>'+dots+lbl+'</svg>';
+}
+function testCell(t,x){return x?'<span class="num">'+x.v+'</span> <span class="muted">'+t.unit+'</span>':'<span class="muted">—</span>';}
+function changeText(t,tt){
+  var d=improvement(tt,t.lower);
+  if(!tt.base||!tt.latest||tt.base.n===tt.latest.n)return '<span class="muted">Baseline set</span>';
+  var mag=t.unit==='s'?Math.abs(d).toFixed(2):Math.abs(Math.round(d));
+  if(d>0)return '<span class="up"><b>▲ '+mag+' '+t.unit+'</b><small>'+(t.lower?'faster':'better')+'</small></span>';
+  if(d<0)return '<span class="down"><b>▼ '+mag+' '+t.unit+'</b><small>keep working</small></span>';
+  return '<span class="flat">Same</span>';
+}
+function testTable(a,ss){
+  var T=tests(a,ss);
+  function at(tt,n){return tt.vals.filter(function(x){return x.n===n;})[0]||null;}
+  return '<div class="tbl-wrap"><table><thead><tr><th>Test</th><th>Day 1</th><th>Midpoint</th><th>Final</th><th>Change</th></tr></thead><tbody>'+
+    TESTS.map(function(t){var tt=T[t.id];return '<tr><td><b>'+t.name+'</b><small>'+t.q+'</small></td><td>'+testCell(t,at(tt,1))+'</td><td>'+testCell(t,at(tt,4))+'</td><td>'+testCell(t,at(tt,8))+'</td><td>'+changeText(t,tt)+'</td></tr>';}).join('')+
+    '</tbody></table></div><p class="note" style="margin-top:10px">Tested on Day 1, at the midpoint (Session 4) and on the final day (Session 8). Scores compare your athlete to HRHR benchmarks for their age group.</p>';
+}
+function traitBars(a,ss,p){
+  return '<div class="bars">'+TRAITS.filter(function(t){return t.p===p;}).map(function(t){
+    var v=traitNow(a,t.id,ss), s=v==null?null:rScore(v), w=s==null?0:clamp((s-45)/55,0,1)*100;
+    return '<div class="bar"><b>'+t.name+'</b><div class="t"><i class="b'+gc(s)+'" style="width:'+w.toFixed(0)+'%"></i></div><span class="v '+gc(s)+'">'+fmt(s)+'</span></div>';
+  }).join('')+'</div>';
+}
+function missionCard(text,title){
+  return '<div class="mission"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6L22 9.3l-5.4 4.8L18.2 21 12 17.3 5.8 21l1.6-6.9L2 9.3l7.1-.7z" fill="currentColor"/></svg><div><div class="eyebrow">'+esc(title||'At-home mission')+'</div><p style="font-weight:600">'+esc(text)+'</p></div></div>';
+}
+
+/* ---------- Coach portal ---------- */
+function status(a,n){var r=rec(a,n);if(!r)return 'todo';if(!r.present)return 'absent';return Object.keys(r.r).length>=TRAITS.length?'done':'todo';}
+function renderCoach(){
+  var site=state.site, n=state.current[site], S=SESS[n-1];
+  var roster=state.athletes.filter(function(a){return a.site===site&&(state.group==='all'||a.band===state.group);});
+  var all=state.athletes.filter(function(a){return a.site===site;});
+  var done=all.filter(function(a){return status(a,n)==='done';}).length, abs=all.filter(function(a){return status(a,n)==='absent';}).length;
+  var isPub=state.published[site].indexOf(n)>=0;
+  var ready=done+abs;
+  var tested=S.test?all.filter(function(a){var r=rec(a,n);return r&&r.present&&TESTS.every(function(t){return r.t&&r.t[t.id]!=null&&r.t[t.id]!=='';});}).length:0;
+
+  var siteSeg='<div class="seg" role="group" aria-label="Site">'+Object.keys(SITES).map(function(k){return '<button type="button" data-act="site" data-site="'+k+'" aria-pressed="'+(site===k)+'">'+SITES[k].short+'</button>';}).join('')+'</div>';
+  var grpSeg='<div class="seg" role="group" aria-label="Group">'+[['all','All'],['8-9','Rookies 8–9'],['10-11','Juniors 10–11']].map(function(g){return '<button type="button" data-act="group" data-g="'+g[0]+'" aria-pressed="'+(state.group===g[0])+'">'+g[1]+'</button>';}).join('')+'</div>';
+
+  var cards=roster.map(function(a){
+    var st=status(a,n), o=overall(a,coachSS(a));
+    var chip=st==='done'?'<span class="chip ok">Rated</span>':st==='absent'?'<span class="chip off">Absent</span>':'<span class="chip warn">Not rated</span>';
+    return '<button type="button" class="ath" data-act="open" data-id="'+a.id+'"><span class="jersey">'+a.num+'</span><span><b>'+esc(a.name)+'</b><small>'+GROUPS[a.band]+'</small><br>'+chip+'</span><span class="sc '+gc(o)+'">'+fmt(o,'100')+'<small class="muted">overall</small></span></button>';
+  }).join('');
+
+  var growth=all.map(function(a){var s=series(a,coachSS(a));return {a:a,d:s.length>1?s[s.length-1].v-s[0].v:null};}).filter(function(x){return x.d!=null;}).sort(function(x,y){return y.d-x.d;}).slice(0,3);
+  var watch=all.map(function(a){return {a:a,v:traitNow(a,'love',coachSS(a))};}).filter(function(x){return x.v!=null&&x.v<=3;}).sort(function(x,y){return x.v-y.v;}).slice(0,3);
+
+  return '<div class="stack">'+
+   '<div class="card"><div class="ctl"><div class="ctl-l">'+siteSeg+'</div><div class="stepper"><button type="button" data-act="sess" data-d="-1" aria-label="Previous session">‹</button><div><div class="eyebrow">Session '+n+' of 8 · Week '+S.wk+'</div><div class="sess-title">'+esc(S.theme)+'</div></div><button type="button" data-act="sess" data-d="1" aria-label="Next session">›</button></div></div>'+
+   '<p class="sess-sub" style="margin-top:10px">'+esc(S.date)+' · '+esc(SITES[site].name)+' · Focus: '+esc(S.focus)+(S.test?' · <span class="chip live">Testing day</span>':'')+'</p>'+
+   '<div style="display:grid;gap:8px;margin-top:14px"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-weight:700"><span>'+done+' rated · '+abs+' absent · '+(all.length-ready)+' to go'+(S.test?' · '+tested+' tested':'')+'</span><span>'+(isPub?'<span class="chip ok">Sent to parents</span>':'<span class="chip warn">Not sent yet</span>')+'</span></div><div class="progress"><i style="width:'+(all.length?Math.round(ready/all.length*100):0)+'%"></i></div>'+
+   '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px"><button type="button" class="btn btn-red" data-act="publish"'+(isPub?' disabled':'')+'>'+(isPub?'Update sent':'Send today\'s update to parents')+'</button>'+(ready<all.length&&!isPub?'<span class="note" style="align-self:center">Athletes you have not rated yet will show the session recap and mission only.</span>':'')+'</div></div></div>'+
+   '<div class="grid2"><div class="stack"><div class="card-h" style="margin:0"><h2>Roster</h2>'+grpSeg+'</div><div class="roster">'+(cards||'<div class="empty">No athletes in this group.</div>')+'</div></div>'+
+   '<div class="stack"><div class="card"><div class="card-h"><h3>Biggest risers</h3><span class="muted">Overall, Day 1 to now</span></div><ul class="list">'+(growth.map(function(g){return '<li><span><b>#'+g.a.num+' '+esc(g.a.name)+'</b></span><span class="num up" style="font-weight:800;font-size:1.1rem">+'+Math.round(g.d)+'</span></li>';}).join('')||'<li class="muted">Needs two sessions of data.</li>')+'</ul></div>'+
+   '<div class="card"><div class="card-h"><h3>Engagement check-in</h3><span class="muted">Love of the Game ≤ 3</span></div><ul class="list">'+(watch.map(function(w){return '<li><span><b>#'+w.a.num+' '+esc(w.a.name)+'</b></span><span class="chip warn">'+w.v.toFixed(1)+' / 5</span></li>';}).join('')||'<li class="muted">Everyone is locked in.</li>')+'</ul><p class="note" style="margin-top:10px">A quick 1-on-1 and a leadership job (cone captain, count reps) usually turns these around.</p></div>'+
+   '<div class="card"><h3>Today\'s at-home mission</h3>'+missionCard(S.mission,'Parents receive')+'</div></div></div></div>';
+}
+
+/* Rating sheet */
+var draft=null, draftA=null, draftN=null;
+function openSheet(id){
+  var a=byId(id), n=state.current[a.site], ex=rec(a,n);
+  draftA=a; draftN=n;
+  draft=ex?JSON.parse(JSON.stringify(ex)):{present:true,r:{},t:{},tags:[],shout:'',focus:''};
+  renderSheet(); $('#sheet').hidden=false; document.body.style.overflow='hidden';
+  setTimeout(function(){var f=$('#sheetClose');if(f)f.focus();},30);
+}
+function closeSheet(){$('#sheet').hidden=true;document.body.style.overflow='';draft=null;}
+function rubric(t,v){return v?'<b>'+v+' · </b>'+esc(t.r[v-1]):'Tap 1–5. 3 = solid for this age group.';}
+function renderSheet(){
+  var a=draftA,n=draftN,S=SESS[n-1];
+  function rows(p){return TRAITS.filter(function(t){return t.p===p;}).map(function(t){var v=draft.r[t.id];return '<div class="rate" data-tid="'+t.id+'"><div class="rate-h"><b>'+t.name+'</b><span>'+t.d+'</span></div><div class="scale" role="group" aria-label="'+t.name+' rating">'+[1,2,3,4,5].map(function(k){return '<button type="button" data-act="rate" data-tid="'+t.id+'" data-v="'+k+'" class="'+(v===k?'on':'')+'" aria-pressed="'+(v===k)+'">'+k+'</button>';}).join('')+'</div><p class="rub" id="rub_'+t.id+'">'+rubric(t,v)+'</p></div>';}).join('');}
+  var base=tests(a,coachSS(a).filter(function(x){return x<n;}));
+  var testsHtml=S.test?'<div class="sheet-sec"><h3>Testing</h3><div class="tests">'+TESTS.map(function(t){var b=base[t.id].latest;return '<div class="field"><label for="t_'+t.id+'">'+t.name+' ('+t.unit+')</label><input id="t_'+t.id+'" type="number" inputmode="decimal" step="'+(t.unit==='s'?'0.01':'1')+'" min="0" value="'+(draft.t&&draft.t[t.id]!=null?draft.t[t.id]:'')+'"><small>'+(b?'Last: '+b.v+' '+t.unit:'First test')+' · '+(t.lower?'lower is better':'higher is better')+'</small></div>';}).join('')+'</div></div>':'';
+  var body=draft.present?
+    testsHtml+
+    '<div class="sheet-sec"><div class="card-h" style="margin:0"><h3>Character</h3><button type="button" class="linkbtn" data-act="copylast">Copy last session\'s ratings</button></div>'+rows('char')+'</div>'+
+    '<div class="sheet-sec"><h3>Football skills</h3>'+rows('skill')+'</div>'+
+    '<div class="sheet-sec"><h3>Quick tags</h3><div class="chips">'+TAGS.map(function(t){var on=draft.tags.indexOf(t)>=0;return '<button type="button" class="tagbtn" data-act="tag" data-tag="'+esc(t)+'" aria-pressed="'+on+'">'+esc(t)+'</button>';}).join('')+'</div></div>'+
+    '<div class="sheet-sec"><div class="field"><label for="f_shout">Coach\'s shout-out (parents and athlete see this)</label><textarea id="f_shout" maxlength="280" placeholder="One specific thing they did well today.">'+esc(draft.shout)+'</textarea></div>'+
+    '<div class="field"><label for="f_focus">Focus for next session</label><input id="f_focus" maxlength="140" value="'+esc(draft.focus)+'" placeholder="One clear coaching point."></div></div>'
+    :'<div class="sheet-sec"><div class="empty">Marked absent. Parents will get the session recap and the at-home mission.</div></div>';
+  $('#sheetP').innerHTML='<div class="sheet-h"><div style="display:flex;gap:12px;align-items:center;min-width:0"><span class="jersey">'+a.num+'</span><div style="min-width:0"><h2 id="sheetTitle">'+esc(a.name)+'</h2><div class="muted" style="font-size:.85rem">Session '+n+' · '+esc(S.theme)+' · '+GROUPS[a.band]+'</div></div></div><button type="button" class="btn" id="sheetClose" data-act="close" aria-label="Close">✕</button></div>'+
+    '<div class="sheet-sec"><div class="toggle"><button type="button" class="sw" role="switch" aria-checked="'+draft.present+'" data-act="present" aria-label="Present today"></button> Present today</div></div>'+body+
+    '<div class="sheet-sec"><div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap"><button type="button" class="btn" data-act="close">Cancel</button><button type="button" class="btn btn-red" data-act="save">Save '+esc(a.name.split(' ')[0])+'</button></div></div>';
+}
+function readSheetInputs(){
+  if(!draft||!draft.present)return;
+  var s=$('#f_shout'),f=$('#f_focus'); if(s)draft.shout=s.value.trim(); if(f)draft.focus=f.value.trim();
+  if(SESS[draftN-1].test){draft.t=draft.t||{};TESTS.forEach(function(t){var el=$('#t_'+t.id);if(el){var v=el.value.trim();if(v===''){delete draft.t[t.id];}else{var num=parseFloat(v);if(!isNaN(num))draft.t[t.id]=num;}}});}
+}
+
+/* ---------- Parent portal ---------- */
+function renderParent(){
+  var a=byId(state.parentChild), ss=pubOf(a), latest=ss[ss.length-1], r=latest?rec(a,latest):null, S=latest?SESS[latest-1]:null;
+  var ov=overall(a,ss), ser=series(a,ss), first=ser[0];
+  var firstSS=first?ss.filter(function(x){return x<=first.n;}):[];
+  var pillars=[['Athletic',athletic,'Speed, agility, power, strength'],['Football Skills',function(x,y){return pillar(x,'skill',y);},'Footwork, hands, IQ, technique'],['Character',function(x,y){return pillar(x,'char',y);},'Compete, coachability, teamwork, leadership, toughness, love of the game']];
+  var upd;
+  if(!S){upd='<div class="card update"><div class="empty">Your first update arrives after Session 1.</div></div>';}
+  else{
+    var body=r&&r.present?
+      (r.shout?'<div class="quote">“'+esc(r.shout)+'”<cite>HRHR coaching staff</cite></div>':'')+
+      '<div class="kv"><div><div class="eyebrow">What we worked on</div><p>'+esc(S.focus)+'</p></div><div><div class="eyebrow">Focus for next session</div><p>'+esc(r.focus||'Keep building on today.')+'</p></div></div>'+
+      (r.tags&&r.tags.length?'<div class="chips" style="margin-top:12px">'+r.tags.map(function(t){return '<span class="chip">'+esc(t)+'</span>';}).join('')+'</div>':'')
+      :'<p style="margin-top:8px;font-weight:600">We missed '+esc(a.name.split(' ')[0])+' today. Here is what we covered: '+esc(S.focus)+'.</p>';
+    upd='<div class="card update"><div class="card-h"><div><div class="eyebrow">Latest update · '+esc(S.date)+'</div><h2>Session '+S.n+': '+esc(S.theme)+'</h2></div>'+(r&&r.present?'<span class="chip ok">Attended</span>':'<span class="chip off">Absent</span>')+'</div>'+body+missionCard(S.mission)+'</div>';
+  }
+  var pos=positionRead(a,ss).slice(0,3);
+  var hist=ss.slice().reverse().map(function(n){var x=rec(a,n),s=SESS[n-1];return '<details'+(n===latest?'':'')+'><summary><span>S'+n+' · '+esc(s.theme)+'</span><span class="muted">'+esc(s.date)+(x&&x.present?'':' · Absent')+'</span></summary>'+(x&&x.present&&x.shout?'<p>“'+esc(x.shout)+'”</p>':'')+(x&&x.present&&x.focus?'<p class="muted">Next focus: '+esc(x.focus)+'</p>':'')+'</details>';}).join('');
+
+  return '<div class="stack">'+
+   '<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center"><div>'+childPicker('pPick',a.id)+'</div>'+fmtSeg()+'</div>'+
+   '<section class="hero"><div><div class="eyebrow">Parent portal · Summer Camp 2027</div><h1>'+esc(a.name)+'</h1><div class="meta"><span>#'+a.num+'</span><span>'+GROUPS[a.band]+'</span><span>'+esc(SITES[a.site].name)+'</span></div>'+
+   '<p style="margin-top:14px;font-weight:600;max-width:46ch">Overall development: <span class="'+gc(ov)+'">'+word(ov)+'</span>. '+(first&&ov!=null&&ser.length>1?(ov-first.v>=0.5?'Up '+Math.round(ov-first.v)+' points since Day 1.':'Holding steady since Day 1.'):'Day 1 baseline is set.')+'</p></div>'+ring(ov,'Overall '+unitLabel())+'</section>'+
+   upd+
+   drive(a,ss)+
+   '<div class="pillars">'+pillars.map(function(p){var v=p[1](a,ss),v0=firstSS.length?p[1](a,firstSS):null;return '<div class="pillar"><div class="eyebrow">'+p[0]+'</div><div class="g '+gc(v)+'">'+fmt(v)+'</div><div class="w">'+word(v)+'</div>'+(ser.length>1?delta(v,v0):'<span class="delta flat">Baseline set</span>')+'<p class="note">'+p[2]+'</p></div>';}).join('')+'</div>'+
+   '<div class="grid2"><div class="stack">'+
+     '<div class="card"><div class="card-h"><h3>Overall score by session</h3><span class="muted">Higher is better</span></div>'+trendChart(ser)+'</div>'+
+     '<div class="card"><div class="card-h"><h3>Testing results</h3></div>'+testTable(a,ss)+'</div>'+
+     '<div class="card"><div class="card-h"><h3>Update history</h3></div><div class="hist">'+(hist||'<p class="muted">No updates yet.</p>')+'</div></div>'+
+   '</div><div class="stack">'+
+     '<div class="card"><div class="card-h"><h3>Character</h3></div>'+traitBars(a,ss,'char')+'</div>'+
+     '<div class="card"><div class="card-h"><h3>Football skills</h3></div>'+traitBars(a,ss,'skill')+'</div>'+
+     '<div class="card"><div class="card-h"><h3>Position read</h3><span class="muted">Profile fit</span></div><div class="bars">'+pos.map(function(p){return '<div class="bar"><b>'+p.k+' · '+p.n+'</b><div class="t"><i class="b'+gc(p.v)+'" style="width:'+p.v+'%"></i></div><span class="v">'+p.v+'</span></div>';}).join('')+'</div><p class="note" style="margin-top:10px">Built from testing and skill ratings. Young athletes should try several positions; coaches confirm in person.</p></div>'+
+     '<div class="card"><h3>How grades work</h3><p class="note" style="margin-top:8px">Coaches rate each skill 1–5 every session using the same rubric. Each test is compared to HRHR benchmarks for your athlete\'s age group. The overall score blends Athletic (35%), Football Skills (30%) and Character (35%). The scale reads like school: A 90+, B 80s, C 70s, D 60s.</p></div>'+
+   '</div></div></div>';
+}
+
+/* ---------- Athlete portal ---------- */
+function badgeSvg(code){return '<svg viewBox="0 0 64 72" aria-hidden="true"><path class="hex" d="M32 3l26 15v36L32 69 6 54V18z"/><text class="code" x="32" y="44" text-anchor="middle">'+esc(code)+'</text></svg>';}
+function renderAthlete(){
+  var a=byId(state.athleteChild), ss=pubOf(a), T=tests(a,ss), x=xpOf(a,ss), L=levelOf(x), latest=ss[ss.length-1];
+  var pct=L.next?clamp((x-L.cur[0])/(L.next[0]-L.cur[0]),0,1)*100:100;
+  var traits=TRAITS.map(function(t){return {t:t,v:traitNow(a,t.id,ss)};}).filter(function(z){return z.v!=null;}).sort(function(p,q){return q.v-p.v;});
+  var top=traits.slice(0,3), low=traits[traits.length-1];
+  var lastShout=null; pres(a,ss).forEach(function(p){if(p[1].shout)lastShout={n:p[0],s:p[1].shout};});
+  var earned=BADGES.filter(function(b){return b.ok(a,ss,T);}).length;
+  var dots=''; for(var n=1;n<=8;n++){var r=rec(a,n),c=ss.indexOf(n)<0?'':(r&&r.present?'on':'miss');dots+='<span class="'+c+'" title="Session '+n+'">'+n+'</span>';}
+  return '<div class="stack">'+
+   '<div>'+childPicker('aPick',a.id)+'</div>'+
+   '<section class="pcard"><div class="bignum" aria-hidden="true">'+a.num+'</div><div class="eyebrow" style="position:relative">Athlete portal · '+GROUPS[a.band]+'</div><h1 style="position:relative">'+esc(a.name.split(' ')[0])+' <span class="muted">#'+a.num+'</span></h1>'+
+   '<div style="margin-top:10px;position:relative"><span class="lvl">Level '+(LEVELS.indexOf(L.cur)+1)+' · '+L.cur[1]+'</span></div>'+
+   '<div class="xp"><div class="xp-row"><span class="num">'+x.toLocaleString()+' XP</span><span class="muted">'+(L.next?(L.next[0]-x).toLocaleString()+' XP to '+L.next[1]:'Top level reached')+'</span></div><div class="progress"><i style="width:'+pct.toFixed(0)+'%"></i></div></div>'+
+   '<div class="dots" aria-label="Sessions attended">'+dots+'</div></section>'+
+   (latest?missionCard(SESS[latest-1].mission,'Your mission before Session '+Math.min(8,latest+1)):'')+
+   '<div class="grid2"><div class="stack">'+
+     '<div class="card"><div class="card-h"><h3>Personal bests</h3><span class="muted">Beat your own number</span></div><div class="pbs">'+TESTS.map(function(t){var tt=T[t.id],b=tt.best,d=improvement(tt,t.lower);return '<div class="pb"><span class="q">'+t.q+' · '+t.name+'</span><span class="v">'+(b?b.v+'<small>'+t.unit+'</small>':'—')+'</span>'+(d>0?'<span class="delta up">▲ '+(t.unit==='s'?d.toFixed(2):Math.round(d))+' '+t.unit+' better</span>':'<span class="delta flat">'+(tt.vals.length>1?'Next test: go get it':'Baseline set')+'</span>')+'</div>';}).join('')+'</div></div>'+
+     '<div class="card"><div class="card-h"><h3>Badges</h3><span class="muted">'+earned+' of '+BADGES.length+' earned</span></div><div class="badges">'+BADGES.map(function(b){var ok=b.ok(a,ss,T);return '<div class="badge '+(ok?'got':'locked')+'">'+badgeSvg(b.code)+'<b>'+b.name+'</b><small>'+(ok?'Earned':esc(b.how))+'</small></div>';}).join('')+'</div></div>'+
+   '</div><div class="stack">'+
+     (lastShout?'<div class="card update"><div class="eyebrow">Coach says · Session '+lastShout.n+'</div><div class="quote">“'+esc(lastShout.s)+'”</div></div>':'')+
+     '<div class="card"><h3>Your superpowers</h3><div class="power" style="margin-top:12px">'+(top.map(function(z,i){return '<div><i>'+(i+1)+'</i>'+z.t.name+'</div>';}).join('')||'<p class="muted">Coming after your first session.</p>')+'</div></div>'+
+     (low?'<div class="card"><h3>Level-up target</h3><p style="margin-top:8px;font-weight:700">'+low.t.name+'</p><p class="muted" style="margin-top:4px">What a 5 looks like: '+esc(low.t.r[4])+'.</p></div>':'')+
+     '<div class="card"><h3>How to earn XP</h3><ul class="list" style="margin-top:10px"><li><span>Show up to a session</span><b class="num">+100</b></li><li><span>Every rating point from your coach</span><b class="num">+8</b></li><li><span>Coach shout-out</span><b class="num">+50</b></li><li><span>New personal best on a test</span><b class="num">+75</b></li></ul></div>'+
+   '</div></div></div>';
+}
+
+/* ---------- Router + events ---------- */
+var ROLES=['coach','parent','athlete'];
+function role(){var h=location.hash.replace('#','');return ROLES.indexOf(h)>=0?h:'parent';}
+function render(){
+  var r=role();
+  document.querySelectorAll('.roles a').forEach(function(el){if(el.getAttribute('data-role')===r)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
+  $('#app').innerHTML=r==='coach'?renderCoach():r==='athlete'?renderAthlete():renderParent();
+}
+var toastT;
+function toast(m){var t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){t.hidden=true;},2400);}
+var resetArmed=false;
+document.addEventListener('click',function(e){
+  var el=e.target.closest('[data-act]'); if(!el)return;
+  var act=el.getAttribute('data-act');
+  if(act==='fmt'){state.gradeFormat=el.getAttribute('data-f');save();render();}
+  else if(act==='site'){state.site=el.getAttribute('data-site');save();render();}
+  else if(act==='group'){state.group=el.getAttribute('data-g');save();render();}
+  else if(act==='sess'){var s=state.site;state.current[s]=clamp(state.current[s]+(+el.getAttribute('data-d')),1,8);save();render();}
+  else if(act==='publish'){var site=state.site,n=state.current[site];if(state.published[site].indexOf(n)<0)state.published[site].push(n);save();render();toast('Session '+n+' update sent to '+SITES[site].short+' families');}
+  else if(act==='open'){openSheet(el.getAttribute('data-id'));}
+  else if(act==='close'){closeSheet();}
+  else if(act==='present'){readSheetInputs();draft.present=!draft.present;renderSheet();}
+  else if(act==='rate'){
+    var tid=el.getAttribute('data-tid'),v=+el.getAttribute('data-v');draft.r[tid]=v;
+    el.parentNode.querySelectorAll('button').forEach(function(b){var on=+b.getAttribute('data-v')===v;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));});
+    var t=TRAITS.filter(function(z){return z.id===tid;})[0];$('#rub_'+tid).innerHTML=rubric(t,v);
+  }
+  else if(act==='tag'){var tg=el.getAttribute('data-tag'),i=draft.tags.indexOf(tg);if(i>=0)draft.tags.splice(i,1);else draft.tags.push(tg);el.setAttribute('aria-pressed',String(i<0));}
+  else if(act==='copylast'){
+    readSheetInputs();
+    var prev=null;for(var k=draftN-1;k>=1;k--){var pr=rec(draftA,k);if(pr&&pr.present){prev=pr;break;}}
+    if(prev){draft.r=JSON.parse(JSON.stringify(prev.r));renderSheet();toast('Copied ratings from Session '+k+'. Adjust what changed.');}else toast('No earlier session to copy from.');
+  }
+  else if(act==='save'){
+    readSheetInputs();
+    if(draft.present){var missing=TRAITS.filter(function(t){return !draft.r[t.id];});if(missing.length){toast('Rate '+missing.length+' more: '+missing.map(function(t){return t.name;}).slice(0,2).join(', ')+(missing.length>2?'…':''));return;}}
+    state.records[draftA.id]=state.records[draftA.id]||{};state.records[draftA.id][draftN]=draft;
+    var nm=draftA.name;save();closeSheet();render();toast('Saved '+nm+' for Session '+draftN);
+  }
+  else if(act==='reset'){
+    if(!resetArmed){resetArmed=true;el.textContent='Tap again to reset';setTimeout(function(){resetArmed=false;var b=$('#resetBtn');if(b)b.textContent='Reset demo data';},3000);return;}
+    resetArmed=false;el.textContent='Reset demo data';state=makeDemo();save();render();toast('Demo data reset');
+  }
+});
+document.addEventListener('change',function(e){
+  var p=e.target.getAttribute&&e.target.getAttribute('data-pick');
+  if(p==='pPick'){state.parentChild=e.target.value;save();render();}
+  if(p==='aPick'){state.athleteChild=e.target.value;save();render();}
+});
+$('#sheet').addEventListener('click',function(e){if(e.target.id==='sheet')closeSheet();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('#sheet').hidden)closeSheet();});
+window.addEventListener('hashchange',render);
+render();
+})();
+</script>
