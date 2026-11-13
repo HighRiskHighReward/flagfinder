@@ -86,6 +86,7 @@ main{padding-block:20px 56px}
 .btn:hover{border-color:var(--muted)}
 .btn-red{background:var(--red);border-color:var(--red);color:var(--on-red)}
 .btn-red:hover{filter:brightness(1.08);border-color:var(--red)}
+.btn-big{padding:14px 20px;font-size:1.05rem}
 .btn[disabled]{opacity:.55;cursor:default;filter:none}
 .seg{display:inline-flex;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px;flex-wrap:wrap}
 .seg button{border:0;background:none;border-radius:8px;padding:6px 12px;font-weight:700;font-size:.85rem;color:var(--muted)}
@@ -97,6 +98,12 @@ select{background:var(--surface-2);border:1px solid var(--line);border-radius:10
 .chip.off{color:var(--muted)}
 .chip.live{color:var(--red);border-color:currentColor}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
+
+/* Coach sub-tabs */
+.subtabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto}
+.subtabs button{background:none;border:0;border-bottom:3px solid transparent;padding:10px 14px;font-family:var(--f-display);font-weight:800;font-size:1.05rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.subtabs button[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--red)}
+.subtabs .count{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:99px;background:var(--red);color:var(--on-red);font-size:.75rem;margin-left:6px;padding:0 6px;font-family:var(--f-body)}
 
 /* Grade colors */
 .gA{color:var(--gA)} .gB{color:var(--gB)} .gC{color:var(--gC)} .gD{color:var(--gD)} .gF{color:var(--gF)}
@@ -114,7 +121,7 @@ select{background:var(--surface-2);border:1px solid var(--line);border-radius:10
 .roster{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr))}
 .ath{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
 .ath:hover{border-color:var(--muted)}
-.jersey{width:46px;height:46px;border-radius:10px;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--line);font-family:var(--f-display);font-weight:800;font-size:1.35rem}
+.jersey{width:46px;height:46px;border-radius:10px;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--line);font-family:var(--f-display);font-weight:800;font-size:1.35rem;flex:none}
 .ath b{display:block;font-weight:700}
 .ath small{color:var(--muted);font-size:.78rem}
 .ath .sc{font-family:var(--f-display);font-weight:800;font-size:1.4rem;text-align:right;line-height:1}
@@ -122,13 +129,28 @@ select{background:var(--surface-2);border:1px solid var(--line);border-radius:10
 .list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
 .list li{display:flex;justify-content:space-between;gap:10px;align-items:center;border-bottom:1px dashed var(--line);padding-bottom:8px}
 .list li:last-child{border-bottom:0;padding-bottom:0}
+.steps{display:grid;gap:8px;margin:0;padding:0;list-style:none;counter-reset:s}
+.steps li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;font-weight:600}
+.steps li::before{counter-increment:s;content:counter(s);width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--line);font-family:var(--f-display);font-weight:800}
+
+/* Quick rate by skill */
+.qr{display:grid;gap:8px}
+.qrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px 12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.qrow .who{display:flex;gap:10px;align-items:center;min-width:0}
+.qrow .who b{display:block;line-height:1.2}
+.qrow .who small{color:var(--muted);font-size:.75rem}
+.qrow .scale{grid-column:1 / -1}
+@media (min-width:640px){.qrow{grid-template-columns:minmax(0,220px) minmax(0,1fr) auto}.qrow .scale{grid-column:auto}}
+.qrow.away{opacity:.55}
+.mini{border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:5px 10px;font-size:.78rem;font-weight:700}
 
 /* Sheet */
 .sheet{position:fixed;inset:0;z-index:40;background:var(--scrim);display:flex;justify-content:center;align-items:flex-end}
 @media (min-width:760px){.sheet{align-items:center}}
-.sheet-p{background:var(--bg);width:100%;max-width:680px;max-height:92%;overflow:auto;border-radius:18px 18px 0 0;border:1px solid var(--line);box-shadow:var(--shadow);padding:0 max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.sheet-p{background:var(--bg);width:100%;max-width:680px;max-height:92%;overflow:auto;border-radius:18px 18px 0 0;border:1px solid var(--line);box-shadow:var(--shadow);padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
 @media (min-width:760px){.sheet-p{border-radius:18px;max-height:88%}}
 .sheet-h{position:sticky;top:0;background:var(--bg);display:flex;gap:12px;align-items:center;justify-content:space-between;padding-block:14px;border-bottom:1px solid var(--line);z-index:1}
+.sheet-f{position:sticky;bottom:0;background:var(--bg);border-top:1px solid var(--line);padding-block:12px calc(12px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px}
 .sheet-sec{padding-top:18px;display:grid;gap:12px}
 .rate{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:8px}
 .rate-h{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline}
@@ -137,21 +159,42 @@ select{background:var(--surface-2);border:1px solid var(--line);border-radius:10
 .scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
 .scale button{height:44px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);font-family:var(--f-display);font-weight:800;font-size:1.2rem}
 .scale button.on{background:var(--red);border-color:var(--red);color:var(--on-red)}
+.scale button.carry{border:2px dashed var(--muted);color:var(--fg)}
 .rub{font-size:.85rem;color:var(--muted);min-height:1.3em}
 .rub b{color:var(--fg)}
+details.more{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
+details.more summary{cursor:pointer;font-weight:700}
+details.more[open] summary{margin-bottom:12px}
+details.more .rate{background:var(--surface-2)}
 .tests{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr))}
-.field{display:grid;gap:4px}
+.field{display:grid;gap:4px;min-width:0}
 .field label{font-weight:700;font-size:.85rem}
-.field input,.field textarea{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+.field input,.field textarea,.field select{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
 .field textarea{min-height:76px;resize:vertical}
 .field small{color:var(--muted);font-size:.75rem}
 .tagbtn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-weight:600;font-size:.85rem}
 .tagbtn[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.tagbtn.sug{border-color:var(--gold)}
 .toggle{display:flex;align-items:center;gap:10px;font-weight:700}
-.sw{width:52px;height:30px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);position:relative;padding:0}
+.sw{width:52px;height:30px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);position:relative;padding:0;flex:none}
 .sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--muted);transition:left .15s}
 .sw[aria-checked="true"]{background:var(--turf-hi);border-color:var(--turf-hi)}
 .sw[aria-checked="true"]::after{left:25px;background:#fff}
+
+/* Send + roster */
+.fam{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.fam summary{cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 10px;align-items:center}
+.fam summary b{display:block}
+.fam summary small{color:var(--muted);font-size:.8rem;overflow-wrap:anywhere}
+.msg{white-space:pre-wrap;font-family:var(--f-body);font-size:.92rem;background:var(--surface-2);border-radius:10px;padding:12px 14px;margin:12px 0 10px;overflow-wrap:anywhere}
+.formgrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:440px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+td .num{font-size:1.1rem;font-weight:700}
+td small{display:block;color:var(--muted);font-size:.75rem}
+code{font-size:.82rem;background:var(--surface-2);padding:2px 6px;border-radius:6px;overflow-wrap:anywhere}
 
 /* Parent hero */
 .hero{display:grid;gap:18px;grid-template-columns:1fr;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;position:relative;overflow:hidden}
@@ -176,6 +219,16 @@ select{background:var(--surface-2);border:1px solid var(--line);border-radius:10
 .kv p{font-weight:600}
 .mission{display:flex;gap:12px;align-items:flex-start;background:var(--surface-2);border:1px dashed var(--gold);border-radius:12px;padding:12px 14px;margin-top:14px}
 .mission svg{flex:none;color:var(--gold)}
+
+/* Growth plan */
+.plan{display:grid;gap:12px}
+.goal{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;background:var(--surface-2);border-radius:12px;padding:14px}
+.goal .rank{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:1.2rem;background:var(--surface);border:1px solid var(--line)}
+.goal.first .rank{background:var(--red);color:var(--on-red);border-color:var(--red)}
+.goal h4{margin:0;font-family:var(--f-display);font-size:1.25rem;text-transform:uppercase;letter-spacing:.03em}
+.goal p{margin-top:4px}
+.drill{margin-top:8px;border-left:3px solid var(--gold);padding-left:10px;font-weight:600}
+.keep{display:flex;gap:10px;align-items:center;font-weight:700;margin-top:4px}
 
 /* Drive chart: the camp as a football field */
 .field-wrap{overflow-x:auto}
@@ -207,13 +260,6 @@ select{background:var(--surface-2);border:1px solid var(--line);border-radius:10
 .bar .t i{display:block;height:100%;border-radius:99px}
 .bar .v{font-family:var(--f-display);font-weight:800;text-align:right;font-size:1.05rem}
 
-.tbl-wrap{overflow-x:auto}
-table{border-collapse:collapse;width:100%;min-width:440px;font-variant-numeric:tabular-nums}
-th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}
-th{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
-td .num{font-size:1.1rem;font-weight:700}
-td small{display:block;color:var(--muted);font-size:.75rem}
-
 .chart text{fill:var(--muted);font-family:var(--f-body);font-size:17px}
 .chart .grid{stroke:var(--line);stroke-width:1}
 .chart .line{stroke:var(--red);stroke-width:3;fill:none;stroke-linejoin:round;stroke-linecap:round}
@@ -235,7 +281,7 @@ td small{display:block;color:var(--muted);font-size:.75rem}
 .xp{margin-top:16px;display:grid;gap:6px;max-width:520px;position:relative}
 .xp .progress{height:14px}
 .xp .progress i{background:linear-gradient(90deg,var(--gold),var(--red))}
-.xp-row{display:flex;justify-content:space-between;font-weight:700;font-size:.85rem}
+.xp-row{display:flex;justify-content:space-between;font-weight:700;font-size:.85rem;gap:10px}
 .dots{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;position:relative}
 .dots span{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:.85rem;border:1px solid var(--line);background:var(--surface)}
 .dots span.on{background:var(--turf-hi);border-color:var(--turf-hi);color:#062314}
@@ -259,7 +305,7 @@ td small{display:block;color:var(--muted);font-size:.75rem}
 .power div{display:flex;align-items:center;gap:10px;background:var(--surface-2);border-radius:10px;padding:10px 12px;font-weight:700}
 .power div i{font-style:normal;font-family:var(--f-display);font-weight:800;color:var(--gold);font-size:1.2rem;width:1.4em}
 
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--fg);color:var(--bg);font-weight:700;padding:10px 18px;border-radius:999px;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--fg);color:var(--bg);font-weight:700;padding:10px 18px;border-radius:999px;box-shadow:var(--shadow);max-width:calc(100% - 32px);text-align:center}
 .empty{padding:28px;text-align:center;color:var(--muted)}
 .note{font-size:.8rem;color:var(--muted)}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
@@ -279,7 +325,7 @@ td small{display:block;color:var(--muted);font-size:.75rem}
   </div>
 </header>
 <div class="demo"><div class="wrap">
-  <span><span class="tag-demo">DEMO</span>Fictional athletes. Changes are saved on this device only.</span>
+  <span><span class="tag-demo">DEMO</span>Fictional athletes and families. Changes are saved on this device only.</span>
   <button class="linkbtn" type="button" data-act="reset" id="resetBtn">Reset demo data</button>
 </div></div>
 <main class="wrap" id="app"></main>
@@ -293,47 +339,57 @@ var $ = function(s){return document.querySelector(s);};
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
 function avg(a){return a.length? a.reduce(function(x,y){return x+y;},0)/a.length : null;}
+function first(name){return String(name).split(' ')[0];}
 
 /* ---------- Camp program ---------- */
 var SITES={prosper:{name:'Prosper Rec Center',short:'Prosper'},plano:{name:'Plano Oak Point Rec Center',short:'Plano Oak Point'}};
 var GROUPS={'8-9':'Rookies 8–9','10-11':'Juniors 10–11'};
+var COACHES=['Coach Niko','Coach Ray','Coach Dee'];
+// foc = the 3 traits coaches must rate that day (tied to the session theme). Everything else carries over.
 var SESS=[
- {n:1,date:'Tue Jun 8',wk:1,theme:'Baseline Day',focus:'Testing, athletic stance and starts',test:true,mission:'Wall drill: 3 sets of 20 seconds. Fast knees, tall posture, drive the arms.'},
- {n:2,date:'Thu Jun 10',wk:1,theme:'Speed Mechanics',focus:'Arm drive, first three steps, acceleration posture',mission:'A-skips down the driveway and back, 3 rounds. Then 4 fast 10-yard starts.'},
- {n:3,date:'Tue Jun 15',wk:2,theme:'Change of Direction',focus:'Plant foot, sink the hips, explode out of the cut',mission:'Set two shoes 5 yards apart. 5 figure-8s each direction, low hips the whole way.'},
- {n:4,date:'Thu Jun 17',wk:2,theme:'Midpoint Testing + Ball Skills',focus:'Re-test, then hands: eyes to the tuck',test:true,mission:'50 catches with a parent or against a wall. Watch the ball all the way into your hands.'},
- {n:5,date:'Tue Jun 22',wk:3,theme:'Position Day',focus:'QB, WR, RB, DB and LB stations',mission:'Teach someone at home one thing you learned at your position today.'},
- {n:6,date:'Thu Jun 24',wk:3,theme:'Defense & Pursuit',focus:'Backpedal, breaking on the ball, pursuit angles, safe flag pulls',mission:'Backpedal 10 yards, turn and sprint 10 yards. 6 reps with full rest.'},
- {n:7,date:'Tue Jun 29',wk:4,theme:'Team & Leadership',focus:'Captains, huddles, calling plays, picking up teammates',mission:'Do one helpful thing at home without being asked. Tell your coach about it.'},
- {n:8,date:'Thu Jul 1',wk:4,theme:'Final Testing + Camp Bowl',focus:'Final testing, the Camp Bowl and awards',test:true,mission:'Keep the HRHR habit: 3 sprint days a week for the rest of the summer.'}
+ {n:1,date:'Tue Jun 8',wk:1,theme:'Baseline Day',focus:'Testing, athletic stance and starts',test:true,foc:['compete','coach','feet'],mission:'Wall drill: 3 sets of 20 seconds. Fast knees, tall posture, drive the arms.'},
+ {n:2,date:'Thu Jun 10',wk:1,theme:'Speed Mechanics',focus:'Arm drive, first three steps, acceleration posture',foc:['feet','coach','compete'],mission:'A-skips down the driveway and back, 3 rounds. Then 4 fast 10-yard starts.'},
+ {n:3,date:'Tue Jun 15',wk:2,theme:'Change of Direction',focus:'Plant foot, sink the hips, explode out of the cut',foc:['feet','tough','coach'],mission:'Set two shoes 5 yards apart. 5 figure-8s each direction, low hips the whole way.'},
+ {n:4,date:'Thu Jun 17',wk:2,theme:'Midpoint Testing + Ball Skills',focus:'Re-test, then hands: eyes to the tuck',test:true,foc:['hands','iq','love'],mission:'50 catches with a parent or against a wall. Watch the ball all the way into your hands.'},
+ {n:5,date:'Tue Jun 22',wk:3,theme:'Position Day',focus:'QB, WR, RB, DB and LB stations',foc:['tech','iq','love'],mission:'Teach someone at home one thing you learned at your position today.'},
+ {n:6,date:'Thu Jun 24',wk:3,theme:'Defense & Pursuit',focus:'Backpedal, breaking on the ball, pursuit angles, safe flag pulls',foc:['tech','tough','team'],mission:'Backpedal 10 yards, turn and sprint 10 yards. 6 reps with full rest.'},
+ {n:7,date:'Tue Jun 29',wk:4,theme:'Team & Leadership',focus:'Captains, huddles, calling plays, picking up teammates',foc:['lead','team','compete'],mission:'Do one helpful thing at home without being asked. Tell your coach about it.'},
+ {n:8,date:'Thu Jul 1',wk:4,theme:'Final Testing + Camp Bowl',focus:'Final testing, the Camp Bowl and awards',test:true,foc:['compete','lead','team'],mission:'Keep the HRHR habit: 3 sprint days a week for the rest of the summer.'}
 ];
+// r = rubric for 1..5. home = 10-minute at-home drill parents can run. kid = how the athlete hears it.
 var TRAITS=[
- {id:'compete',p:'char',name:'Compete',d:'Effort and will to win',r:['Goes through the motions','Competes when it is fun or easy','Solid effort on most reps','Competes hard on nearly every rep','Max effort every rep; wins and loses with class']},
- {id:'coach',p:'char',name:'Coachability',d:'Listens and applies feedback',r:['Repeats the same mistakes','Listens but rarely adjusts','Adjusts after a few reminders','Fixes it on the very next rep','Asks questions and seeks out coaching']},
- {id:'team',p:'char',name:'Teamwork',d:'Plays for the group',r:['Plays for self','Gets along, stays in own lane','Good teammate when things go well','Encourages others and shares the ball','Lifts the whole group; celebrates others first']},
- {id:'lead',p:'char',name:'Leadership',d:'Sets the standard',r:['Follows only when told','Leads by example sometimes','Leads by example consistently','Speaks up and organizes others','Others follow them; sets the standard']},
- {id:'tough',p:'char',name:'Toughness',d:'Pushes through hard moments',r:['Shuts down when tired or after mistakes','Needs encouragement to push through','Pushes through most hard moments','Bounces back fast from mistakes','Gets better when it gets hard']},
- {id:'love',p:'char',name:'Love of the Game',d:'Interest and energy',r:['Seems checked out','Interested in parts of practice','Engaged and having fun','Excited and eager for the next drill','Lives for it; asks for extra work']},
- {id:'feet',p:'skill',name:'Footwork',d:'Stance, starts, balance, cuts',r:['Off balance, heavy feet','Gets there, but slow or upright','Balanced; decent stance and starts','Quick, low and controlled in cuts','Elite balance; sharp and explosive']},
- {id:'hands',p:'skill',name:'Ball Skills',d:'Catch, carry, throw',r:['Struggles to catch or carry','Catches easy balls, often with the body','Reliable hands on routine balls','Catches away from the body and secures it','Makes the tough catch look easy']},
- {id:'iq',p:'skill',name:'Football IQ',d:'Assignments and awareness',r:['Unsure where to line up','Knows the drill once shown','Understands assignments','Anticipates plays and adjusts','Sees the field; helps teammates line up']},
- {id:'tech',p:'skill',name:'Position Technique',d:'Fundamentals at speed',r:['Basic technique not there yet','Learning the fundamentals','Fundamentals show up in drills','Technique holds up at full speed','Holds up in live play; can demo it']}
+ {id:'compete',p:'char',name:'Compete',d:'Effort and will to win',r:['Goes through the motions','Competes when it is fun or easy','Solid effort on most reps','Competes hard on nearly every rep','Max effort every rep; wins and loses with class'],home:'Race a sibling or parent: 5 races of 10 yards. Keep score out loud. The winner picks the next drill.',kid:'Win every rep. Race someone at home 5 times and keep score.'},
+ {id:'coach',p:'char',name:'Coachability',d:'Listens and applies feedback',r:['Repeats the same mistakes','Listens but rarely adjusts','Adjusts after a few reminders','Fixes it on the very next rep','Asks questions and seeks out coaching'],home:'Ask: "What was one coaching point today?" Have them show you the fix 5 times in a row.',kid:'Tell your family one coaching point from today and show them the fix 5 times.'},
+ {id:'team',p:'char',name:'Teamwork',d:'Plays for the group',r:['Plays for self','Gets along, stays in own lane','Good teammate when things go well','Encourages others and shares the ball','Lifts the whole group; celebrates others first'],home:'Ask them to name a teammate who did something great. Next session, they tell that teammate.',kid:'Find a teammate doing something great next session and tell them.'},
+ {id:'lead',p:'char',name:'Leadership',d:'Sets the standard',r:['Follows only when told','Leads by example sometimes','Leads by example consistently','Speaks up and organizes others','Others follow them; sets the standard'],home:'Let them lead the family warm-up: they pick 3 exercises, call them out and count every rep.',kid:'Lead a warm-up at home: pick 3 exercises and count the reps out loud.'},
+ {id:'tough',p:'char',name:'Toughness',d:'Pushes through hard moments',r:['Shuts down when tired or after mistakes','Needs encouragement to push through','Pushes through most hard moments','Bounces back fast from mistakes','Gets better when it gets hard'],home:'Wall sits: 3 rounds of 30 seconds. Talk about what to say to yourself when it burns.',kid:'3 wall sits of 30 seconds. When it burns, say "next rep".'},
+ {id:'love',p:'char',name:'Love of the Game',d:'Interest and energy',r:['Seems checked out','Interested in parts of practice','Engaged and having fun','Excited and eager for the next drill','Lives for it; asks for extra work'],home:'Watch 10 minutes of football together. Ask which position looks the most fun and why.',kid:'Watch some football and pick the player you want to play like.'},
+ {id:'feet',p:'skill',name:'Footwork',d:'Stance, starts, balance, cuts',r:['Off balance, heavy feet','Gets there, but slow or upright','Balanced; decent stance and starts','Quick, low and controlled in cuts','Elite balance; sharp and explosive'],home:'Chalk 4 squares on the driveway. Quick feet in and out, 4 rounds of 15 seconds.',kid:'Quick feet: 4 rounds of 15 seconds in and out of chalk squares.'},
+ {id:'hands',p:'skill',name:'Ball Skills',d:'Catch, carry, throw',r:['Struggles to catch or carry','Catches easy balls, often with the body','Reliable hands on routine balls','Catches away from the body and secures it','Makes the tough catch look easy'],home:'50 catches a day with a parent or a wall. Hands make a diamond, eyes watch the ball into the tuck.',kid:'50 catches a day. Make a diamond with your hands and watch it all the way in.'},
+ {id:'iq',p:'skill',name:'Football IQ',d:'Assignments and awareness',r:['Unsure where to line up','Knows the drill once shown','Understands assignments','Anticipates plays and adjusts','Sees the field; helps teammates line up'],home:'Draw 3 plays on paper together. Ask: where does each player go, and why?',kid:'Draw 3 plays and explain where everyone goes.'},
+ {id:'tech',p:'skill',name:'Position Technique',d:'Fundamentals at speed',r:['Basic technique not there yet','Learning the fundamentals','Fundamentals show up in drills','Technique holds up at full speed','Holds up in live play; can demo it'],home:'10 perfect stances and starts. Check feet, hands and eyes every time before going.',kid:'10 perfect stances and starts. Check feet, hands, eyes.'}
 ];
 var TESTS=[
- {id:'dash',name:'20-Yard Dash',q:'Speed',unit:'s',lower:true,b:{'8-9':[4.8,3.6],'10-11':[4.5,3.4]}},
- {id:'shuttle',name:'5-10-5 Shuttle',q:'Agility',unit:'s',lower:true,b:{'8-9':[7.2,5.4],'10-11':[6.8,5.1]}},
- {id:'broad',name:'Broad Jump',q:'Power',unit:'in',lower:false,b:{'8-9':[36,72],'10-11':[44,84]}},
- {id:'push',name:'Push-ups (30 s)',q:'Strength',unit:'reps',lower:false,b:{'8-9':[3,25],'10-11':[5,30]}}
+ {id:'dash',name:'20-Yard Dash',q:'Speed',unit:'s',lower:true,b:{'8-9':[4.8,3.6],'10-11':[4.5,3.4]},home:'4 starts of 10 yards from a two-point stance. Full rest between each. Arms drive cheek to cheek.'},
+ {id:'shuttle',name:'5-10-5 Shuttle',q:'Agility',unit:'s',lower:true,b:{'8-9':[7.2,5.4],'10-11':[6.8,5.1]},home:'Two shoes 5 yards apart. Touch and go, 5 reps each direction, staying low at every turn.'},
+ {id:'broad',name:'Broad Jump',q:'Power',unit:'in',lower:false,b:{'8-9':[36,72],'10-11':[44,84]},home:'Squat jumps: 3 sets of 5. Swing the arms, jump far, land soft and stick it for 2 seconds.'},
+ {id:'push',name:'Push-ups (30 s)',q:'Strength',unit:'reps',lower:false,b:{'8-9':[3,25],'10-11':[5,30]},home:'Push-ups: 3 sets of as many good ones as possible. Knees down is fine. Chest to the floor every rep.'}
 ];
 var TAGS=['Hustle','Great teammate','Listened first time','Encouraged others','Fought through fatigue','Big play','Led a drill','Needs more focus'];
+var PHRASES=[['Hustle','{n} gave max effort on every single rep today.'],['Toughness','{n} kept pushing when the whole group was tired.'],['Teammate','{n} picked up a teammate without being asked.'],['Coachable','{n} heard the coaching point once and fixed it on the next rep.'],['Big play','{n} made one of the plays of the day.'],['Leader','{n} led the group in warm-ups and set the tone.']];
 var LEVELS=[[0,'Rookie'],[700,'Starter'],[1500,'Playmaker'],[2500,'Captain'],[3600,'HRHR Elite']];
+function T_(id){return TRAITS.filter(function(t){return t.id===id;})[0];}
+function TS_(id){return TESTS.filter(function(t){return t.id===id;})[0];}
 
-/* ---------- Demo data (fictional) ---------- */
+/* ---------- Demo data (fictional people; 555-01xx numbers and example.com are reserved for fiction) ---------- */
 var DEFS=[
- ['Mason T.','prosper','10-11',7],['Ava R.','prosper','8-9',12],['Jayden W.','prosper','10-11',22],['Liam K.','prosper','8-9',3],
- ['Zoe M.','prosper','10-11',11],['Carter B.','prosper','8-9',5],['Elijah P.','prosper','10-11',24],['Harper S.','prosper','8-9',9],
- ['Noah D.','plano','10-11',1],['Mia L.','plano','8-9',14],['Josiah F.','plano','10-11',33],['Kai N.','plano','8-9',8],
- ['Isaiah G.','plano','10-11',2],['Ella J.','plano','8-9',18]
+ ['Mason T.','prosper','10-11',7,'Dana T.','text','(469) 555-0101'],['Ava R.','prosper','8-9',12,'Marcus R.','email','marcus.r@example.com'],
+ ['Jayden W.','prosper','10-11',22,'Keisha W.','text','(469) 555-0103'],['Liam K.','prosper','8-9',3,'Sarah K.','email','sarah.k@example.com'],
+ ['Zoe M.','prosper','10-11',11,'Andre M.','text','(469) 555-0105'],['Carter B.','prosper','8-9',5,'Jen B.','email','jen.b@example.com'],
+ ['Elijah P.','prosper','10-11',24,'Tasha P.','text','(469) 555-0107'],['Harper S.','prosper','8-9',9,'Chris S.','email','chris.s@example.com'],
+ ['Noah D.','plano','10-11',1,'Monique D.','text','(972) 555-0109'],['Mia L.','plano','8-9',14,'David L.','email','david.l@example.com'],
+ ['Josiah F.','plano','10-11',33,'Erica F.','text','(972) 555-0111'],['Kai N.','plano','8-9',8,'Brian N.','email','brian.n@example.com'],
+ ['Isaiah G.','plano','10-11',2,'Latoya G.','text','(972) 555-0113'],['Ella J.','plano','8-9',18,'Mike J.','email','mike.j@example.com']
 ];
 var SHOUTS=[
  '{n} won the get-off race three times in a row. Explosive first step today.',
@@ -344,13 +400,12 @@ var SHOUTS=[
  '{n} brought the loudest voice in the huddle and the best energy on the field.',
  '{n} made the catch of the day on a contested ball. Strong, soft hands.'
 ];
-var FOCUS=['Eyes on the ball all the way into the hands.','Stay low out of the breaks: chest over toes.','Talk more on defense so teammates know where you are.','Finish every rep through the cone, not at it.','Drive the arms, cheek to cheek, on every start.','Reset fast after a mistake. Next play.'];
 
 function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
 function makeDemo(){
   var R=rng(2027), athletes=[], records={};
   DEFS.forEach(function(d,i){
-    var a={id:'a'+(i+1),name:d[0],site:d[1],band:d[2],num:d[3],pick:''};
+    var a={id:'a'+(i+1),name:d[0],site:d[1],band:d[2],num:d[3],guardian:d[4],method:d[5],contact:d[6]};
     athletes.push(a); records[a.id]={};
     var base={}; TRAITS.forEach(function(t){base[t.id]=1.7+R()*2.1;});
     var growth=0.1+R()*0.24, tn={}; TESTS.forEach(function(t){tn[t.id]=0.12+R()*0.5;});
@@ -358,7 +413,7 @@ function makeDemo(){
     for(var n=1;n<=last;n++){
       if(n===6 && i%2===1) continue;
       var present=!(n!==1 && R()<0.07);
-      var rec={present:present,r:{},t:{},tags:[],shout:'',focus:''};
+      var rec={present:present,r:{},c:{},t:{},tags:[],shout:'',focus:'',work:'',coach:COACHES[Math.floor(R()*3)]};
       if(present){
         TRAITS.forEach(function(t){rec.r[t.id]=clamp(Math.round(base[t.id]+growth*(n-1)+(R()-.5)*0.9),1,5);});
         if(SESS[n-1].test){
@@ -368,23 +423,35 @@ function makeDemo(){
             rec.t[t.id]=t.unit==='s'?Math.round(v*100)/100:Math.round(v);
           });
         }
-        var first=a.name.split(' ')[0];
-        if(R()<0.75) rec.shout=SHOUTS[Math.floor(R()*SHOUTS.length)].replace('{n}',first);
-        rec.focus=FOCUS[Math.floor(R()*FOCUS.length)];
+        if(R()<0.75) rec.shout=SHOUTS[Math.floor(R()*SHOUTS.length)].replace('{n}',first(a.name));
+        rec.work=suggestWork(rec.r,SESS[n-1].foc);
         rec.tags=[TAGS[Math.floor(R()*7)]];
       }
       records[a.id][n]=rec;
     }
   });
-  return {v:1,athletes:athletes,records:records,published:{prosper:[1,2,3,4,5],plano:[1,2,3,4,5]},current:{prosper:6,plano:6},
-    gradeFormat:'letter',site:'prosper',group:'all',parentChild:'a1',athleteChild:'a1'};
+  return {v:2,athletes:athletes,records:records,published:{prosper:[1,2,3,4,5],plano:[1,2,3,4,5]},current:{prosper:6,plano:6},
+    gradeFormat:'letter',site:'prosper',group:'all',parentChild:'a1',athleteChild:'a1',coach:'Coach Niko',tab:'rate',mode:'athlete',skill:''};
 }
-var KEY='hrhr-camp-demo-v1', state=null;
+var KEY='hrhr-camp-demo-v2', state=null;
 try{state=JSON.parse(localStorage.getItem(KEY));}catch(e){state=null;}
-if(!state||state.v!==1||!state.athletes) state=makeDemo();
+if(!state||state.v!==2||!state.athletes) state=makeDemo();
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
 function byId(id){return state.athletes.filter(function(a){return a.id===id;})[0]||state.athletes[0];}
 function rec(a,n){var r=state.records[a.id]; return r?r[n]:null;}
+function lastPresent(a,n){for(var k=n-1;k>=1;k--){var r=rec(a,k);if(r&&r.present)return {n:k,r:r};}return null;}
+// New record for today, with ratings carried over from the last session they attended (flagged in c{} until a coach taps them).
+function freshRec(a,n){
+  var lp=lastPresent(a,n), r={present:true,r:{},c:{},t:{},tags:[],shout:'',focus:'',work:'',coach:state.coach};
+  if(lp){TRAITS.forEach(function(t){if(lp.r.r[t.id]!=null){r.r[t.id]=lp.r.r[t.id];r.c[t.id]=true;}});}
+  return r;
+}
+// The growth area for parents: lowest rating, today's focus traits break ties.
+function suggestWork(ratings,foc){
+  var best=null;
+  TRAITS.forEach(function(t){var v=ratings[t.id];if(v==null)return;var key=v-(foc&&foc.indexOf(t.id)>=0?0.1:0);if(!best||key<best.k)best={k:key,id:t.id};});
+  return best?best.id:'';
+}
 
 /* ---------- Scoring ---------- */
 // Ratings 1–5 map onto the 100-point scale: 1≈55 (F), 2≈66 (D), 3≈76 (C), 4≈87 (B+), 5=98 (A+).
@@ -410,7 +477,7 @@ function overall(a,ss){
   var w=parts.reduce(function(s,p){return s+p[1];},0);
   return parts.reduce(function(s,p){return s+p[0]*p[1];},0)/w;
 }
-function series(a,ss,fn){fn=fn||overall;return pres(a,ss).map(function(x){var n=x[0];return {n:n,v:fn(a,ss.filter(function(s){return s<=n;}))};});}
+function series(a,ss){return pres(a,ss).map(function(x){var n=x[0];return {n:n,v:overall(a,ss.filter(function(s){return s<=n;}))};});}
 function improvement(tt,lower){if(!tt.base||!tt.latest||tt.base.n===tt.latest.n)return 0;return lower?tt.base.v-tt.latest.v:tt.latest.v-tt.base.v;}
 var LET=[[97,'A+'],[93,'A'],[90,'A-'],[87,'B+'],[83,'B'],[80,'B-'],[77,'C+'],[73,'C'],[70,'C-'],[67,'D+'],[63,'D'],[60,'D-'],[0,'F']];
 function letter(s){for(var i=0;i<LET.length;i++){if(s>=LET[i][0])return LET[i][1];}return 'F';}
@@ -426,6 +493,22 @@ function delta(now,then){
   if(Math.abs(d)<0.5)return '<span class="delta flat">Steady since Day 1</span>';
   return d>0?'<span class="delta up">▲ +'+f+' pts since Day 1</span>':'<span class="delta down">▼ '+f+' pts since Day 1</span>';
 }
+
+/* Growth plan: #1 = the coach's "work on" pick from the latest update, #2 = weakest test vs. age benchmark, #3 = next-lowest trait. */
+function growthPlan(a,ss){
+  var latest=null; pres(a,ss).forEach(function(p){latest=p;});
+  var plan=[], used={};
+  var workId=latest?(latest[1].work||suggestWork(latest[1].r,SESS[latest[0]-1].foc)):'';
+  if(workId){var t=T_(workId);plan.push({kind:'trait',t:t,name:t.name,why:'Coach\'s pick from Session '+latest[0]+'.',good:t.r[4],home:t.home,kid:t.kid});used[workId]=1;}
+  var T=tests(a,ss), weakest=null;
+  TESTS.forEach(function(t){var x=T[t.id].latest;if(!x)return;var s=tScore(t,x.v,a.band);if(!weakest||s<weakest.s)weakest={t:t,s:s,v:x.v};});
+  if(weakest)plan.push({kind:'test',t:weakest.t,name:weakest.t.q+' ('+weakest.t.name+')',why:'Latest result: '+weakest.v+' '+weakest.t.unit+'. This is the test with the most room to grow for the age group.',good:'',home:weakest.t.home,kid:weakest.t.home});
+  var rest=TRAITS.map(function(t){return {t:t,v:traitNow(a,t.id,ss)};}).filter(function(z){return z.v!=null&&!used[z.t.id];}).sort(function(p,q){return p.v-q.v;});
+  if(rest[0])plan.push({kind:'trait',t:rest[0].t,name:rest[0].t.name,why:'Currently '+rest[0].v.toFixed(1)+' out of 5.',good:rest[0].t.r[4],home:rest[0].t.home,kid:rest[0].t.kid});
+  return plan;
+}
+function strength(a,ss){var top=TRAITS.map(function(t){return {t:t,v:traitNow(a,t.id,ss)};}).filter(function(z){return z.v!=null;}).sort(function(p,q){return q.v-p.v;});return top;}
+
 function xpOf(a,ss){
   var x=0;
   pres(a,ss).forEach(function(p){x+=100;TRAITS.forEach(function(t){x+=(p[1].r[t.id]||0)*8;});if(p[1].shout)x+=50;});
@@ -451,17 +534,41 @@ var BADGES=[
 ];
 function positionRead(a,ss){
   var T=tests(a,ss);
-  function ts(id){var x=T[id].latest;var t=TESTS.filter(function(z){return z.id===id;})[0];return x?(tScore(t,x.v,a.band)-55)/43:.5;}
+  function ts(id){var x=T[id].latest;return x?(tScore(TS_(id),x.v,a.band)-55)/43:.5;}
   function tr(id){var v=traitNow(a,id,ss);return v==null?.5:(v-1)/4;}
   var sp=ts('dash'),ag=ts('shuttle'),pw=ts('broad'),st=ts('push');
   return [
-    ['QB','Quarterback',tr('iq')*.35+tr('lead')*.25+tr('hands')*.2+tr('coach')*.2,'Decision-making, leadership, accuracy'],
-    ['WR','Wide Receiver',sp*.3+tr('hands')*.35+ag*.2+tr('feet')*.15,'Speed, hands, sharp cuts'],
-    ['RB','Running Back',ag*.3+pw*.25+tr('tough')*.25+sp*.2,'Agility, power, toughness'],
-    ['DB','Defensive Back',sp*.3+ag*.3+tr('feet')*.2+tr('iq')*.2,'Speed, hips, reading the QB'],
-    ['LB','Linebacker',tr('tough')*.3+pw*.25+tr('compete')*.25+tr('iq')*.2,'Toughness, power, pursuit'],
-    ['OL/DL','Line / Rusher',st*.4+tr('tough')*.3+pw*.3,'Strength, power, leverage']
-  ].map(function(p){return {k:p[0],n:p[1],v:Math.round(40+60*p[2]),why:p[3]};}).sort(function(x,y){return y.v-x.v;});
+    ['QB','Quarterback',tr('iq')*.35+tr('lead')*.25+tr('hands')*.2+tr('coach')*.2],
+    ['WR','Wide Receiver',sp*.3+tr('hands')*.35+ag*.2+tr('feet')*.15],
+    ['RB','Running Back',ag*.3+pw*.25+tr('tough')*.25+sp*.2],
+    ['DB','Defensive Back',sp*.3+ag*.3+tr('feet')*.2+tr('iq')*.2],
+    ['LB','Linebacker',tr('tough')*.3+pw*.25+tr('compete')*.25+tr('iq')*.2],
+    ['OL/DL','Line / Rusher',st*.4+tr('tough')*.3+pw*.3]
+  ].map(function(p){return {k:p[0],n:p[1],v:Math.round(40+60*p[2])};}).sort(function(x,y){return y.v-x.v;});
+}
+
+/* ---------- Family message (what each parent receives) ---------- */
+function familyMessage(a,n){
+  var r=rec(a,n), S=SESS[n-1], kid=first(a.name), g=first(a.guardian||'there');
+  var ss=pubOf(a).filter(function(x){return x<n;}).concat([n]);
+  var lines=['Hi '+g+'! Here is '+kid+'\'s HRHR Camp update for Session '+n+': '+S.theme+' ('+S.date+').',''];
+  if(!r||!r.present){
+    lines.push('We missed '+kid+' today. We worked on: '+S.focus+'.','','At-home mission: '+S.mission);
+  }else{
+    if(r.shout)lines.push('Shout-out: '+r.shout,'');
+    var top=strength(a,ss)[0];
+    if(top)lines.push('Strength: '+top.t.name+'. Keep it up.');
+    var w=r.work?T_(r.work):null;
+    if(w){lines.push('Work on: '+w.name+'. A 5 looks like: '+w.r[4].charAt(0).toLowerCase()+w.r[4].slice(1)+'.','At home (10 min): '+w.home);}
+    if(r.focus)lines.push('Next session focus: '+r.focus);
+    var tested=S.test&&r.t&&Object.keys(r.t).length;
+    if(tested){var T=tests(a,ss);var parts=TESTS.filter(function(t){return T[t.id].latest&&T[t.id].latest.n===n;}).map(function(t){var d=improvement(T[t.id],t.lower);return t.name+' '+T[t.id].latest.v+' '+t.unit+(d>0?' (improved '+(t.unit==='s'?d.toFixed(2):Math.round(d))+')':'');});if(parts.length)lines.push('','Testing: '+parts.join(', ')+'.');}
+    lines.push('','At-home mission: '+S.mission);
+    var ov=overall(a,ss);
+    if(ov!=null)lines.push('Overall: '+fmt(ov)+' ('+word(ov)+').');
+  }
+  lines.push('','The full report is in the HRHR parent portal.','- '+((r&&r.coach)||state.coach)+', High Risk High Reward');
+  return lines.join('\n');
 }
 
 /* ---------- Shared pieces ---------- */
@@ -477,8 +584,7 @@ function childPicker(id,selected){
   return '<label class="eyebrow" for="'+id+'">Demo: switch family</label> <select id="'+id+'" data-pick="'+id+'">'+state.athletes.map(function(a){return '<option value="'+a.id+'"'+(a.id===selected?' selected':'')+'>'+esc(a.name)+' · #'+a.num+' · '+esc(SITES[a.site].short)+'</option>';}).join('')+'</select>';
 }
 function drive(a,ss){
-  var cells='';
-  var latest=ss[ss.length-1]||0;
+  var cells='', latest=ss[ss.length-1]||0;
   for(var n=1;n<=8;n++){
     var r=rec(a,n), cls='future', lbl='';
     if(ss.indexOf(n)>=0){cls=r&&r.present?'done':'miss';lbl=r&&r.present?'':'MISSED';}
@@ -495,7 +601,7 @@ function trendChart(pts){
   function x(n){return pl+(n-1)*(W-pl-pr)/7;}
   function y(v){return pt+(100-clamp(v,50,100))*(H-pt-pb)/50;}
   var g='';
-  [[60,'D'],[70,'C'],[80,'B'],[90,'A'],[100,'']].forEach(function(l){g+='<line class="grid" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y(l[0])+'" y2="'+y(l[0])+'"/><text x="'+(pl-6)+'" y="'+(y(l[0])+4)+'" text-anchor="end">'+l[0]+'</text>'+(l[1]?'<text x="'+(W-pr+8)+'" y="'+(y(l[0]-5)+4)+'">'+l[1]+'</text>':'');});
+  [[60,'D'],[70,'C'],[80,'B'],[90,'A'],[100,'']].forEach(function(l){g+='<line class="grid" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y(l[0])+'" y2="'+y(l[0])+'"/><text x="'+(pl-6)+'" y="'+(y(l[0])+5)+'" text-anchor="end">'+l[0]+'</text>'+(l[1]?'<text x="'+(W-pr+8)+'" y="'+(y(l[0]-5)+5)+'">'+l[1]+'</text>':'');});
   for(var n=1;n<=8;n++)g+='<text x="'+x(n)+'" y="'+(H-8)+'" text-anchor="middle">S'+n+'</text>';
   pts=pts.filter(function(p){return p.v!=null;});
   if(!pts.length)return '<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="No scores yet">'+g+'</svg>';
@@ -533,66 +639,135 @@ function missionCard(text,title){
 }
 
 /* ---------- Coach portal ---------- */
-function status(a,n){var r=rec(a,n);if(!r)return 'todo';if(!r.present)return 'absent';return Object.keys(r.r).length>=TRAITS.length?'done':'todo';}
+function status(a,n){var r=rec(a,n);if(!r)return 'todo';if(!r.present)return 'absent';var c=r.c||{};return SESS[n-1].foc.every(function(t){return r.r[t]!=null&&!c[t];})?'done':'todo';}
+function siteRoster(){return state.athletes.filter(function(a){return a.site===state.site;});}
+function groupRoster(){return siteRoster().filter(function(a){return state.group==='all'||a.band===state.group;});}
+function nextTodo(afterId){
+  var list=groupRoster(), n=state.current[state.site], start=0;
+  if(afterId){list.forEach(function(a,i){if(a.id===afterId)start=i+1;});}
+  var order=list.slice(start).concat(list.slice(0,start));
+  return order.filter(function(a){return a.id!==afterId&&status(a,n)==='todo';})[0]||null;
+}
 function renderCoach(){
-  var site=state.site, n=state.current[site], S=SESS[n-1];
-  var roster=state.athletes.filter(function(a){return a.site===site&&(state.group==='all'||a.band===state.group);});
-  var all=state.athletes.filter(function(a){return a.site===site;});
-  var done=all.filter(function(a){return status(a,n)==='done';}).length, abs=all.filter(function(a){return status(a,n)==='absent';}).length;
+  var site=state.site, n=state.current[site], S=SESS[n-1], all=siteRoster();
+  var done=all.filter(function(a){return status(a,n)==='done';}).length, abs=all.filter(function(a){return status(a,n)==='absent';}).length, left=all.length-done-abs;
   var isPub=state.published[site].indexOf(n)>=0;
-  var ready=done+abs;
-  var tested=S.test?all.filter(function(a){var r=rec(a,n);return r&&r.present&&TESTS.every(function(t){return r.t&&r.t[t.id]!=null&&r.t[t.id]!=='';});}).length:0;
-
   var siteSeg='<div class="seg" role="group" aria-label="Site">'+Object.keys(SITES).map(function(k){return '<button type="button" data-act="site" data-site="'+k+'" aria-pressed="'+(site===k)+'">'+SITES[k].short+'</button>';}).join('')+'</div>';
+  var coachSel='<label class="eyebrow" for="coachPick">Signed in as</label> <select id="coachPick" data-pick="coach">'+COACHES.map(function(c){return '<option'+(c===state.coach?' selected':'')+'>'+c+'</option>';}).join('')+'</select>';
+  var head='<div class="card"><div class="ctl"><div class="ctl-l">'+siteSeg+'<span>'+coachSel+'</span></div><div class="stepper"><button type="button" data-act="sess" data-d="-1" aria-label="Previous session">‹</button><div><div class="eyebrow">Session '+n+' of 8 · Week '+S.wk+' · '+esc(S.date)+'</div><div class="sess-title">'+esc(S.theme)+'</div></div><button type="button" data-act="sess" data-d="1" aria-label="Next session">›</button></div></div>'+
+   '<div style="display:grid;gap:8px;margin-top:14px"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-weight:700"><span>'+done+' rated · '+abs+' absent · '+left+' to go</span><span>'+(isPub?'<span class="chip ok">Sent to families</span>':'<span class="chip warn">Not sent yet</span>')+'</span></div><div class="progress"><i style="width:'+(all.length?Math.round((done+abs)/all.length*100):0)+'%"></i></div></div></div>';
+  var tabs='<div class="subtabs" role="tablist">'+[['rate','Rate today'],['send','Send updates'],['roster','Families']].map(function(t){var badge=t[0]==='send'&&!isPub?'<span class="count">'+all.length+'</span>':'';return '<button type="button" role="tab" data-act="tab" data-tab="'+t[0]+'" aria-selected="'+(state.tab===t[0])+'">'+t[1]+badge+'</button>';}).join('')+'</div>';
+  var body=state.tab==='send'?renderSend():state.tab==='roster'?renderRoster():renderRate();
+  return '<div class="stack">'+head+tabs+body+'</div>';
+}
+function renderRate(){
+  var site=state.site, n=state.current[site], S=SESS[n-1], all=siteRoster(), roster=groupRoster();
+  var nt=nextTodo(null);
   var grpSeg='<div class="seg" role="group" aria-label="Group">'+[['all','All'],['8-9','Rookies 8–9'],['10-11','Juniors 10–11']].map(function(g){return '<button type="button" data-act="group" data-g="'+g[0]+'" aria-pressed="'+(state.group===g[0])+'">'+g[1]+'</button>';}).join('')+'</div>';
-
-  var cards=roster.map(function(a){
-    var st=status(a,n), o=overall(a,coachSS(a));
-    var chip=st==='done'?'<span class="chip ok">Rated</span>':st==='absent'?'<span class="chip off">Absent</span>':'<span class="chip warn">Not rated</span>';
-    return '<button type="button" class="ath" data-act="open" data-id="'+a.id+'"><span class="jersey">'+a.num+'</span><span><b>'+esc(a.name)+'</b><small>'+GROUPS[a.band]+'</small><br>'+chip+'</span><span class="sc '+gc(o)+'">'+fmt(o,'100')+'<small class="muted">overall</small></span></button>';
-  }).join('');
-
+  var modeSeg='<div class="seg" role="group" aria-label="Rating mode">'+[['athlete','One athlete at a time'],['skill','By skill (station)']].map(function(m){return '<button type="button" data-act="mode" data-m="'+m[0]+'" aria-pressed="'+(state.mode===m[0])+'">'+m[1]+'</button>';}).join('')+'</div>';
+  var focusNames=S.foc.map(function(id){return T_(id).name;}).join(', ');
+  var start='<div class="card update"><div class="card-h" style="margin-bottom:6px"><div><div class="eyebrow">Today\'s 3 focus ratings</div><h3 style="margin-top:4px">'+esc(focusNames)+'</h3></div>'+(S.test?'<span class="chip live">Testing day</span>':'')+'</div>'+
+    '<p class="muted">Rate these 3 for each kid, pick one thing for them to work on, and you are done. Everything else carries over from last time.</p>'+
+    '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">'+(nt?'<button type="button" class="btn btn-red btn-big" data-act="open" data-id="'+nt.id+'">Start rating: '+esc(nt.name)+' ›</button>':'<button type="button" class="btn btn-red btn-big" data-act="tab" data-tab="send">Everyone is rated. Send updates ›</button>')+'</div></div>';
+  var main;
+  if(state.mode==='skill'){
+    var sk=state.skill&&T_(state.skill)?state.skill:S.foc[0];
+    var skillChips='<div class="chips">'+S.foc.concat(TRAITS.map(function(t){return t.id;}).filter(function(id){return S.foc.indexOf(id)<0;})).map(function(id){return '<button type="button" class="tagbtn'+(S.foc.indexOf(id)>=0?' sug':'')+'" data-act="skill" data-tid="'+id+'" aria-pressed="'+(sk===id)+'">'+T_(id).name+'</button>';}).join('')+'</div>';
+    var t=T_(sk);
+    var rows=roster.map(function(a){
+      var r=rec(a,n), away=r&&!r.present, v=r?r.r[sk]:null, carried=r?(r.c||{})[sk]:false;
+      if(!r){var lp=lastPresent(a,n);if(lp&&lp.r.r[sk]!=null){v=lp.r.r[sk];carried=true;}}
+      return '<div class="qrow'+(away?' away':'')+'"><div class="who"><span class="jersey">'+a.num+'</span><div><b>'+esc(a.name)+'</b><small>'+GROUPS[a.band]+(carried?' · last time '+v:'')+'</small></div></div>'+
+        '<div class="scale" role="group" aria-label="'+esc(a.name)+' '+t.name+'">'+[1,2,3,4,5].map(function(k){var on=v===k&&!carried,cr=v===k&&carried;return '<button type="button" data-act="qrate" data-id="'+a.id+'" data-tid="'+sk+'" data-v="'+k+'" class="'+(on?'on':cr?'carry':'')+'" aria-pressed="'+on+'"'+(away?' disabled':'')+'>'+k+'</button>';}).join('')+'</div>'+
+        '<button type="button" class="mini" data-act="qaway" data-id="'+a.id+'">'+(away?'Mark here':'Absent')+'</button></div>';
+    }).join('');
+    main='<div class="card"><div class="card-h"><h3>Rate the whole group on one skill</h3><span class="muted">Taps save instantly</span></div>'+skillChips+'<p class="rub" style="margin-top:12px"><b>'+t.name+':</b> 1 '+esc(t.r[0])+' · 3 '+esc(t.r[2])+' · 5 '+esc(t.r[4])+'</p><p class="note" style="margin-top:4px">Dashed number = last session\'s rating. Tap to confirm or change it.</p></div><div class="qr">'+(rows||'<div class="empty">No athletes in this group.</div>')+'</div>';
+  }else{
+    var cards=roster.map(function(a){
+      var st=status(a,n), o=overall(a,coachSS(a));
+      var chip=st==='done'?'<span class="chip ok">Rated</span>':st==='absent'?'<span class="chip off">Absent</span>':'<span class="chip warn">Not rated</span>';
+      return '<button type="button" class="ath" data-act="open" data-id="'+a.id+'"><span class="jersey">'+a.num+'</span><span><b>'+esc(a.name)+'</b><small>'+GROUPS[a.band]+'</small><br>'+chip+'</span><span class="sc '+gc(o)+'">'+fmt(o,'100')+'<small class="muted">overall</small></span></button>';
+    }).join('');
+    main='<div class="roster">'+(cards||'<div class="empty">No athletes in this group.</div>')+'</div>';
+  }
   var growth=all.map(function(a){var s=series(a,coachSS(a));return {a:a,d:s.length>1?s[s.length-1].v-s[0].v:null};}).filter(function(x){return x.d!=null;}).sort(function(x,y){return y.d-x.d;}).slice(0,3);
   var watch=all.map(function(a){return {a:a,v:traitNow(a,'love',coachSS(a))};}).filter(function(x){return x.v!=null&&x.v<=3;}).sort(function(x,y){return x.v-y.v;}).slice(0,3);
-
-  return '<div class="stack">'+
-   '<div class="card"><div class="ctl"><div class="ctl-l">'+siteSeg+'</div><div class="stepper"><button type="button" data-act="sess" data-d="-1" aria-label="Previous session">‹</button><div><div class="eyebrow">Session '+n+' of 8 · Week '+S.wk+'</div><div class="sess-title">'+esc(S.theme)+'</div></div><button type="button" data-act="sess" data-d="1" aria-label="Next session">›</button></div></div>'+
-   '<p class="sess-sub" style="margin-top:10px">'+esc(S.date)+' · '+esc(SITES[site].name)+' · Focus: '+esc(S.focus)+(S.test?' · <span class="chip live">Testing day</span>':'')+'</p>'+
-   '<div style="display:grid;gap:8px;margin-top:14px"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-weight:700"><span>'+done+' rated · '+abs+' absent · '+(all.length-ready)+' to go'+(S.test?' · '+tested+' tested':'')+'</span><span>'+(isPub?'<span class="chip ok">Sent to parents</span>':'<span class="chip warn">Not sent yet</span>')+'</span></div><div class="progress"><i style="width:'+(all.length?Math.round(ready/all.length*100):0)+'%"></i></div>'+
-   '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px"><button type="button" class="btn btn-red" data-act="publish"'+(isPub?' disabled':'')+'>'+(isPub?'Update sent':'Send today\'s update to parents')+'</button>'+(ready<all.length&&!isPub?'<span class="note" style="align-self:center">Athletes you have not rated yet will show the session recap and mission only.</span>':'')+'</div></div></div>'+
-   '<div class="grid2"><div class="stack"><div class="card-h" style="margin:0"><h2>Roster</h2>'+grpSeg+'</div><div class="roster">'+(cards||'<div class="empty">No athletes in this group.</div>')+'</div></div>'+
-   '<div class="stack"><div class="card"><div class="card-h"><h3>Biggest risers</h3><span class="muted">Overall, Day 1 to now</span></div><ul class="list">'+(growth.map(function(g){return '<li><span><b>#'+g.a.num+' '+esc(g.a.name)+'</b></span><span class="num up" style="font-weight:800;font-size:1.1rem">+'+Math.round(g.d)+'</span></li>';}).join('')||'<li class="muted">Needs two sessions of data.</li>')+'</ul></div>'+
-   '<div class="card"><div class="card-h"><h3>Engagement check-in</h3><span class="muted">Love of the Game ≤ 3</span></div><ul class="list">'+(watch.map(function(w){return '<li><span><b>#'+w.a.num+' '+esc(w.a.name)+'</b></span><span class="chip warn">'+w.v.toFixed(1)+' / 5</span></li>';}).join('')||'<li class="muted">Everyone is locked in.</li>')+'</ul><p class="note" style="margin-top:10px">A quick 1-on-1 and a leadership job (cone captain, count reps) usually turns these around.</p></div>'+
-   '<div class="card"><h3>Today\'s at-home mission</h3>'+missionCard(S.mission,'Parents receive')+'</div></div></div></div>';
+  return start+'<div class="grid2"><div class="stack"><div class="ctl">'+modeSeg+grpSeg+'</div>'+main+'</div>'+
+   '<div class="stack"><div class="card"><h3>Coach game plan</h3><ol class="steps" style="margin-top:12px"><li>Mark who is absent at check-in.</li><li>Rate the 3 focus skills during drills, or by station.</li><li>Pick one "work on" per kid. Add a shout-out if you saw something.</li><li>Tap Send updates after the session.</li></ol></div>'+
+   '<div class="card"><div class="card-h"><h3>Biggest risers</h3><span class="muted">Overall, Day 1 to now</span></div><ul class="list">'+(growth.map(function(g){return '<li><span><b>#'+g.a.num+' '+esc(g.a.name)+'</b></span><span class="num up" style="font-weight:800;font-size:1.1rem">+'+Math.round(g.d)+'</span></li>';}).join('')||'<li class="muted">Needs two sessions of data.</li>')+'</ul></div>'+
+   '<div class="card"><div class="card-h"><h3>Engagement check-in</h3><span class="muted">Love of the Game ≤ 3</span></div><ul class="list">'+(watch.map(function(w){return '<li><span><b>#'+w.a.num+' '+esc(w.a.name)+'</b></span><span class="chip warn">'+w.v.toFixed(1)+' / 5</span></li>';}).join('')||'<li class="muted">Everyone is locked in.</li>')+'</ul><p class="note" style="margin-top:10px">A quick 1-on-1 and a job (cone captain, count reps) usually turns these around.</p></div></div></div>';
+}
+function renderSend(){
+  var site=state.site, n=state.current[site], S=SESS[n-1], all=siteRoster(), isPub=state.published[site].indexOf(n)>=0;
+  var notRated=all.filter(function(a){return status(a,n)==='todo';});
+  var rows=all.map(function(a){
+    var st=status(a,n), msg=familyMessage(a,n);
+    var stChip=isPub?'<span class="chip ok">Sent</span>':st==='todo'?'<span class="chip warn">Not rated</span>':'<span class="chip">Ready</span>';
+    return '<details class="fam"><summary><span><b>'+esc(a.guardian||'No guardian on file')+' · '+esc(a.name)+'</b><small>'+(a.method==='email'?'Email':'Text')+' · '+esc(a.contact||'no contact')+'</small></span>'+stChip+'</summary><pre class="msg" id="msg_'+a.id+'">'+esc(msg)+'</pre><button type="button" class="mini" data-act="copy" data-id="'+a.id+'">Copy message</button></details>';
+  }).join('');
+  return '<div class="card"><div class="card-h"><div><div class="eyebrow">Session '+n+' · '+esc(S.theme)+'</div><h2 style="margin-top:4px">'+all.length+' families · '+esc(SITES[site].short)+'</h2></div>'+(isPub?'<span class="chip ok">Sent</span>':'')+'</div>'+
+    '<p class="muted">Each family gets a personal message: a shout-out, their kid\'s strength, one thing to work on with a 10-minute home drill, and the at-home mission.</p>'+
+    (notRated.length&&!isPub?'<p class="note" style="margin-top:8px;color:var(--gC)">'+notRated.length+' not rated yet ('+notRated.map(function(a){return esc(first(a.name));}).join(', ')+'). They will get the session recap and mission without a "work on".</p>':'')+
+    '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button type="button" class="btn btn-red btn-big" data-act="publish"'+(isPub?' disabled':'')+'>'+(isPub?'Sent to all '+all.length+' families':'Send to all '+all.length+' families')+'</button>'+(notRated.length&&!isPub?'<button type="button" class="btn btn-big" data-act="open" data-id="'+notRated[0].id+'">Rate '+esc(first(notRated[0].name))+' first</button>':'')+'</div>'+
+    '<p class="note" style="margin-top:10px">Demo: no messages leave this page. In the live version this button texts or emails every family from the HRHR account, and their parent portal updates at the same time.</p></div>'+
+    '<div class="stack" style="gap:8px">'+rows+'</div>';
+}
+function renderRoster(){
+  var all=siteRoster();
+  var rows=all.map(function(a){return '<tr><td><span class="num">#'+a.num+'</span></td><td><b>'+esc(a.name)+'</b><small>'+GROUPS[a.band]+'</small></td><td>'+esc(a.guardian||'—')+'<small>'+(a.method==='email'?'Email':'Text')+'</small></td><td><span style="overflow-wrap:anywhere">'+esc(a.contact||'—')+'</span></td></tr>';}).join('');
+  return '<div class="grid2"><div class="stack"><div class="card"><div class="card-h"><h3>'+esc(SITES[state.site].name)+'</h3><span class="muted">'+all.length+' athletes</span></div><div class="tbl-wrap"><table><thead><tr><th>#</th><th>Athlete</th><th>Parent / guardian</th><th>Contact</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>'+
+    '<div class="card"><h3>Import from your registration form</h3><p class="muted" style="margin-top:6px">Export your sign-up sheet (Google Forms, Jotform, the rec center list) and paste the rows here. One athlete per line:</p><p style="margin-top:8px"><code>First, Last initial, Age group (8-9 or 10-11), Jersey, Site (prosper or plano), Parent name, Phone or email</code></p>'+
+    '<div class="field" style="margin-top:12px"><label for="csvIn">Paste rows</label><textarea id="csvIn" rows="4" placeholder="Jordan, B, 10-11, 15, prosper, Kim B., (469) 555-0150"></textarea></div><div style="margin-top:10px"><button type="button" class="btn" data-act="import">Import athletes</button></div></div></div>'+
+    '<div class="stack"><form class="card" id="addForm"><h3>Add one athlete</h3><div class="formgrid" style="margin-top:12px">'+
+    '<div class="field"><label for="nf_first">First name</label><input id="nf_first" required maxlength="20" autocomplete="off"></div>'+
+    '<div class="field"><label for="nf_last">Last initial</label><input id="nf_last" required maxlength="1" autocomplete="off"></div>'+
+    '<div class="field"><label for="nf_band">Age group</label><select id="nf_band"><option value="8-9">Rookies 8–9</option><option value="10-11">Juniors 10–11</option></select></div>'+
+    '<div class="field"><label for="nf_num">Jersey #</label><input id="nf_num" type="number" min="0" max="99" required></div>'+
+    '<div class="field"><label for="nf_site">Site</label><select id="nf_site"><option value="prosper"'+(state.site==='prosper'?' selected':'')+'>Prosper</option><option value="plano"'+(state.site==='plano'?' selected':'')+'>Plano Oak Point</option></select></div>'+
+    '<div class="field"><label for="nf_g">Parent / guardian</label><input id="nf_g" required maxlength="40" autocomplete="off"></div>'+
+    '<div class="field"><label for="nf_c">Phone or email</label><input id="nf_c" required maxlength="60" autocomplete="off"></div>'+
+    '</div><div style="margin-top:12px"><button type="submit" class="btn btn-red">Add athlete</button></div></form>'+
+    '<div class="card"><h3>What we store</h3><p class="note" style="margin-top:8px">First name, last initial, age group, jersey and one parent contact. Never birthdates, addresses or school. Updates go to the parent, not the child. Phone numbers get a text and emails get an email, picked automatically.</p></div></div></div>';
 }
 
-/* Rating sheet */
+/* Rating sheet: one athlete, focus first, everything else tucked away */
 var draft=null, draftA=null, draftN=null;
 function openSheet(id){
   var a=byId(id), n=state.current[a.site], ex=rec(a,n);
   draftA=a; draftN=n;
-  draft=ex?JSON.parse(JSON.stringify(ex)):{present:true,r:{},t:{},tags:[],shout:'',focus:''};
+  draft=ex?JSON.parse(JSON.stringify(ex)):freshRec(a,n);
+  draft.c=draft.c||{}; draft.tags=draft.tags||[];
+  if(!draft.work)draft._autoWork=true;
   renderSheet(); $('#sheet').hidden=false; document.body.style.overflow='hidden';
   setTimeout(function(){var f=$('#sheetClose');if(f)f.focus();},30);
 }
 function closeSheet(){$('#sheet').hidden=true;document.body.style.overflow='';draft=null;}
-function rubric(t,v){return v?'<b>'+v+' · </b>'+esc(t.r[v-1]):'Tap 1–5. 3 = solid for this age group.';}
+function rubric(t,v,carried){return v?(carried?'Last session: <b>'+v+'</b> · '+esc(t.r[v-1])+'. Tap to confirm or change.':'<b>'+v+' · </b>'+esc(t.r[v-1])):'Tap 1–5. 3 = solid for this age group.';}
+function rateRow(t){var v=draft.r[t.id],cr=!!draft.c[t.id];return '<div class="rate" data-tid="'+t.id+'"><div class="rate-h"><b>'+t.name+'</b><span>'+t.d+'</span></div><div class="scale" role="group" aria-label="'+t.name+' rating">'+[1,2,3,4,5].map(function(k){var on=v===k&&!cr;return '<button type="button" data-act="rate" data-tid="'+t.id+'" data-v="'+k+'" class="'+(on?'on':(v===k&&cr?'carry':''))+'" aria-pressed="'+on+'">'+k+'</button>';}).join('')+'</div><p class="rub" id="rub_'+t.id+'">'+rubric(t,v,cr)+'</p></div>';}
+function workChips(){
+  var S=SESS[draftN-1], sug=suggestWork(draft.r,S.foc), cur=draft.work||sug;
+  return TRAITS.map(function(t){return '<button type="button" class="tagbtn'+(t.id===sug?' sug':'')+'" data-act="work" data-tid="'+t.id+'" aria-pressed="'+(cur===t.id)+'">'+t.name+(t.id===sug?' · suggested':'')+'</button>';}).join('');
+}
 function renderSheet(){
   var a=draftA,n=draftN,S=SESS[n-1];
-  function rows(p){return TRAITS.filter(function(t){return t.p===p;}).map(function(t){var v=draft.r[t.id];return '<div class="rate" data-tid="'+t.id+'"><div class="rate-h"><b>'+t.name+'</b><span>'+t.d+'</span></div><div class="scale" role="group" aria-label="'+t.name+' rating">'+[1,2,3,4,5].map(function(k){return '<button type="button" data-act="rate" data-tid="'+t.id+'" data-v="'+k+'" class="'+(v===k?'on':'')+'" aria-pressed="'+(v===k)+'">'+k+'</button>';}).join('')+'</div><p class="rub" id="rub_'+t.id+'">'+rubric(t,v)+'</p></div>';}).join('');}
+  var others=TRAITS.filter(function(t){return S.foc.indexOf(t.id)<0;});
   var base=tests(a,coachSS(a).filter(function(x){return x<n;}));
   var testsHtml=S.test?'<div class="sheet-sec"><h3>Testing</h3><div class="tests">'+TESTS.map(function(t){var b=base[t.id].latest;return '<div class="field"><label for="t_'+t.id+'">'+t.name+' ('+t.unit+')</label><input id="t_'+t.id+'" type="number" inputmode="decimal" step="'+(t.unit==='s'?'0.01':'1')+'" min="0" value="'+(draft.t&&draft.t[t.id]!=null?draft.t[t.id]:'')+'"><small>'+(b?'Last: '+b.v+' '+t.unit:'First test')+' · '+(t.lower?'lower is better':'higher is better')+'</small></div>';}).join('')+'</div></div>':'';
+  var fn=first(a.name);
   var body=draft.present?
+    '<div class="sheet-sec"><div class="card-h" style="margin:0"><h3>1 · Today\'s focus</h3><span class="muted">3 taps</span></div>'+S.foc.map(function(id){return rateRow(T_(id));}).join('')+'</div>'+
     testsHtml+
-    '<div class="sheet-sec"><div class="card-h" style="margin:0"><h3>Character</h3><button type="button" class="linkbtn" data-act="copylast">Copy last session\'s ratings</button></div>'+rows('char')+'</div>'+
-    '<div class="sheet-sec"><h3>Football skills</h3>'+rows('skill')+'</div>'+
-    '<div class="sheet-sec"><h3>Quick tags</h3><div class="chips">'+TAGS.map(function(t){var on=draft.tags.indexOf(t)>=0;return '<button type="button" class="tagbtn" data-act="tag" data-tag="'+esc(t)+'" aria-pressed="'+on+'">'+esc(t)+'</button>';}).join('')+'</div></div>'+
-    '<div class="sheet-sec"><div class="field"><label for="f_shout">Coach\'s shout-out (parents and athlete see this)</label><textarea id="f_shout" maxlength="280" placeholder="One specific thing they did well today.">'+esc(draft.shout)+'</textarea></div>'+
-    '<div class="field"><label for="f_focus">Focus for next session</label><input id="f_focus" maxlength="140" value="'+esc(draft.focus)+'" placeholder="One clear coaching point."></div></div>'
-    :'<div class="sheet-sec"><div class="empty">Marked absent. Parents will get the session recap and the at-home mission.</div></div>';
+    '<div class="sheet-sec"><div class="card-h" style="margin:0"><h3>2 · Work on next</h3><span class="muted">Parents get a home drill for it</span></div><div class="chips" id="workChips">'+workChips()+'</div></div>'+
+    '<div class="sheet-sec"><div class="card-h" style="margin:0"><h3>3 · Shout-out</h3><span class="muted">Optional</span></div><div class="chips">'+PHRASES.map(function(p,i){return '<button type="button" class="tagbtn" data-act="phrase" data-i="'+i+'">'+p[0]+'</button>';}).join('')+'</div>'+
+    '<div class="field"><label for="f_shout">Shout-out for '+esc(fn)+' (parents and athlete see this)</label><textarea id="f_shout" maxlength="280" placeholder="Tap a phrase above or write one specific thing they did well.">'+esc(draft.shout)+'</textarea></div></div>'+
+    '<div class="sheet-sec"><details class="more"><summary>More: other ratings, tags, next-session note</summary><div class="stack" style="gap:10px">'+others.map(rateRow).join('')+
+    '<div class="chips">'+TAGS.map(function(t){var on=draft.tags.indexOf(t)>=0;return '<button type="button" class="tagbtn" data-act="tag" data-tag="'+esc(t)+'" aria-pressed="'+on+'">'+esc(t)+'</button>';}).join('')+'</div>'+
+    '<div class="field"><label for="f_focus">Focus for next session</label><input id="f_focus" maxlength="140" value="'+esc(draft.focus)+'" placeholder="One clear coaching point."></div></div></details></div>'
+    :'<div class="sheet-sec"><div class="empty">Marked absent. The family will get the session recap and the at-home mission.</div></div>';
+  var nt=nextTodo(a.id);
   $('#sheetP').innerHTML='<div class="sheet-h"><div style="display:flex;gap:12px;align-items:center;min-width:0"><span class="jersey">'+a.num+'</span><div style="min-width:0"><h2 id="sheetTitle">'+esc(a.name)+'</h2><div class="muted" style="font-size:.85rem">Session '+n+' · '+esc(S.theme)+' · '+GROUPS[a.band]+'</div></div></div><button type="button" class="btn" id="sheetClose" data-act="close" aria-label="Close">✕</button></div>'+
-    '<div class="sheet-sec"><div class="toggle"><button type="button" class="sw" role="switch" aria-checked="'+draft.present+'" data-act="present" aria-label="Present today"></button> Present today</div></div>'+body+
-    '<div class="sheet-sec"><div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap"><button type="button" class="btn" data-act="close">Cancel</button><button type="button" class="btn btn-red" data-act="save">Save '+esc(a.name.split(' ')[0])+'</button></div></div>';
+    '<div class="sheet-sec"><div class="toggle"><button type="button" class="sw" role="switch" aria-checked="'+draft.present+'" data-act="present" aria-label="Present today"></button> Here today</div></div>'+body+
+    '<div class="sheet-f"><button type="button" class="btn" data-act="save" data-next="0">Save</button><button type="button" class="btn btn-red" data-act="save" data-next="1">'+(nt?'Save · next: '+esc(first(nt.name))+' ›':'Save · done')+'</button></div>';
 }
 function readSheetInputs(){
   if(!draft||!draft.present)return;
@@ -601,29 +776,37 @@ function readSheetInputs(){
 }
 
 /* ---------- Parent portal ---------- */
+function planHtml(a,ss,kid){
+  var plan=growthPlan(a,ss), top=strength(a,ss)[0];
+  if(!plan.length)return '';
+  return '<div class="card"><div class="card-h"><div><div class="eyebrow">'+(kid?'Your level-up plan':'Growth plan')+'</div><h2 style="margin-top:4px">'+(kid?'How to get better':'What '+esc(first(a.name))+' should work on')+'</h2></div></div>'+
+   (top?'<p class="keep"><span class="chip ok">Strength</span> '+esc(top.t.name)+(kid?'. That is your superpower.':'. Keep praising it.')+'</p>':'')+
+   '<div class="plan" style="margin-top:12px">'+plan.map(function(p,i){return '<div class="goal'+(i===0?' first':'')+'"><span class="rank">'+(i+1)+'</span><div><h4>'+esc(p.name)+'</h4>'+(kid?'':'<p class="muted">'+esc(p.why)+(p.good?' A 5 looks like: '+esc(p.good.charAt(0).toLowerCase()+p.good.slice(1))+'.':'')+'</p>')+'<p class="drill">'+(kid?esc(p.kid):'At home, 10 min: '+esc(p.home))+'</p></div></div>';}).join('')+'</div></div>';
+}
 function renderParent(){
   var a=byId(state.parentChild), ss=pubOf(a), latest=ss[ss.length-1], r=latest?rec(a,latest):null, S=latest?SESS[latest-1]:null;
-  var ov=overall(a,ss), ser=series(a,ss), first=ser[0];
-  var firstSS=first?ss.filter(function(x){return x<=first.n;}):[];
+  var ov=overall(a,ss), ser=series(a,ss), firstPt=ser[0];
+  var firstSS=firstPt?ss.filter(function(x){return x<=firstPt.n;}):[];
   var pillars=[['Athletic',athletic,'Speed, agility, power, strength'],['Football Skills',function(x,y){return pillar(x,'skill',y);},'Footwork, hands, IQ, technique'],['Character',function(x,y){return pillar(x,'char',y);},'Compete, coachability, teamwork, leadership, toughness, love of the game']];
   var upd;
   if(!S){upd='<div class="card update"><div class="empty">Your first update arrives after Session 1.</div></div>';}
   else{
+    var w=r&&r.present&&r.work?T_(r.work):null;
     var body=r&&r.present?
-      (r.shout?'<div class="quote">“'+esc(r.shout)+'”<cite>HRHR coaching staff</cite></div>':'')+
-      '<div class="kv"><div><div class="eyebrow">What we worked on</div><p>'+esc(S.focus)+'</p></div><div><div class="eyebrow">Focus for next session</div><p>'+esc(r.focus||'Keep building on today.')+'</p></div></div>'+
+      (r.shout?'<div class="quote">“'+esc(r.shout)+'”<cite>'+esc(r.coach||'HRHR coaching staff')+'</cite></div>':'')+
+      '<div class="kv"><div><div class="eyebrow">What we worked on</div><p>'+esc(S.focus)+'</p></div>'+(w?'<div><div class="eyebrow">Work on this week</div><p>'+esc(w.name)+'</p></div>':'')+(r.focus?'<div><div class="eyebrow">Next session focus</div><p>'+esc(r.focus)+'</p></div>':'')+'</div>'+
       (r.tags&&r.tags.length?'<div class="chips" style="margin-top:12px">'+r.tags.map(function(t){return '<span class="chip">'+esc(t)+'</span>';}).join('')+'</div>':'')
-      :'<p style="margin-top:8px;font-weight:600">We missed '+esc(a.name.split(' ')[0])+' today. Here is what we covered: '+esc(S.focus)+'.</p>';
+      :'<p style="margin-top:8px;font-weight:600">We missed '+esc(first(a.name))+' today. Here is what we covered: '+esc(S.focus)+'.</p>';
     upd='<div class="card update"><div class="card-h"><div><div class="eyebrow">Latest update · '+esc(S.date)+'</div><h2>Session '+S.n+': '+esc(S.theme)+'</h2></div>'+(r&&r.present?'<span class="chip ok">Attended</span>':'<span class="chip off">Absent</span>')+'</div>'+body+missionCard(S.mission)+'</div>';
   }
   var pos=positionRead(a,ss).slice(0,3);
-  var hist=ss.slice().reverse().map(function(n){var x=rec(a,n),s=SESS[n-1];return '<details'+(n===latest?'':'')+'><summary><span>S'+n+' · '+esc(s.theme)+'</span><span class="muted">'+esc(s.date)+(x&&x.present?'':' · Absent')+'</span></summary>'+(x&&x.present&&x.shout?'<p>“'+esc(x.shout)+'”</p>':'')+(x&&x.present&&x.focus?'<p class="muted">Next focus: '+esc(x.focus)+'</p>':'')+'</details>';}).join('');
+  var hist=ss.slice().reverse().map(function(n){var x=rec(a,n),s=SESS[n-1],wk=x&&x.present&&x.work?T_(x.work):null;return '<details><summary><span>S'+n+' · '+esc(s.theme)+'</span><span class="muted">'+esc(s.date)+(x&&x.present?'':' · Absent')+'</span></summary>'+(x&&x.present&&x.shout?'<p>“'+esc(x.shout)+'”</p>':'')+(wk?'<p class="muted">Worked on: '+esc(wk.name)+'</p>':'')+'</details>';}).join('');
 
   return '<div class="stack">'+
    '<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center"><div>'+childPicker('pPick',a.id)+'</div>'+fmtSeg()+'</div>'+
    '<section class="hero"><div><div class="eyebrow">Parent portal · Summer Camp 2027</div><h1>'+esc(a.name)+'</h1><div class="meta"><span>#'+a.num+'</span><span>'+GROUPS[a.band]+'</span><span>'+esc(SITES[a.site].name)+'</span></div>'+
-   '<p style="margin-top:14px;font-weight:600;max-width:46ch">Overall development: <span class="'+gc(ov)+'">'+word(ov)+'</span>. '+(first&&ov!=null&&ser.length>1?(ov-first.v>=0.5?'Up '+Math.round(ov-first.v)+' points since Day 1.':'Holding steady since Day 1.'):'Day 1 baseline is set.')+'</p></div>'+ring(ov,'Overall '+unitLabel())+'</section>'+
-   upd+
+   '<p style="margin-top:14px;font-weight:600;max-width:46ch">Overall development: <span class="'+gc(ov)+'">'+word(ov)+'</span>. '+(firstPt&&ov!=null&&ser.length>1?(ov-firstPt.v>=0.5?'Up '+Math.round(ov-firstPt.v)+' points since Day 1.':'Holding steady since Day 1.'):'Day 1 baseline is set.')+'</p></div>'+ring(ov,'Overall '+unitLabel())+'</section>'+
+   '<div class="grid2"><div class="stack">'+upd+'</div><div class="stack">'+planHtml(a,ss,false)+'</div></div>'+
    drive(a,ss)+
    '<div class="pillars">'+pillars.map(function(p){var v=p[1](a,ss),v0=firstSS.length?p[1](a,firstSS):null;return '<div class="pillar"><div class="eyebrow">'+p[0]+'</div><div class="g '+gc(v)+'">'+fmt(v)+'</div><div class="w">'+word(v)+'</div>'+(ser.length>1?delta(v,v0):'<span class="delta flat">Baseline set</span>')+'<p class="note">'+p[2]+'</p></div>';}).join('')+'</div>'+
    '<div class="grid2"><div class="stack">'+
@@ -634,7 +817,7 @@ function renderParent(){
      '<div class="card"><div class="card-h"><h3>Character</h3></div>'+traitBars(a,ss,'char')+'</div>'+
      '<div class="card"><div class="card-h"><h3>Football skills</h3></div>'+traitBars(a,ss,'skill')+'</div>'+
      '<div class="card"><div class="card-h"><h3>Position read</h3><span class="muted">Profile fit</span></div><div class="bars">'+pos.map(function(p){return '<div class="bar"><b>'+p.k+' · '+p.n+'</b><div class="t"><i class="b'+gc(p.v)+'" style="width:'+p.v+'%"></i></div><span class="v">'+p.v+'</span></div>';}).join('')+'</div><p class="note" style="margin-top:10px">Built from testing and skill ratings. Young athletes should try several positions; coaches confirm in person.</p></div>'+
-     '<div class="card"><h3>How grades work</h3><p class="note" style="margin-top:8px">Coaches rate each skill 1–5 every session using the same rubric. Each test is compared to HRHR benchmarks for your athlete\'s age group. The overall score blends Athletic (35%), Football Skills (30%) and Character (35%). The scale reads like school: A 90+, B 80s, C 70s, D 60s.</p></div>'+
+     '<div class="card"><h3>How grades work</h3><p class="note" style="margin-top:8px">Coaches rate skills 1–5 each session using the same written rubric. Each test is compared to HRHR benchmarks for your athlete\'s age group. The overall score blends Athletic (35%), Football Skills (30%) and Character (35%). The scale reads like school: A 90+, B 80s, C 70s, D 60s.</p></div>'+
    '</div></div></div>';
 }
 
@@ -643,39 +826,44 @@ function badgeSvg(code){return '<svg viewBox="0 0 64 72" aria-hidden="true"><pat
 function renderAthlete(){
   var a=byId(state.athleteChild), ss=pubOf(a), T=tests(a,ss), x=xpOf(a,ss), L=levelOf(x), latest=ss[ss.length-1];
   var pct=L.next?clamp((x-L.cur[0])/(L.next[0]-L.cur[0]),0,1)*100:100;
-  var traits=TRAITS.map(function(t){return {t:t,v:traitNow(a,t.id,ss)};}).filter(function(z){return z.v!=null;}).sort(function(p,q){return q.v-p.v;});
-  var top=traits.slice(0,3), low=traits[traits.length-1];
-  var lastShout=null; pres(a,ss).forEach(function(p){if(p[1].shout)lastShout={n:p[0],s:p[1].shout};});
+  var top=strength(a,ss).slice(0,3);
+  var lastShout=null; pres(a,ss).forEach(function(p){if(p[1].shout)lastShout={n:p[0],s:p[1].shout,c:p[1].coach};});
   var earned=BADGES.filter(function(b){return b.ok(a,ss,T);}).length;
   var dots=''; for(var n=1;n<=8;n++){var r=rec(a,n),c=ss.indexOf(n)<0?'':(r&&r.present?'on':'miss');dots+='<span class="'+c+'" title="Session '+n+'">'+n+'</span>';}
   return '<div class="stack">'+
    '<div>'+childPicker('aPick',a.id)+'</div>'+
-   '<section class="pcard"><div class="bignum" aria-hidden="true">'+a.num+'</div><div class="eyebrow" style="position:relative">Athlete portal · '+GROUPS[a.band]+'</div><h1 style="position:relative">'+esc(a.name.split(' ')[0])+' <span class="muted">#'+a.num+'</span></h1>'+
+   '<section class="pcard"><div class="bignum" aria-hidden="true">'+a.num+'</div><div class="eyebrow" style="position:relative">Athlete portal · '+GROUPS[a.band]+'</div><h1 style="position:relative">'+esc(first(a.name))+' <span class="muted">#'+a.num+'</span></h1>'+
    '<div style="margin-top:10px;position:relative"><span class="lvl">Level '+(LEVELS.indexOf(L.cur)+1)+' · '+L.cur[1]+'</span></div>'+
    '<div class="xp"><div class="xp-row"><span class="num">'+x.toLocaleString()+' XP</span><span class="muted">'+(L.next?(L.next[0]-x).toLocaleString()+' XP to '+L.next[1]:'Top level reached')+'</span></div><div class="progress"><i style="width:'+pct.toFixed(0)+'%"></i></div></div>'+
    '<div class="dots" aria-label="Sessions attended">'+dots+'</div></section>'+
    (latest?missionCard(SESS[latest-1].mission,'Your mission before Session '+Math.min(8,latest+1)):'')+
    '<div class="grid2"><div class="stack">'+
+     planHtml(a,ss,true)+
      '<div class="card"><div class="card-h"><h3>Personal bests</h3><span class="muted">Beat your own number</span></div><div class="pbs">'+TESTS.map(function(t){var tt=T[t.id],b=tt.best,d=improvement(tt,t.lower);return '<div class="pb"><span class="q">'+t.q+' · '+t.name+'</span><span class="v">'+(b?b.v+'<small>'+t.unit+'</small>':'—')+'</span>'+(d>0?'<span class="delta up">▲ '+(t.unit==='s'?d.toFixed(2):Math.round(d))+' '+t.unit+' better</span>':'<span class="delta flat">'+(tt.vals.length>1?'Next test: go get it':'Baseline set')+'</span>')+'</div>';}).join('')+'</div></div>'+
      '<div class="card"><div class="card-h"><h3>Badges</h3><span class="muted">'+earned+' of '+BADGES.length+' earned</span></div><div class="badges">'+BADGES.map(function(b){var ok=b.ok(a,ss,T);return '<div class="badge '+(ok?'got':'locked')+'">'+badgeSvg(b.code)+'<b>'+b.name+'</b><small>'+(ok?'Earned':esc(b.how))+'</small></div>';}).join('')+'</div></div>'+
    '</div><div class="stack">'+
-     (lastShout?'<div class="card update"><div class="eyebrow">Coach says · Session '+lastShout.n+'</div><div class="quote">“'+esc(lastShout.s)+'”</div></div>':'')+
+     (lastShout?'<div class="card update"><div class="eyebrow">'+esc(lastShout.c||'Coach')+' says · Session '+lastShout.n+'</div><div class="quote">“'+esc(lastShout.s)+'”</div></div>':'')+
      '<div class="card"><h3>Your superpowers</h3><div class="power" style="margin-top:12px">'+(top.map(function(z,i){return '<div><i>'+(i+1)+'</i>'+z.t.name+'</div>';}).join('')||'<p class="muted">Coming after your first session.</p>')+'</div></div>'+
-     (low?'<div class="card"><h3>Level-up target</h3><p style="margin-top:8px;font-weight:700">'+low.t.name+'</p><p class="muted" style="margin-top:4px">What a 5 looks like: '+esc(low.t.r[4])+'.</p></div>':'')+
      '<div class="card"><h3>How to earn XP</h3><ul class="list" style="margin-top:10px"><li><span>Show up to a session</span><b class="num">+100</b></li><li><span>Every rating point from your coach</span><b class="num">+8</b></li><li><span>Coach shout-out</span><b class="num">+50</b></li><li><span>New personal best on a test</span><b class="num">+75</b></li></ul></div>'+
    '</div></div></div>';
 }
 
 /* ---------- Router + events ---------- */
 var ROLES=['coach','parent','athlete'];
-function role(){var h=location.hash.replace('#','');return ROLES.indexOf(h)>=0?h:'parent';}
+function role(){var h=location.hash.replace('#','');return ROLES.indexOf(h)>=0?h:'coach';}
 function render(){
   var r=role();
   document.querySelectorAll('.roles a').forEach(function(el){if(el.getAttribute('data-role')===r)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
   $('#app').innerHTML=r==='coach'?renderCoach():r==='athlete'?renderAthlete():renderParent();
 }
 var toastT;
-function toast(m){var t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){t.hidden=true;},2400);}
+function toast(m){var t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){t.hidden=true;},2600);}
+function addAthlete(o){
+  var id='a'+Date.now().toString(36)+Math.floor(Math.random()*1e4);
+  var contact=o.contact.trim();
+  state.athletes.push({id:id,name:o.first.trim().charAt(0).toUpperCase()+o.first.trim().slice(1)+' '+o.last.trim().charAt(0).toUpperCase()+'.',site:o.site,band:o.band,num:+o.num||0,guardian:o.guardian.trim(),contact:contact,method:contact.indexOf('@')>=0?'email':'text'});
+  state.records[id]={};
+}
 var resetArmed=false;
 document.addEventListener('click',function(e){
   var el=e.target.closest('[data-act]'); if(!el)return;
@@ -683,37 +871,73 @@ document.addEventListener('click',function(e){
   if(act==='fmt'){state.gradeFormat=el.getAttribute('data-f');save();render();}
   else if(act==='site'){state.site=el.getAttribute('data-site');save();render();}
   else if(act==='group'){state.group=el.getAttribute('data-g');save();render();}
+  else if(act==='mode'){state.mode=el.getAttribute('data-m');save();render();}
+  else if(act==='skill'){state.skill=el.getAttribute('data-tid');save();render();}
+  else if(act==='tab'){state.tab=el.getAttribute('data-tab');save();render();window.scrollTo(0,0);}
   else if(act==='sess'){var s=state.site;state.current[s]=clamp(state.current[s]+(+el.getAttribute('data-d')),1,8);save();render();}
-  else if(act==='publish'){var site=state.site,n=state.current[site];if(state.published[site].indexOf(n)<0)state.published[site].push(n);save();render();toast('Session '+n+' update sent to '+SITES[site].short+' families');}
+  else if(act==='publish'){var site=state.site,n=state.current[site];if(state.published[site].indexOf(n)<0)state.published[site].push(n);save();render();toast('Session '+n+' updates sent to '+siteRoster().length+' '+SITES[site].short+' families');}
+  else if(act==='copy'){
+    var pre=$('#msg_'+el.getAttribute('data-id')), txt=pre?pre.textContent:'';
+    var done=function(){el.textContent='Copied';setTimeout(function(){el.textContent='Copy message';},1500);};
+    var fallback=function(){var rg=document.createRange();rg.selectNodeContents(pre);var sel=window.getSelection();sel.removeAllRanges();sel.addRange(rg);toast('Text selected. Copy it from here.');};
+    try{navigator.clipboard.writeText(txt).then(done,fallback);}catch(err){fallback();}
+  }
+  else if(act==='qrate'||act==='qaway'){
+    var qa=byId(el.getAttribute('data-id')), qn=state.current[qa.site];
+    state.records[qa.id]=state.records[qa.id]||{};
+    var qr=state.records[qa.id][qn]||freshRec(qa,qn); qr.c=qr.c||{};
+    if(act==='qaway'){qr.present=!qr.present;}
+    else{var qt=el.getAttribute('data-tid');qr.r[qt]=+el.getAttribute('data-v');delete qr.c[qt];qr.coach=state.coach;if(!qr.work||qr._autoWork!==false)qr.work=suggestWork(qr.r,SESS[qn-1].foc);}
+    state.records[qa.id][qn]=qr; save(); render();
+  }
+  else if(act==='import'){
+    var lines=($('#csvIn').value||'').split(/\r?\n/).map(function(l){return l.trim();}).filter(Boolean), added=0, bad=0;
+    lines.forEach(function(l){var c=l.split(',').map(function(x){return x.trim();});
+      if(c.length<7||!/^(8-9|10-11)$/.test(c[2])||!/^(prosper|plano)$/i.test(c[4])||!c[0]){bad++;return;}
+      addAthlete({first:c[0],last:c[1],band:c[2],num:c[3],site:c[4].toLowerCase(),guardian:c[5],contact:c.slice(6).join(',')});added++;});
+    save();render();toast('Added '+added+' athlete'+(added===1?'':'s')+(bad?'. '+bad+' row'+(bad===1?'':'s')+' skipped: check age group (8-9 or 10-11) and site (prosper or plano).':''));
+  }
   else if(act==='open'){openSheet(el.getAttribute('data-id'));}
   else if(act==='close'){closeSheet();}
   else if(act==='present'){readSheetInputs();draft.present=!draft.present;renderSheet();}
   else if(act==='rate'){
-    var tid=el.getAttribute('data-tid'),v=+el.getAttribute('data-v');draft.r[tid]=v;
-    el.parentNode.querySelectorAll('button').forEach(function(b){var on=+b.getAttribute('data-v')===v;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));});
-    var t=TRAITS.filter(function(z){return z.id===tid;})[0];$('#rub_'+tid).innerHTML=rubric(t,v);
+    var tid=el.getAttribute('data-tid'),v=+el.getAttribute('data-v');draft.r[tid]=v;delete draft.c[tid];
+    el.parentNode.querySelectorAll('button').forEach(function(b){var on=+b.getAttribute('data-v')===v;b.classList.toggle('on',on);b.classList.remove('carry');b.setAttribute('aria-pressed',String(on));});
+    $('#rub_'+tid).innerHTML=rubric(T_(tid),v,false);
+    if(draft._autoWork){draft.work='';var wc=$('#workChips');if(wc)wc.innerHTML=workChips();}
   }
+  else if(act==='work'){draft.work=el.getAttribute('data-tid');draft._autoWork=false;$('#workChips').innerHTML=workChips();}
+  else if(act==='phrase'){var ta=$('#f_shout'),p=PHRASES[+el.getAttribute('data-i')][1].replace('{n}',first(draftA.name));ta.value=ta.value.trim()?ta.value.trim()+' '+p:p;}
   else if(act==='tag'){var tg=el.getAttribute('data-tag'),i=draft.tags.indexOf(tg);if(i>=0)draft.tags.splice(i,1);else draft.tags.push(tg);el.setAttribute('aria-pressed',String(i<0));}
-  else if(act==='copylast'){
-    readSheetInputs();
-    var prev=null;for(var k=draftN-1;k>=1;k--){var pr=rec(draftA,k);if(pr&&pr.present){prev=pr;break;}}
-    if(prev){draft.r=JSON.parse(JSON.stringify(prev.r));renderSheet();toast('Copied ratings from Session '+k+'. Adjust what changed.');}else toast('No earlier session to copy from.');
-  }
   else if(act==='save'){
     readSheetInputs();
-    if(draft.present){var missing=TRAITS.filter(function(t){return !draft.r[t.id];});if(missing.length){toast('Rate '+missing.length+' more: '+missing.map(function(t){return t.name;}).slice(0,2).join(', ')+(missing.length>2?'…':''));return;}}
+    var S=SESS[draftN-1];
+    if(draft.present){var missing=S.foc.filter(function(id){return draft.r[id]==null||draft.c[id];});if(missing.length){toast('Tap a rating for '+missing.map(function(id){return T_(id).name;}).join(' and '));return;}
+      if(!draft.work)draft.work=suggestWork(draft.r,S.foc);}
+    draft.coach=state.coach; var auto=!!draft._autoWork; delete draft._autoWork; if(!auto)draft._autoWork=false;
     state.records[draftA.id]=state.records[draftA.id]||{};state.records[draftA.id][draftN]=draft;
-    var nm=draftA.name;save();closeSheet();render();toast('Saved '+nm+' for Session '+draftN);
+    var nm=draftA.name, aid=draftA.id, goNext=el.getAttribute('data-next')==='1';
+    save(); closeSheet(); render();
+    var nt=goNext?nextTodo(aid):null;
+    if(nt){openSheet(nt.id);toast('Saved '+nm);}
+    else toast(goNext?'Saved '+nm+'. Everyone in this group is done.':'Saved '+nm);
   }
   else if(act==='reset'){
     if(!resetArmed){resetArmed=true;el.textContent='Tap again to reset';setTimeout(function(){resetArmed=false;var b=$('#resetBtn');if(b)b.textContent='Reset demo data';},3000);return;}
     resetArmed=false;el.textContent='Reset demo data';state=makeDemo();save();render();toast('Demo data reset');
   }
 });
+document.addEventListener('submit',function(e){
+  if(e.target.id!=='addForm')return; e.preventDefault();
+  var g=function(id){return $('#'+id).value;};
+  addAthlete({first:g('nf_first'),last:g('nf_last'),band:g('nf_band'),num:g('nf_num'),site:g('nf_site'),guardian:g('nf_g'),contact:g('nf_c')});
+  save();render();toast('Added '+g('nf_first')+' to the roster');
+});
 document.addEventListener('change',function(e){
   var p=e.target.getAttribute&&e.target.getAttribute('data-pick');
   if(p==='pPick'){state.parentChild=e.target.value;save();render();}
   if(p==='aPick'){state.athleteChild=e.target.value;save();render();}
+  if(p==='coach'){state.coach=e.target.value;save();}
 });
 $('#sheet').addEventListener('click',function(e){if(e.target.id==='sheet')closeSheet();});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('#sheet').hidden)closeSheet();});
