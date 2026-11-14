@@ -358,6 +358,55 @@ code{font-size:.8rem;background:var(--surface-2);padding:2px 6px;border-radius:6
 .sw8{display:grid;gap:4px;justify-items:center;font-size:.7rem;color:var(--muted)}
 .sw8 i{width:44px;height:44px;border-radius:10px;border:1px solid var(--line);display:block}
 
+/* Pods (how coaches spot a kid: pinnie color + number), live feed, timer, messages, head portal */
+.jersey[data-pod]{box-shadow:inset 0 -6px 0 var(--pod);border-color:var(--pod)}
+.podchip{display:inline-flex;align-items:center;gap:6px;font-size:.74rem;font-weight:700;color:var(--muted)}
+.podchip i{width:10px;height:10px;border-radius:50%;background:var(--pod);display:inline-block;flex:none}
+.chip.flag{color:var(--gF);border-color:currentColor}
+.chip.flag.star{color:var(--gA)}
+.dot-live{width:8px;height:8px;border-radius:50%;background:var(--gA);display:inline-block;animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.tcard{border-top:4px solid var(--tc,var(--line))}
+.tbig{font-family:var(--f-display);font-size:clamp(3rem,14vw,5.4rem);line-height:1;text-align:center;margin:8px 0 12px;font-variant-numeric:tabular-nums}
+.tprog{height:10px;border-radius:99px;background:var(--surface-2);overflow:hidden;border:1px solid var(--line)}
+.tprog i{display:block;height:100%;background:var(--tc,var(--accent))}
+.tctl{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.presets{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr));margin-top:14px}
+.preset{display:grid;gap:2px;text-align:left;border:1px solid var(--line);border-left:5px solid var(--pc);background:var(--surface-2);border-radius:10px;padding:10px 12px;font-weight:700}
+.preset small{color:var(--muted);font-weight:600}
+.tbar{position:fixed;left:0;right:0;bottom:0;z-index:35;width:100%;background:var(--hdr-bg);color:#FFFFFF;border:0;border-top:3px solid var(--tc,#D4C618);display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));font-weight:700;text-align:left}
+.tbar .num{font-size:1.6rem;color:#D4C618}
+body.has-tbar main{padding-bottom:110px}
+body.has-tbar .toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+.mcard{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:10px}
+.mcard.unread{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.mcard .who{display:flex;gap:10px;align-items:center;min-width:0}
+.mtext{font-size:1rem;font-weight:600}
+.mfoot{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.alert{background:var(--accent);color:var(--on-accent);border-radius:12px;padding:12px 14px;display:flex;gap:10px 14px;align-items:center;justify-content:space-between;flex-wrap:wrap;font-weight:600}
+.alert .btn{background:#0B0B0B;color:#D4C618;border-color:#0B0B0B}
+.feed{display:grid;max-height:540px;overflow:auto}
+.fe{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px 2px;border:0;border-bottom:1px dashed var(--line);text-align:left;background:none;width:100%}
+.fe:last-child{border-bottom:0}
+.fe .pd{width:10px;height:10px;border-radius:50%;margin-top:7px;background:var(--pod)}
+.fe b{display:block;font-size:.86rem}
+.fe span{font-size:.86rem;overflow-wrap:anywhere}
+.fe time{font-size:.72rem;color:var(--muted);white-space:nowrap}
+.board{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,175px),1fr))}
+.kt{display:grid;gap:6px;text-align:left;background:var(--surface);border:1px solid var(--line);border-left:7px solid var(--pod);border-radius:12px;padding:12px;align-content:start}
+.kt:hover{border-color:var(--accent);border-left-color:var(--pod)}
+.kt.attn{background:var(--surface-2)}
+.kt .knum{font-family:var(--f-display);font-size:1.7rem;line-height:1}
+.kt .kname{font-weight:700;line-height:1.2}
+.trow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line)}
+.trow:last-child{border-bottom:0}
+.tav{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:var(--hdr-bg);color:#D4C618;font-family:var(--f-display);border:2px solid var(--pod);font-size:.8rem}
+.prow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line)}
+.prow:last-child{border-bottom:0}
+.diag-profile{font-family:var(--f-display);font-size:1.05rem;line-height:1.35}
+.cue{background:var(--surface-2);border-left:4px solid var(--accent);border-radius:10px;padding:12px 14px;font-weight:600}
+.flagban{border:1px solid var(--gF);border-radius:12px;padding:10px 12px;font-weight:600}
+.flagban b{color:var(--gF)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--fg);color:var(--bg);font-weight:700;padding:10px 18px;border-radius:999px;box-shadow:var(--shadow);max-width:calc(100% - 32px);text-align:center}
 .empty{padding:28px;text-align:center;color:var(--muted)}
 .note{font-size:.78rem;color:var(--muted)}
@@ -371,6 +420,7 @@ code{font-size:.8rem;background:var(--surface-2);padding:2px 6px;border-radius:6
       <div><b>HIGH RISK HIGH REWARD</b><span>Sports Performance &amp; Fitness · Camp</span></div>
     </div>
     <nav class="roles" aria-label="Portal">
+      <a href="#head" data-role="head">Head</a>
       <a href="#coach" data-role="coach">Coach</a>
       <a href="#parent" data-role="parent">Parent</a>
       <a href="#athlete" data-role="athlete">Athlete</a>
@@ -378,11 +428,12 @@ code{font-size:.8rem;background:var(--surface-2);padding:2px 6px;border-radius:6
   </div>
 </header>
 <div class="demo"><div class="wrap">
-  <span><span class="tag-demo">DEMO</span>Fictional athletes and families. Changes are saved on this device only.</span>
+  <span><span class="tag-demo">DEMO</span>Fictional athletes and families. The timer, messages, flags and ratings sync live to everyone who has this page open.</span>
   <button class="linkbtn" type="button" data-act="reset" id="resetBtn">Reset demo data</button>
 </div></div>
 <main class="wrap" id="app"></main>
 <div class="sheet" id="sheet" hidden><div class="sheet-p" id="sheetP" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div></div>
+<button type="button" class="tbar" id="tbar" hidden data-act="gohome" aria-label="Camp timer, open Home"><span id="tbarL"></span><span class="num" data-tm>0:00</span></button>
 <div class="toast" id="toast" hidden role="status"></div>
 
 <script>
@@ -400,7 +451,15 @@ var SITES={prosper:{name:'Prosper Rec Center',short:'Prosper'},plano:{name:'Plan
 var GROUPS={'8-9':'Rookies 8–9','10-11':'Juniors 10–11'};
 var DIVS={boys:'Boys',girls:'Girls'};
 var POS={QB:'Quarterback',RB:'Running Back',WR:'Wide Receiver',TE:'Tight End',OL:'Offensive Line',DL:'Defensive Line',LB:'Linebacker',DB:'Defensive Back',C:'Center (flag)',RUSH:'Rusher (flag)',ATH:'Athlete (any)'};
-var COACHES=['Coach Niko','Coach Ray','Coach Dee'];
+var HEAD='Coach Niko';
+var TRAINERS=['Coach Ray','Coach Dee','Coach Mo'];
+var COACHES=TRAINERS.concat([HEAD]);
+// Pods = pinnie colors. A trainer runs each pod, so a kid is "#22 in red" on the field.
+var PODS={red:{name:'Red',color:'#E5484D'},blue:{name:'Blue',color:'#3E8EF7'},green:{name:'Green',color:'#2DB566'},white:{name:'White',color:'#C9CED6'}};
+var TPRESETS=[{id:'instr',label:'Instruction, demo & questions',sec:180,color:'#57AEF2'},{id:'drill',label:'Drill circuit',sec:480,color:'#D4C618'},{id:'water',label:'Water break',sec:90,color:'#2DB566'},{id:'rotate',label:'Rotate stations',sec:45,color:'#F07F3C'}];
+var FLAGS={down:{label:'Down today',tip:'Encourage them as they enter your drill. Praise one thing early.'},slow:{label:'Slow today',tip:'Check water and energy. Short, fast reps and lots of praise.'},confused:{label:'Confused',tip:'Re-explain with one simple cue and a demo before their rep.'},star:{label:'On fire',tip:'Challenge them and let them demo for the group.'}};
+var KTPL={encourage:['Encourage','{k} is a little down today. Encourage them as they enter your drill and find one thing to praise early.'],simple:['Re-explain','{k} looks confused. Re-explain with one simple cue and demo it before their rep.'],energy:['Energy check','{k} is moving slow. Check water and energy. Keep their reps short and positive.'],push:['Challenge','{k} is ready for more. Challenge them and let them demo for the group.'],watch:['Watch & report','Watch {k} on this drill and tell me what you see after the circuit.']};
+var GTPL=[['Tempo','Pick up the tempo. Fast transitions between reps.'],['2 min left','2 minutes left in this circuit. Finish strong.'],['Water','Bring your pod in for water now.'],['Praise','Catch three kids doing something right in this drill and tell them.']];
 // foc = the 3 categories coaches must rate that session (tied to its theme). Everything else carries over.
 var SESS=[
  {n:1,date:'Tue Jun 8',wk:1,theme:'Baseline Day',focus:'Testing, athletic stance and starts',test:true,foc:['compete','coach','stance'],mission:'Wall drill: 3 sets of 20 seconds. Fast knees, tall posture, drive the arms.'},
@@ -475,7 +534,7 @@ function makeDemo(){
   var R=rng(2027), athletes=[], records={};
   DEFS.forEach(function(d,i){
     var g,c; if(d.length===8){g=d[6];c=d[7];}else{var p=d[6].split('|');c=p[0];g=p[1];}
-    var a={id:'a'+(i+1),name:d[0],site:d[1],div:d[2],band:d[3],num:d[4],pos:d[5],guardian:g,contact:c,method:c.indexOf('@')>=0?'email':'text'};
+    var a={id:'a'+(i+1),name:d[0],site:d[1],div:d[2],band:d[3],num:d[4],pos:d[5],guardian:g,contact:c,method:c.indexOf('@')>=0?'email':'text',pod:['red','blue','green'][i%3]};
     athletes.push(a); records[a.id]={};
     var base={}; TRAITS.forEach(function(t){base[t.id]=1.7+R()*2.1;});
     var growth=0.1+R()*0.24, tn={}; TESTS.forEach(function(t){tn[t.id]=0.12+R()*0.5;});
@@ -501,15 +560,17 @@ function makeDemo(){
     }
   });
   var pub={}; ['prosper','plano'].forEach(function(s){['boys','girls'].forEach(function(dv){pub[s+'-'+dv]=[1,2,3,4,5];});});
-  return {v:3,athletes:athletes,records:records,published:pub,current:{prosper:6,plano:6},
-    gradeFormat:'letter',site:'prosper',div:'boys',group:'all',parentChild:'a1',athleteChild:'a1',coach:'Coach Niko',tab:'rate',mode:'athlete',skill:'',logo:''};
+  return {v:4,athletes:athletes,records:records,published:pub,current:{prosper:6,plano:6},
+    gradeFormat:'letter',site:'prosper',div:'boys',group:'all',parentChild:'a1',athleteChild:'a1',coach:'Coach Ray',tab:'home',mode:'athlete',skill:'',logo:'',
+    podCoach:{red:'Coach Ray',blue:'Coach Dee',green:'Coach Mo',white:HEAD},feedF:'all',boardF:'all'};
 }
-var KEY='hr2-camp-demo-v3', state=null;
+var KEY='hr2-camp-demo-v4', state=null;
 try{state=JSON.parse(localStorage.getItem(KEY));}catch(e){state=null;}
-if(!state||state.v!==3||!state.athletes) state=makeDemo();
+if(!state||state.v!==4||!state.athletes) state=makeDemo();
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){toast('Could not save on this device. Storage may be full or blocked.');}}
-function byId(id){return state.athletes.filter(function(a){return a.id===id;})[0]||state.athletes[0];}
-function rec(a,n){var r=state.records[a.id]; return r?r[n]:null;}
+function byId(id){return findAth(id)||state.athletes[0];}
+// Live ratings (any trainer's phone) win over the ratings stored on this device.
+function rec(a,n){var live=store.docs['ratings/'+a.id+'_'+n];if(live)return live;var r=state.records[a.id]; return r?r[n]:null;}
 function pk(a){return a.site+'-'+a.div;}
 function lastPresent(a,n){for(var k=n-1;k>=1;k--){var r=rec(a,k);if(r&&r.present)return {n:k,r:r};}return null;}
 function freshRec(a,n){
@@ -551,7 +612,8 @@ function gc(s){return s==null?'':s>=90?'gA':s>=80?'gB':s>=70?'gC':s>=60?'gD':'gF
 function word(s){return s==null?'No data yet':s>=90?'Elite':s>=80?'Strong':s>=70?'Solid':s>=60?'Developing':'Building';}
 function fmt(s,f){f=f||state.gradeFormat;if(s==null)return '—';return f==='letter'?letter(s):f==='100'?String(Math.round(s)):(s/10).toFixed(1);}
 function unitLabel(){return state.gradeFormat==='100'?'out of 100':state.gradeFormat==='10'?'out of 10':'grade';}
-function pubOf(a){return (state.published[pk(a)]||[]).slice().sort(function(x,y){return x-y;});}
+function sentList(key){var out=(state.published[key]||[]).slice();sentFor(key).forEach(function(n){if(out.indexOf(n)<0)out.push(n);});return out.sort(function(x,y){return x-y;});}
+function pubOf(a){return sentList(pk(a));}
 function coachSS(a){var c=state.current[a.site];return [1,2,3,4,5,6,7,8].filter(function(n){return n<=c;});}
 function delta(now,then){
   if(now==null||then==null)return '';
@@ -655,7 +717,7 @@ function fmtSeg(){
 }
 function childPicker(id,selected){
   var opts=['boys','girls'].map(function(dv){
-    var list=state.athletes.filter(function(a){return a.div===dv;}).sort(function(x,y){return x.num-y.num;});
+    var list=ATH().filter(function(a){return a.div===dv;}).sort(function(x,y){return x.num-y.num;});
     return '<optgroup label="'+DIVS[dv]+'">'+list.map(function(a){return '<option value="'+a.id+'"'+(a.id===selected?' selected':'')+'>'+esc(label(a))+' · '+a.pos+' · '+esc(SITES[a.site].short)+'</option>';}).join('')+'</optgroup>';
   }).join('');
   return '<label class="eyebrow" for="'+id+'">Demo: switch family</label> <select id="'+id+'" data-pick="'+id+'">'+opts+'</select>';
@@ -707,36 +769,40 @@ function testTable(a,ss){
 function missionCard(text,title){
   return '<div class="mission"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.6L22 9.3l-5.4 4.8L18.2 21 12 17.3 5.8 21l1.6-6.9L2 9.3l7.1-.7z" fill="currentColor"/></svg><div><div class="eyebrow">'+esc(title||'At-home mission')+'</div><p style="font-weight:600">'+esc(text)+'</p></div></div>';
 }
-function whoCell(a,sub){return '<span class="jersey">#'+a.num+'</span><span style="min-width:0"><span class="who-name">'+esc(a.name)+'</span> <span class="chip pos">'+a.pos+'</span>'+(sub?'<small style="display:block">'+sub+'</small>':'')+'</span>';}
+function jersey(a){return '<span class="jersey" data-pod style="--pod:'+podOf(a).color+'">#'+a.num+'</span>';}
+function flagChip(a){var f=flagOf(a.id);return f&&FLAGS[f.f]?' <span class="chip flag'+(f.f==='star'?' star':'')+'">'+FLAGS[f.f].label+'</span>':'';}
+function whoCell(a,sub){return jersey(a)+'<span style="min-width:0"><span class="who-name">'+esc(a.name)+'</span> <span class="chip pos">'+a.pos+'</span>'+flagChip(a)+'<small style="display:block"><span class="podchip" style="--pod:'+podOf(a).color+'"><i></i>'+podOf(a).name+'</span>'+(sub?' · '+sub:'')+'</small></span>';}
 
 /* ---------- Coach portal ---------- */
 function status(a,n){var r=rec(a,n);if(!r)return 'todo';if(!r.present)return 'absent';var c=r.c||{};return SESS[n-1].foc.every(function(t){return r.r[t]!=null&&!c[t];})?'done':'todo';}
-function siteRoster(){return state.athletes.filter(function(a){return a.site===state.site&&a.div===state.div;}).sort(function(x,y){return x.num-y.num;});}
-function groupRoster(){return siteRoster().filter(function(a){return state.group==='all'||a.band===state.group;});}
+function siteRoster(){return ATH().filter(function(a){return a.site===state.site&&a.div===state.div;}).sort(function(x,y){return x.num-y.num;});}
+function groupRoster(){return siteRoster().filter(function(a){return state.group==='all'||(state.group==='pod'?podCoach(a.pod)===state.coach:a.band===state.group);});}
 function nextTodo(afterId){
   var list=groupRoster(), n=state.current[state.site], start=0;
   if(afterId){list.forEach(function(a,i){if(a.id===afterId)start=i+1;});}
   var order=list.slice(start).concat(list.slice(0,start));
   return order.filter(function(a){return a.id!==afterId&&status(a,n)==='todo';})[0]||null;
 }
-function isPublished(){return (state.published[state.site+'-'+state.div]||[]).indexOf(state.current[state.site])>=0;}
+function isPublished(){return sentList(state.site+'-'+state.div).indexOf(state.current[state.site])>=0;}
 function renderCoach(){
   var site=state.site, n=state.current[site], S=SESS[n-1], all=siteRoster();
   var done=all.filter(function(a){return status(a,n)==='done';}).length, abs=all.filter(function(a){return status(a,n)==='absent';}).length, left=all.length-done-abs;
   var isPub=isPublished();
   var siteSeg='<div class="seg" role="group" aria-label="Site">'+Object.keys(SITES).map(function(k){return '<button type="button" data-act="site" data-site="'+k+'" aria-pressed="'+(site===k)+'">'+SITES[k].short+'</button>';}).join('')+'</div>';
-  var divSeg='<div class="seg div" role="group" aria-label="Division">'+Object.keys(DIVS).map(function(k){var c=state.athletes.filter(function(a){return a.site===site&&a.div===k;}).length;return '<button type="button" data-act="div" data-div="'+k+'" aria-pressed="'+(state.div===k)+'">'+DIVS[k]+' · '+c+'</button>';}).join('')+'</div>';
+  var divSeg='<div class="seg div" role="group" aria-label="Division">'+Object.keys(DIVS).map(function(k){var c=ATH().filter(function(a){return a.site===site&&a.div===k;}).length;return '<button type="button" data-act="div" data-div="'+k+'" aria-pressed="'+(state.div===k)+'">'+DIVS[k]+' · '+c+'</button>';}).join('')+'</div>';
   var coachSel='<label class="eyebrow" for="coachPick">Coach</label> <select id="coachPick" data-pick="coach">'+COACHES.map(function(c){return '<option'+(c===state.coach?' selected':'')+'>'+c+'</option>';}).join('')+'</select>';
   var head='<div class="card"><div class="ctl"><div class="ctl-l">'+divSeg+siteSeg+'<span>'+coachSel+'</span></div></div>'+
    '<div class="ctl" style="margin-top:14px"><div class="stepper"><button type="button" data-act="sess" data-d="-1" aria-label="Previous session">‹</button><div><div class="eyebrow">Session '+n+' of 8 · Week '+S.wk+' · '+esc(S.date)+'</div><div class="sess-title">'+esc(S.theme)+'</div></div><button type="button" data-act="sess" data-d="1" aria-label="Next session">›</button></div>'+(isPub?'<span class="chip ok">Sent to families</span>':'<span class="chip warn">Not sent yet</span>')+'</div>'+
    '<div style="display:grid;gap:8px;margin-top:14px"><div style="font-weight:700">'+DIVS[state.div]+' · '+done+' rated · '+abs+' absent · '+left+' to go</div><div class="progress"><i style="width:'+(all.length?Math.round((done+abs)/all.length*100):0)+'%"></i></div></div></div>';
-  var tabs='<div class="subtabs" role="tablist">'+[['rate','Rate today'],['send','Send updates'],['roster','Families'],['brand','Brand']].map(function(t){var badge=t[0]==='send'&&!isPub&&all.length?'<span class="count">'+all.length+'</span>':'';return '<button type="button" role="tab" data-act="tab" data-tab="'+t[0]+'" aria-selected="'+(state.tab===t[0])+'">'+t[1]+badge+'</button>';}).join('')+'</div>';
-  var body=state.tab==='send'?renderSend():state.tab==='roster'?renderRoster():state.tab==='brand'?renderBrand():renderRate();
-  return '<div class="stack">'+head+tabs+body+'</div>';
+  var unread=unreadFor(state.coach);
+  var tabs='<div class="subtabs" role="tablist">'+[['home','Home'],['rate','Rate today'],['send','Send updates'],['roster','Families'],['brand','Brand']].map(function(t){var badge=t[0]==='send'&&!isPub&&all.length?'<span class="count">'+all.length+'</span>':(t[0]==='home'&&unread.length?'<span class="count">'+unread.length+'</span>':'');return '<button type="button" role="tab" data-act="tab" data-tab="'+t[0]+'" aria-selected="'+(state.tab===t[0])+'">'+t[1]+badge+'</button>';}).join('')+'</div>';
+  var body=state.tab==='send'?renderSend():state.tab==='roster'?renderRoster():state.tab==='brand'?renderBrand():state.tab==='rate'?renderRate():renderHome();
+  var alertHtml=unread.length&&state.tab!=='home'?'<div class="alert" role="status"><span><b>'+esc(unread[0].from)+':</b> '+esc(unread[0].text)+'</span><button type="button" class="btn" data-act="ack" data-id="'+unread[0].id+'">Got it</button></div>':'';
+  return '<div class="stack">'+alertHtml+head+tabs+body+'</div>';
 }
 function renderRate(){
   var n=state.current[state.site], S=SESS[n-1], all=siteRoster(), roster=groupRoster(), nt=nextTodo(null);
-  var grpSeg='<div class="seg" role="group" aria-label="Age group">'+[['all','All ages'],['8-9','8–9'],['10-11','10–11']].map(function(g){return '<button type="button" data-act="group" data-g="'+g[0]+'" aria-pressed="'+(state.group===g[0])+'">'+g[1]+'</button>';}).join('')+'</div>';
+  var grpSeg='<div class="seg" role="group" aria-label="Age group">'+[['all','All'],['pod','My pod'],['8-9','8–9'],['10-11','10–11']].map(function(g){return '<button type="button" data-act="group" data-g="'+g[0]+'" aria-pressed="'+(state.group===g[0])+'">'+g[1]+'</button>';}).join('')+'</div>';
   var modeSeg='<div class="seg" role="group" aria-label="Rating mode">'+[['athlete','One at a time'],['skill','By station']].map(function(m){return '<button type="button" data-act="mode" data-m="'+m[0]+'" aria-pressed="'+(state.mode===m[0])+'">'+m[1]+'</button>';}).join('')+'</div>';
   var start='<div class="card update"><div class="card-h" style="margin-bottom:6px"><div><div class="eyebrow">Today\'s 3 focus categories</div><h2 style="margin-top:6px;font-size:1.1rem">'+S.foc.map(function(id){return esc(T_(id).name);}).join(' · ')+'</h2></div>'+(S.test?'<span class="chip gold">Testing day</span>':'')+'</div>'+
     '<p class="muted">Rate these 3 for each athlete, pick one thing to work on, done. The other 12 carry over from last time.</p>'+
@@ -795,6 +861,7 @@ function renderRoster(){
     '<div class="field"><label for="nf_first">First name</label><input id="nf_first" required maxlength="20" autocomplete="off"></div>'+
     '<div class="field"><label for="nf_last">Last initial</label><input id="nf_last" required maxlength="1" autocomplete="off"></div>'+
     '<div class="field"><label for="nf_pos">Preferred position</label><select id="nf_pos">'+posOpts+'</select></div>'+
+    '<div class="field"><label for="nf_pod">Pod (pinnie color)</label><select id="nf_pod"><option value="">Auto (smallest pod)</option>'+Object.keys(PODS).map(function(p){return '<option value="'+p+'">'+PODS[p].name+' · '+esc(podCoach(p))+'</option>';}).join('')+'</select></div>'+
     '<div class="field"><label for="nf_div">Division</label><select id="nf_div"><option value="boys"'+(state.div==='boys'?' selected':'')+'>Boys</option><option value="girls"'+(state.div==='girls'?' selected':'')+'>Girls</option></select></div>'+
     '<div class="field"><label for="nf_band">Age group</label><select id="nf_band"><option value="8-9">8–9</option><option value="10-11">10–11</option></select></div>'+
     '<div class="field"><label for="nf_site">Site</label><select id="nf_site"><option value="prosper"'+(state.site==='prosper'?' selected':'')+'>Prosper</option><option value="plano"'+(state.site==='plano'?' selected':'')+'>Plano Oak Point</option></select></div>'+
@@ -847,7 +914,8 @@ function renderSheet(){
     '<div class="field"><label for="f_focus">Focus for next session</label><input id="f_focus" maxlength="140" value="'+esc(draft.focus)+'" placeholder="One clear coaching point."></div></div></details></div>'
     :'<div class="sheet-sec"><div class="empty">Marked absent. The family gets the session recap and the at-home mission.</div></div>';
   var nt=nextTodo(a.id);
-  $('#sheetP').innerHTML='<div class="sheet-h"><div style="display:flex;gap:12px;align-items:center;min-width:0"><span class="jersey">#'+a.num+'</span><div style="min-width:0"><h2 id="sheetTitle" style="font-size:1.15rem">'+esc(a.name)+' <span class="chip pos">'+a.pos+'</span></h2><div class="muted" style="font-size:.8rem">Session '+n+' · '+esc(S.theme)+' · '+DIVS[a.div]+' '+a.band+'</div></div></div><button type="button" class="btn" id="sheetClose" data-act="close" aria-label="Close">✕</button></div>'+
+  var fl=flagOf(a.id), flHtml=fl&&FLAGS[fl.f]?'<div class="sheet-sec"><div class="flagban"><b>'+esc(fl.by||HEAD)+': '+FLAGS[fl.f].label+'.</b> '+FLAGS[fl.f].tip+'</div></div>':'';
+  $('#sheetP').innerHTML='<div class="sheet-h"><div style="display:flex;gap:12px;align-items:center;min-width:0">'+jersey(a)+'<div style="min-width:0"><h2 id="sheetTitle" style="font-size:1.15rem">'+esc(a.name)+' <span class="chip pos">'+a.pos+'</span></h2><div class="muted" style="font-size:.8rem">'+podOf(a).name+' pod · Session '+n+' · '+esc(S.theme)+' · '+DIVS[a.div]+' '+a.band+'</div></div></div><button type="button" class="btn" id="sheetClose" data-act="close" aria-label="Close">✕</button></div>'+flHtml+
     '<div class="sheet-sec"><div class="toggle"><button type="button" class="sw" role="switch" aria-checked="'+draft.present+'" data-act="present" aria-label="Here today"></button> Here today</div></div>'+body+
     '<div class="sheet-f"><button type="button" class="btn" data-act="save" data-next="0">Save</button><button type="button" class="btn btn-acc" data-act="save" data-next="1">'+(nt?'Save · next: #'+nt.num+' '+esc(first(nt.name))+' ›':'Save · done')+'</button></div>';
 }
@@ -960,23 +1028,254 @@ function renderAthlete(){
    '</div></div></div>';
 }
 
+/* ---------- Live layer ----------
+   With the artifact's shared store (db) every phone that has the page open sees the same timer, messages,
+   flags, feed and ratings within a second or two. Without it (preview, offline) everything still works on this
+   device, and other tabs on the same device stay in sync through localStorage. */
+var LS_LIVE='hr2-camp-live-v1', COLLS=['live','feed','msgs','acks','notes','ratings','sent','roster'];
+var store={db:null,on:false,stale:false,canHead:true,docs:{},chains:{}};
+try{store.docs=JSON.parse(localStorage.getItem(LS_LIVE))||{};}catch(e){store.docs={};}
+function sget(p){return store.docs[p]||null;}
+function sset(p,data){
+  store.docs[p]=data;
+  if(store.db){
+    var prev=store.chains[p]||Promise.resolve();
+    store.chains[p]=prev.then(function(){return store.db.doc(p).set(data);}).catch(function(e){
+      var c=e&&e.code;
+      if(c==='invalid_argument')toast('Your access level cannot change this. The head instructor can give you Contributor access.');
+      else if(c==='quota_exceeded')toast('Live storage is full. Clear the feed and messages in the Head portal.');
+      else if(c==='unavailable')setTimeout(function(){if(store.docs[p])store.db.doc(p).set(store.docs[p]).catch(function(){});},700+Math.random()*900);
+    });
+  }else{try{localStorage.setItem(LS_LIVE,JSON.stringify(store.docs));}catch(e){}}
+  onLiveChange();
+}
+function slug(s){return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-');}
+function ATH(){var extra=[];Object.keys(store.docs).forEach(function(k){if(k.indexOf('roster/')===0){var d=store.docs[k];if(d&&d.id&&!state.athletes.some(function(a){return a.id===d.id;}))extra.push(d);}});return extra.length?state.athletes.concat(extra):state.athletes;}
+function findAth(id){return ATH().filter(function(a){return a.id===id;})[0]||null;}
+function podOf(a){return PODS[a&&a.pod]||PODS.white;}
+function podCoach(pod){var c=(sget('live/config')||{}).podCoach;return (c&&c[pod])||state.podCoach[pod]||HEAD;}
+function autoPod(site,div){var cnt={red:0,blue:0,green:0};ATH().forEach(function(a){if(a.site===site&&a.div===div&&cnt[a.pod]!=null)cnt[a.pod]++;});return Object.keys(cnt).sort(function(x,y){return cnt[x]-cnt[y];})[0];}
+function flagOf(id){var m=(sget('live/flags')||{}).map||{};return m[id]||null;}
+function sentFor(key){var d=sget('sent/'+key);return d&&d.sessions?d.sessions:[];}
+function ago(t){var s=Math.max(0,Math.round((Date.now()-t)/1000));return s<45?'just now':s<3600?Math.round(s/60)+'m ago':s<86400?Math.round(s/3600)+'h ago':Math.round(s/86400)+'d ago';}
+function mid(p){return p+Date.now().toString(36)+Math.floor(Math.random()*1e4);}
+
+/* Feed: each trainer's phone writes only its own document, so trainers never overwrite each other. */
+function pushFeed(ev){var p='feed/'+slug(state.coach),cur=((sget(p)||{}).events||[]).slice(-39);ev.id=mid('e');ev.at=Date.now();ev.coach=state.coach;cur.push(ev);sset(p,{events:cur});}
+function allFeed(){var out=[];Object.keys(store.docs).forEach(function(k){if(k.indexOf('feed/')===0)((store.docs[k]||{}).events||[]).forEach(function(e){out.push(e);});});return out.sort(function(a,b){return b.at-a.at;});}
+function feedText(e){
+  var a=e.aid?findAth(e.aid):null, who=a?label(a):'';
+  if(e.t==='save')return who+' rated: '+Object.keys(e.r||{}).map(function(k){return T_(k)?T_(k).name+' '+e.r[k]:'';}).join(', ')+(e.work&&T_(e.work)?'. Work on: '+T_(e.work).name:'')+(e.shout?'. Shout-out added':'')+(e.tests?'. '+e.tests+' tests entered':'');
+  if(e.t==='rate')return who+': '+(T_(e.tid)?T_(e.tid).name:'')+' '+e.v;
+  if(e.t==='absent')return who+' marked '+(e.here?'here':'absent');
+  if(e.t==='sent'){var k=String(e.key).split('-');return 'Sent Session '+e.n+' updates to '+e.count+' '+(DIVS[k[1]]||'')+' families at '+((SITES[k[0]]||{}).short||'');}
+  return '';
+}
+function feedRows(list,clickable){
+  if(!list.length)return '<p class="muted" style="padding:8px 0">Nothing yet. Entries appear here the moment a trainer saves a rating, marks attendance or sends updates.</p>';
+  return list.map(function(e){var a=e.aid?findAth(e.aid):null,pc=a?podOf(a).color:'var(--accent)';var inner='<span class="pd" style="--pod:'+pc+'"></span><span><b>'+esc(e.coach)+(e.n?' · S'+e.n:'')+'</b><span>'+esc(feedText(e))+'</span></span><time>'+ago(e.at)+'</time>';
+    return clickable&&a?'<button type="button" class="fe" data-act="diag" data-id="'+a.id+'">'+inner+'</button>':'<div class="fe">'+inner+'</div>';}).join('');
+}
+
+/* Messages: head writes msgs/<trainer> (or msgs/all); each trainer writes their own acks/<trainer>. */
+function msgsFor(c){var a=((sget('msgs/'+slug(c))||{}).items||[]),b=((sget('msgs/all')||{}).items||[]).map(function(m){return Object.assign({},m,{all:true});});return a.concat(b).sort(function(x,y){return y.at-x.at;});}
+function acksOf(c){return (sget('acks/'+slug(c))||{}).read||{};}
+function unreadFor(c){var r=acksOf(c);return msgsFor(c).filter(function(m){return !r[m.id];});}
+function sendMsg(to,aid,text){var p='msgs/'+(to==='all'?'all':slug(to)),cur=((sget(p)||{}).items||[]).slice(-29);cur.push({id:mid('m'),aid:aid||'',text:text,at:Date.now(),from:HEAD,to:to});sset(p,{items:cur});}
+function ack(id){var r=Object.assign({},acksOf(state.coach));r[id]=Date.now();var keys=Object.keys(r).sort(function(a,b){return r[b]-r[a];}).slice(0,80),o={};keys.forEach(function(k){o[k]=r[k];});sset('acks/'+slug(state.coach),{read:o});}
+function sentMsgs(){var out=[];Object.keys(store.docs).forEach(function(k){if(k.indexOf('msgs/')===0)((store.docs[k]||{}).items||[]).forEach(function(m){out.push(m);});});return out.sort(function(a,b){return b.at-a.at;});}
+function seenBy(m){if(m.to==='all')return TRAINERS.filter(function(c){return acksOf(c)[m.id];});return acksOf(m.to)[m.id]?[m.to]:[];}
+function msgCard(m){
+  var a=m.aid?findAth(m.aid):null, read=!!acksOf(state.coach)[m.id];
+  return '<div class="mcard'+(read?'':' unread')+'">'+(a?'<div class="who">'+whoCell(a,GROUPS[a.band])+'</div>':'')+'<p class="mtext">'+esc(m.text)+'</p><div class="mfoot"><span class="note">'+esc(m.from)+' · '+ago(m.at)+(m.all?' · to all trainers':'')+'</span><span style="display:flex;gap:8px;flex-wrap:wrap">'+(a?'<button type="button" class="mini" data-act="open" data-id="'+a.id+'">Rate #'+a.num+'</button>':'')+(read?'<span class="chip ok">Got it</span>':'<button type="button" class="btn btn-acc" data-act="ack" data-id="'+m.id+'">Got it</button>')+'</span></div></div>';
+}
+
+/* Timer: one shared document. Every phone counts down from the same start time. */
+function timerDoc(){return sget('live/timer');}
+function timerOn(t){return !!(t&&t.phase&&t.phase!=='idle');}
+function timerLeft(t){if(!timerOn(t))return 0;if(!t.running)return t.left!=null?t.left:t.dur;return Math.max(0,t.dur-(Date.now()-t.start)/1000);}
+function fmtTime(s){s=Math.ceil(s);var m=Math.floor(s/60),r=s%60;return m+':'+(r<10?'0':'')+r;}
+function setTimer(o){o.by=HEAD;o.at=Date.now();sset('live/timer',o);}
+function startPreset(p){setTimer({phase:p.id,label:p.label,dur:p.sec,start:Date.now(),running:true,left:null,color:p.color});}
+function timerHtml(ctrl){
+  var t=timerDoc(), on=timerOn(t), left=timerLeft(t), pct=on&&t.dur?clamp(left/t.dur,0,1)*100:0, ro=ctrl&&!store.canHead;
+  var h='<div class="card tcard" style="--tc:'+(on?t.color:'var(--line)')+'"><div class="card-h" style="margin-bottom:0"><div><div class="eyebrow">'+(on?(t.running?'Running':'Paused')+' · set by '+esc(t.by||HEAD):'Camp timer')+'</div><h3 style="margin-top:6px">'+(on?esc(t.label):'No timer running')+'</h3></div>'+(ctrl?'':'<span class="note">Controlled by '+HEAD+'</span>')+'</div>'+
+    '<div class="tbig" data-tm>'+fmtTime(left)+'</div><div class="tprog"><i data-tmbar style="width:'+pct.toFixed(1)+'%"></i></div>';
+  if(ctrl){
+    var dis=ro?' disabled':'';
+    h+='<div class="presets">'+TPRESETS.map(function(p,i){return '<button type="button" class="preset" style="--pc:'+p.color+'" data-act="tpreset" data-i="'+i+'"'+dis+'>'+esc(p.label)+'<small>'+fmtTime(p.sec)+' · start</small></button>';}).join('')+'</div>'+
+      '<div class="tctl">'+(on&&t.running?'<button type="button" class="btn" data-act="tpause"'+dis+'>Pause</button>':'<button type="button" class="btn btn-acc" data-act="tresume"'+(on&&!t.running&&left>0?'':' disabled')+'>Resume</button>')+
+      '<button type="button" class="btn" data-act="tplus"'+(on?dis:' disabled')+'>+1 min</button><button type="button" class="btn" data-act="treset"'+(on?dis:' disabled')+'>Restart</button><button type="button" class="btn btn-acc" data-act="tnext"'+dis+'>Next phase ›</button><button type="button" class="btn" data-act="tstop"'+(on?dis:' disabled')+'>Stop</button></div>'+
+      '<div class="formgrid" style="margin-top:12px;align-items:end"><div class="field"><label for="tmLabel">Custom timer</label><input id="tmLabel" maxlength="40" placeholder="e.g. Route tree demo"></div><div class="field"><label for="tmMin">Minutes</label><input id="tmMin" type="number" min="0.25" max="60" step="0.25" value="5"></div><div><button type="button" class="btn" data-act="tcustom"'+dis+' style="width:100%">Start custom</button></div></div>';
+  }
+  return h+'</div>';
+}
+
+/* Diagnosis: built from the 15 categories and tests, plus the head instructor's own notes. */
+var CUES={compete:'Pair them with a slightly better partner and keep score out loud.',tough:'After a mistake: one cue, then "next rep." Do not let them sit in it.',focus:'One instruction at a time. Have them say the cue back before the rep.',conf:'Give them an early win: start with a rep they can nail, then praise it loudly.',love:'Give them a job (cone captain, rep counter) and turn the drill into a game.',coach:'Show, don\'t tell. Demo once, then let them try right away.',team:'Pair them with a positive teammate and praise every encouraging word.',lead:'Let them lead the count or demo one rep for the group.',work:'Set a small rep goal and check it off with them.',respect:'Quiet, firm reset away from the group; praise respectful moments right away.',stance:'Check feet, hands and eyes before every start. One fix per rep.',feet:'Slow it down: walk the cut, jog it, then full speed.',hands:'Short, soft tosses first. "Eyes to the tuck" on every catch.',iq:'Ask "where do you go?" before the snap. Walk it through once.',tech:'Demo the skill side by side with them, then rep it slow to fast.'};
+function profileLine(P){
+  var h=function(k){return P[k]!=null;};
+  if(h('ath')&&h('mind')&&P.ath>=82&&P.mind<74)return 'Gifted mover who needs a competitive spark.';
+  if(h('mind')&&h('ath')&&P.mind>=82&&P.ath<74)return 'Big motor and real competitor; athletic tools still developing.';
+  if(h('char')&&h('skill')&&P.char>=82&&P.skill<74)return 'Great teammate who is still learning the game.';
+  if(h('skill')&&h('mind')&&P.skill>=82&&P.mind<74)return 'Skilled player who needs confidence and toughness.';
+  var ks=PILLARS.filter(function(p){return h(p.id);}).sort(function(a,b){return P[b.id]-P[a.id];});
+  return ks.length?'Strongest in '+ks[0].name+'. Biggest room to grow: '+ks[ks.length-1].name+'.':'Not enough data yet.';
+}
+var diagId=null, sheetKind='rate';
+function openDiag(id){diagId=id;sheetKind='diag';renderDiag();$('#sheet').hidden=false;document.body.style.overflow='hidden';setTimeout(function(){var f=$('#sheetClose');if(f)f.focus();},30);}
+function renderDiag(){
+  var a=findAth(diagId); if(!a)return;
+  var ss=coachSS(a), n=state.current[a.site], r=rec(a,n), ro=!store.canHead, dis=ro?' disabled':'';
+  var P={}; PILLARS.forEach(function(p){P[p.id]=pillar(a,p.id,ss);});
+  var tr=strength(a,ss), top=tr.slice(0,3), low=tr.slice().reverse().slice(0,3);
+  var ov=overall(a,ss), fo=fallOutlook(a,ss), f=flagOf(a.id), note=sget('notes/'+a.id)||{}, T=tests(a,ss), coach=podCoach(a.pod);
+  var lvl=function(z){var l=Math.round(z.v);return '<div class="nn"><span><b>Now:</b> '+esc(z.t.r[l-1])+'</span>'+(l<5?'<span><b>Next:</b> '+esc(z.t.r[l])+'</span>':'')+'</div>';};
+  var today=r&&r.present?S_foc(n).map(function(id){return T_(id).name+' '+(r.r[id]!=null&&!(r.c||{})[id]?r.r[id]:'—');}).join(' · ')+(r.work&&T_(r.work)?'<br>Work on: '+T_(r.work).name:'')+(r.shout?'<br>“'+esc(r.shout)+'”':''):(r&&!r.present?'Marked absent.':'Not rated yet this session.');
+  var kidFeed=allFeed().filter(function(e){return e.aid===a.id;}).slice(0,5);
+  $('#sheetP').innerHTML='<div class="sheet-h"><div style="display:flex;gap:12px;align-items:center;min-width:0">'+jersey(a)+'<div style="min-width:0"><h2 id="sheetTitle" style="font-size:1.15rem">'+esc(a.name)+' <span class="chip pos">'+a.pos+'</span></h2><div class="muted" style="font-size:.8rem">'+podOf(a).name+' pod · '+esc(coach)+' · '+DIVS[a.div]+' '+a.band+' · '+esc(SITES[a.site].short)+'</div></div></div><button type="button" class="btn" id="sheetClose" data-act="close" aria-label="Close">✕</button></div>'+
+   '<div class="sheet-sec"><h3>How they look today</h3><div class="chips">'+Object.keys(FLAGS).map(function(k){return '<button type="button" class="tagbtn" data-act="flag" data-f="'+k+'" aria-pressed="'+(!!f&&f.f===k)+'"'+dis+'>'+FLAGS[k].label+'</button>';}).join('')+'<button type="button" class="tagbtn" data-act="flag" data-f=""'+(f?dis:' disabled')+'>Clear</button></div><p class="note">A flag shows on '+esc(coach)+'\'s screen next to #'+a.num+'.</p></div>'+
+   '<div class="sheet-sec"><h3>Send '+esc(coach)+' a focus</h3><div class="chips">'+Object.keys(KTPL).map(function(k){return '<button type="button" class="tagbtn" data-act="dsend" data-k="'+k+'"'+dis+'>'+KTPL[k][0]+'</button>';}).join('')+'</div><p class="note">Sends right now to '+esc(coach)+'\'s phone with #'+a.num+' attached. Their phone buzzes.</p></div>'+
+   '<div class="sheet-sec"><h3>Diagnosis</h3><p class="diag-profile">'+esc(profileLine(P))+'</p><div class="chips"><span class="chip gold">Overall '+fmt(ov)+' · '+word(ov)+'</span>'+(ov!=null?'<span class="chip">Fall 2027: '+fo.tier[1]+'</span>':'')+PILLARS.map(function(p){return '<span class="chip"><span class="'+gc(P[p.id])+'">'+fmt(P[p.id])+'</span>&nbsp;'+p.name+'</span>';}).join('')+'</div></div>'+
+   '<div class="sheet-sec"><div class="grid2" style="gap:12px"><div class="card"><h3 style="margin-bottom:10px">Strengths</h3><div class="bd">'+(top.map(function(z){return '<div class="cat"><div class="cat-h"><b>'+z.t.name+'</b><span class="v '+gc(rScore(z.v))+'">'+z.v.toFixed(1)+'</span></div></div>';}).join('')||'<p class="muted">Not rated yet.</p>')+'</div></div>'+
+   '<div class="card"><h3 style="margin-bottom:10px">Growth areas</h3><div class="bd">'+(low.map(function(z){return '<div class="cat"><div class="cat-h"><b>'+z.t.name+'</b><span class="v '+gc(rScore(z.v))+'">'+z.v.toFixed(1)+'</span></div>'+lvl(z)+'</div>';}).join('')||'<p class="muted">Not rated yet.</p>')+'</div></div></div></div>'+
+   (low[0]?'<div class="sheet-sec"><h3>How to coach #'+a.num+' right now</h3><p class="cue">'+esc(CUES[low[0].t.id])+'</p></div>':'')+
+   '<div class="sheet-sec"><h3>Athletic snapshot</h3><div class="bars">'+TESTS.map(function(t){var x=T[t.id].latest,s=x?tScore(t,x.v,a.band):null,w=s==null?0:clamp((s-45)/55,0,1)*100;return '<div class="bar"><b>'+t.q+(x?' · '+x.v+' '+t.unit:'')+'</b><div class="t"><i class="b'+gc(s)+'" style="width:'+w.toFixed(0)+'%"></i></div><span class="v '+gc(s)+'">'+fmt(s)+'</span></div>';}).join('')+'</div></div>'+
+   '<div class="sheet-sec"><h3>Session '+n+' so far</h3><p>'+today+'</p>'+(kidFeed.length?'<div class="feed">'+feedRows(kidFeed,false)+'</div>':'')+'</div>'+
+   '<div class="sheet-sec"><div class="field"><label for="diagNote">Your diagnosis and plan for #'+a.num+'</label><textarea id="diagNote" maxlength="1200" placeholder="What you see, what they need, and how your trainers should coach them."'+dis+'>'+esc(note.text||'')+'</textarea><small>'+(note.at?'Saved '+ago(note.at):'Only coaches see this. Parents do not.')+'</small></div></div>'+
+   '<div class="sheet-f"><button type="button" class="btn" data-act="close">Close</button><button type="button" class="btn btn-acc" data-act="savenote"'+dis+'>Save diagnosis</button></div>';
+}
+function S_foc(n){return SESS[n-1].foc;}
+
+/* ---------- Head instructor portal ---------- */
+function renderHead(){
+  var site=state.site, n=state.current[site], S=SESS[n-1], ro=!store.canHead, dis=ro?' disabled':'';
+  var live=store.on?(store.stale?'<span class="chip warn">Connecting…</span>':'<span class="chip ok"><i class="dot-live"></i>&nbsp;Live on every phone</span>'):'<span class="chip off">Demo: this device only</span>';
+  var divSeg='<div class="seg div" role="group" aria-label="Division">'+Object.keys(DIVS).map(function(k){var c=ATH().filter(function(a){return a.site===site&&a.div===k;}).length;return '<button type="button" data-act="div" data-div="'+k+'" aria-pressed="'+(state.div===k)+'">'+DIVS[k]+' · '+c+'</button>';}).join('')+'</div>';
+  var siteSeg='<div class="seg" role="group" aria-label="Site">'+Object.keys(SITES).map(function(k){return '<button type="button" data-act="site" data-site="'+k+'" aria-pressed="'+(site===k)+'">'+SITES[k].short+'</button>';}).join('')+'</div>';
+  var roster=siteRoster(), done=roster.filter(function(a){return status(a,n)==='done';}).length, abs=roster.filter(function(a){return status(a,n)==='absent';}).length;
+  var head='<div class="card"><div class="card-h"><div><div class="eyebrow">Head instructor · '+HEAD+'</div><h2 style="margin-top:6px">Command center</h2></div>'+live+'</div>'+
+    (ro?'<p class="flagban" style="margin-bottom:12px"><b>View only.</b> Only the head instructor (artifact owner or Editor) can run the timer, flag athletes and message trainers.</p>':'')+
+    '<div class="ctl"><div class="ctl-l">'+divSeg+siteSeg+'</div><div class="stepper"><button type="button" data-act="sess" data-d="-1" aria-label="Previous session">‹</button><div><div class="eyebrow">Session '+n+' of 8 · '+esc(S.date)+'</div><div class="sess-title" style="font-size:1.15rem">'+esc(S.theme)+'</div></div><button type="button" data-act="sess" data-d="1" aria-label="Next session">›</button></div></div>'+
+    '<div style="display:grid;gap:8px;margin-top:14px"><div style="font-weight:700">'+DIVS[state.div]+' · '+done+' rated · '+abs+' absent · '+(roster.length-done-abs)+' to go</div><div class="progress"><i style="width:'+(roster.length?Math.round((done+abs)/roster.length*100):0)+'%"></i></div></div></div>';
+  // Trainers
+  var feed=allFeed();
+  var trows=TRAINERS.map(function(c){
+    var pods=Object.keys(PODS).filter(function(p){return podCoach(p)===c;});
+    var kids=roster.filter(function(a){return pods.indexOf(a.pod)>=0;}), kd=kids.filter(function(a){return status(a,n)!=='todo';}).length;
+    var last=feed.filter(function(e){return e.coach===c;})[0], unseen=msgsFor(c).filter(function(m){return !m.all&&!acksOf(c)[m.id];}).length;
+    var pc=pods[0]?PODS[pods[0]].color:'var(--line)';
+    return '<div class="trow"><span class="tav" style="--pod:'+pc+'">'+esc(c.replace('Coach ','').slice(0,3).toUpperCase())+'</span><span style="min-width:0"><b>'+esc(c)+'</b><small class="note" style="display:block">'+(pods.map(function(p){return PODS[p].name;}).join(', ')||'No pod')+' pod · '+kd+'/'+kids.length+' done · '+(last?'active '+ago(last.at):'no entries yet')+(unseen?' · <span style="color:var(--gC)">'+unseen+' unread</span>':'')+'</small></span><button type="button" class="mini" data-act="msgto" data-c="'+esc(c)+'"'+dis+'>Message</button></div>';
+  }).join('');
+  // Composer
+  var kidOpts='<option value="">No athlete</option>'+roster.map(function(a){return '<option value="'+a.id+'">'+esc(label(a))+' · '+a.pos+' · '+podOf(a).name+'</option>';}).join('');
+  var toOpts=TRAINERS.map(function(c){return '<option value="'+esc(c)+'"'+(state.msgTo===c?' selected':'')+'>'+esc(c)+'</option>';}).join('')+'<option value="all"'+(state.msgTo==='all'?' selected':'')+'>All trainers</option>';
+  var recent=sentMsgs().slice(0,6).map(function(m){var a=m.aid?findAth(m.aid):null,sb=seenBy(m);return '<li style="align-items:flex-start"><span style="min-width:0"><b>To '+esc(m.to==='all'?'all trainers':m.to)+(a?' · #'+a.num:'')+'</b><small class="note" style="display:block">'+esc(m.text)+'</small></span><span class="chip '+(sb.length?'ok':'off')+'">'+(sb.length?(m.to==='all'?'Seen '+sb.length+'/'+TRAINERS.length:'Seen'):'Sent '+ago(m.at))+'</span></li>';}).join('');
+  var composer='<div class="card" id="composer"><div class="card-h"><h3>Message a trainer</h3><span class="muted">Their phone buzzes</span></div><div class="formgrid"><div class="field"><label for="msgTo">To</label><select id="msgTo" data-pick="msgTo">'+toOpts+'</select></div><div class="field"><label for="msgKid">About athlete</label><select id="msgKid">'+kidOpts+'</select></div></div>'+
+    '<div class="chips" style="margin-top:12px">'+Object.keys(KTPL).map(function(k){return '<button type="button" class="tagbtn" data-act="tpl" data-k="'+k+'">'+KTPL[k][0]+'</button>';}).join('')+GTPL.map(function(g,i){return '<button type="button" class="tagbtn" data-act="gtpl" data-i="'+i+'">'+g[0]+'</button>';}).join('')+'</div>'+
+    '<div class="field" style="margin-top:10px"><label for="msgText">Message</label><textarea id="msgText" maxlength="280" placeholder="Pick a quick message above or type your own."></textarea></div><div style="margin-top:10px"><button type="button" class="btn btn-acc" data-act="sendmsg"'+dis+'>Send now</button></div>'+
+    (recent?'<h3 style="margin:16px 0 8px">Recent</h3><ul class="list">'+recent+'</ul>':'')+'</div>';
+  // Board
+  var ssOf=function(a){return coachSS(a);};
+  var tiles=roster.map(function(a){var st=status(a,n),f=flagOf(a.id),cf=traitNow(a,'conf',ssOf(a)),dv=traitNow(a,'love',ssOf(a)),low=(cf!=null&&cf<=2.5)||(dv!=null&&dv<=2.5);
+    return {a:a,st:st,f:f,low:low,attn:!!(f&&f.f!=='star')||st==='todo'||low};}).filter(function(x){return state.boardF!=='attn'||x.attn;}).sort(function(x,y){return (y.attn-x.attn)||(x.a.num-y.a.num);});
+  var board='<div class="card"><div class="card-h"><div><div class="eyebrow">Tap a kid for their diagnosis</div><h2 style="margin-top:6px">Athlete board</h2></div><div class="seg" role="group" aria-label="Board filter"><button type="button" data-act="boardf" data-f="all" aria-pressed="'+(state.boardF!=='attn')+'">All</button><button type="button" data-act="boardf" data-f="attn" aria-pressed="'+(state.boardF==='attn')+'">Needs attention</button></div></div><div class="board">'+
+    (tiles.map(function(x){var a=x.a;return '<button type="button" class="kt'+(x.attn?' attn':'')+'" style="--pod:'+podOf(a).color+'" data-act="diag" data-id="'+a.id+'"><span style="display:flex;justify-content:space-between;align-items:center;gap:6px"><span class="knum">#'+a.num+'</span><span class="chip pos">'+a.pos+'</span></span><span class="kname">'+esc(a.name)+'</span><span class="podchip" style="--pod:'+podOf(a).color+'"><i></i>'+podOf(a).name+' · '+esc(podCoach(a.pod))+'</span><span class="chips">'+(x.st==='done'?'<span class="chip ok">Rated</span>':x.st==='absent'?'<span class="chip off">Absent</span>':'<span class="chip warn">Not rated</span>')+flagChip(a)+(x.low?' <span class="chip warn">Low confidence/drive</span>':'')+'</span></button>';}).join('')||'<p class="muted">Nobody needs attention right now.</p>')+'</div></div>';
+  // Admin
+  var podSel=Object.keys(PODS).map(function(p){return '<div class="field"><label for="pod-'+p+'"><span class="podchip" style="--pod:'+PODS[p].color+'"><i></i>'+PODS[p].name+' pod</span></label><select id="pod-'+p+'" data-pick="pod"'+dis+'>'+COACHES.map(function(c){return '<option'+(podCoach(p)===c?' selected':'')+'>'+c+'</option>';}).join('')+'</select></div>';}).join('');
+  var sendRows=[];Object.keys(SITES).forEach(function(s){Object.keys(DIVS).forEach(function(d){var key=s+'-'+d,ok=sentList(key).indexOf(state.current[s])>=0;sendRows.push('<li><span>'+SITES[s].short+' · '+DIVS[d]+' · S'+state.current[s]+'</span>'+(ok?'<span class="chip ok">Sent</span>':'<span class="chip warn">Not sent</span>')+'</li>');});});
+  var admin='<div class="card"><h3>Admin</h3><div class="formgrid" style="margin-top:12px">'+podSel+'</div><p class="note" style="margin-top:8px">Pods are pinnie colors. Each trainer sees "My pod" on their Rate screen.</p>'+
+    '<h3 style="margin:16px 0 8px">Parent updates this session</h3><ul class="list">'+sendRows.join('')+'</ul>'+
+    '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><a class="btn" href="#coach" style="text-decoration:none;color:var(--fg)">Open coach view</a><button type="button" class="btn" data-act="clearlive" id="clearLiveBtn"'+dis+'>Clear feed, messages & flags</button></div></div>';
+  var fF='<div class="seg" role="group" aria-label="Feed filter">'+['all'].concat(TRAINERS).map(function(c){return '<button type="button" data-act="feedf" data-c="'+esc(c)+'" aria-pressed="'+(state.feedF===c)+'">'+(c==='all'?'All':esc(c.replace('Coach ','')))+'</button>';}).join('')+'</div>';
+  var fl=feed.filter(function(e){return state.feedF==='all'||e.coach===state.feedF;}).slice(0,30);
+  return '<div class="stack">'+head+
+    '<div class="grid2"><div class="stack">'+timerHtml(true)+'<div class="card"><div class="card-h"><h3>Live feed</h3>'+fF+'</div><div class="feed">'+feedRows(fl,true)+'</div></div></div>'+
+    '<div class="stack"><div class="card"><div class="card-h"><h3>Trainers</h3><span class="muted">Right now</span></div>'+trows+'</div>'+composer+'</div></div>'+
+    board+admin+'</div>';
+}
+
+/* ---------- Coach home: the first screen trainers see ---------- */
+function renderHome(){
+  var mine=msgsFor(state.coach), unread=unreadFor(state.coach), n=state.current[state.site];
+  var pods=Object.keys(PODS).filter(function(p){return podCoach(p)===state.coach;});
+  var kids=siteRoster().filter(function(a){return pods.indexOf(a.pod)>=0;}).sort(function(x,y){return (!!flagOf(y.id))-(!!flagOf(x.id))||x.num-y.num;});
+  var kidRows=kids.map(function(a){var st=status(a,n);return '<div class="prow">'+whoCell(a,(st==='done'?'Rated':st==='absent'?'Absent':'Not rated'))+'<button type="button" class="mini" data-act="open" data-id="'+a.id+'">Rate</button></div>';}).join('');
+  return '<div class="grid2"><div class="stack">'+timerHtml(false)+
+    '<div class="card"><div class="card-h"><h3>From '+HEAD+'</h3>'+(unread.length?'<span class="chip gold">'+unread.length+' new</span>':'<span class="muted">All caught up</span>')+'</div><div class="stack" style="gap:10px">'+(mine.slice(0,8).map(msgCard).join('')||'<p class="muted">No messages yet. When the head instructor sends you a focus athlete or a reminder, it shows here and your phone buzzes.</p>')+'</div></div></div>'+
+    '<div class="stack"><div class="card"><div class="card-h"><h3>My pod</h3><span class="muted">'+(pods.map(function(p){return PODS[p].name;}).join(', ')||'No pod assigned')+' · '+DIVS[state.div]+'</span></div>'+(kidRows||'<p class="muted">No kids in your pod for this division and site. Switch division above, or ask '+HEAD+' to assign a pod.</p>')+'</div>'+
+    '<div class="card"><div class="card-h"><h3>Latest updates</h3><span class="muted">All trainers</span></div><div class="feed">'+feedRows(allFeed().slice(0,12),false)+'</div></div></div></div>';
+}
+
+/* Live wiring */
+var seenMsg=null, rT=null, rPending=false;
+function onLiveChange(){
+  if(role()==='coach'){
+    var all=msgsFor(state.coach), r=acksOf(state.coach);
+    if(seenMsg===null){seenMsg={};all.forEach(function(m){seenMsg[m.id]=1;});}
+    else{var fresh=all.filter(function(m){return !seenMsg[m.id]&&!r[m.id];});all.forEach(function(m){seenMsg[m.id]=1;});if(fresh.length){toast('New message from '+fresh[0].from);buzz();}}
+  }
+  scheduleRender();
+}
+function typing(container){var ae=document.activeElement;return !!(ae&&container&&container.contains(ae)&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName));}
+function scheduleRender(){clearTimeout(rT);rT=setTimeout(function(){
+  if(typing($('#app'))||typing($('#sheetP'))){rPending=true;return;}
+  render(); if(!$('#sheet').hidden&&sheetKind==='diag')renderDiag();
+},120);}
+document.addEventListener('focusout',function(){if(rPending){rPending=false;setTimeout(scheduleRender,60);}});
+var actx=null;
+document.addEventListener('pointerdown',function(){if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){actx=null;}}});
+function buzz(){try{if(actx){var o=actx.createOscillator(),g=actx.createGain();o.frequency.value=880;o.connect(g);g.connect(actx.destination);g.gain.setValueAtTime(.18,actx.currentTime);o.start();o.stop(actx.currentTime+.3);}}catch(e){}try{if(navigator.vibrate)navigator.vibrate([200,100,200]);}catch(e){}}
+function initLive(){
+  if(!window.claude||typeof window.claude.use!=='function')return;
+  window.claude.use('db').then(function(db){
+    if(!db)return;
+    store.db=db; store.on=true; store.docs={}; store.stale=true; seenMsg=null;
+    var pending=COLLS.length, tm=setTimeout(function(){store.stale=true;scheduleRender();},10000);
+    COLLS.forEach(function(c){
+      var firstLive=true;
+      db.collection(c).onSnapshot(function(snap){
+        snap.docChanges().forEach(function(ch){var p=c+'/'+ch.doc.id;if(ch.type==='removed')delete store.docs[p];else store.docs[p]=ch.doc.data();});
+        if(firstLive&&!snap.metadata.fromCache){firstLive=false;pending--;if(pending<=0){clearTimeout(tm);store.stale=false;}}
+        onLiveChange();
+      },function(){clearTimeout(tm);store.stale=true;scheduleRender();});
+    });
+    scheduleRender();
+  }).catch(function(){});
+  window.claude.use('user').then(function(u){
+    if(!u)return;
+    Promise.resolve(u.canEdit()).then(function(v){store.canHead=v!==false;scheduleRender();}).catch(function(){});
+  }).catch(function(){});
+}
+window.addEventListener('storage',function(e){if(e.key===LS_LIVE&&!store.db){try{store.docs=JSON.parse(e.newValue)||{};}catch(_){store.docs={};}onLiveChange();}});
+var alerted={};
+setInterval(function(){
+  var t=timerDoc(), on=timerOn(t), left=timerLeft(t), pct=on&&t.dur?clamp(left/t.dur,0,1)*100:0;
+  document.querySelectorAll('[data-tm]').forEach(function(el){el.textContent=fmtTime(left);});
+  document.querySelectorAll('[data-tmbar]').forEach(function(el){el.style.width=pct.toFixed(1)+'%';});
+  if(on&&t.running&&left<=0&&!alerted[t.start]){alerted[t.start]=1;if((Date.now()-t.start)/1000-t.dur<5){toast('Time! '+t.label+' is done.');buzz();}}
+  var bar=$('#tbar'), show=on&&role()==='coach';
+  bar.hidden=!show; document.body.classList.toggle('has-tbar',show);
+  if(show){bar.style.setProperty('--tc',t.color||'#D4C618');$('#tbarL').textContent=t.label+(t.running?'':' · paused');}
+},250);
+
 /* ---------- Router + events ---------- */
-var ROLES=['coach','parent','athlete'];
+var ROLES=['head','coach','parent','athlete'];
 function role(){var h=location.hash.replace('#','');return ROLES.indexOf(h)>=0?h:'coach';}
 function renderMark(){$('#brandMark').innerHTML=state.logo?'<img src="'+state.logo+'" alt="HR² logo">':'<span class="mark">HR<sup>2</sup></span>';}
 function render(){
   var r=role();
   document.querySelectorAll('.roles a').forEach(function(el){if(el.getAttribute('data-role')===r)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
   renderMark();
-  $('#app').innerHTML=r==='coach'?renderCoach():r==='athlete'?renderAthlete():renderParent();
+  $('#app').innerHTML=r==='head'?renderHead():r==='coach'?renderCoach():r==='athlete'?renderAthlete():renderParent();
 }
 var toastT;
 function toast(m){var t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){t.hidden=true;},2800);}
 function addAthlete(o){
   var id='a'+Date.now().toString(36)+Math.floor(Math.random()*1e4), contact=o.contact.trim(), f=o.first.trim();
   var pos=String(o.pos||'ATH').toUpperCase(); if(!POS[pos])pos='ATH';
-  state.athletes.push({id:id,name:f.charAt(0).toUpperCase()+f.slice(1)+' '+o.last.trim().charAt(0).toUpperCase()+'.',site:o.site,div:o.div,band:o.band,num:+o.num||0,pos:pos,guardian:o.guardian.trim(),contact:contact,method:contact.indexOf('@')>=0?'email':'text'});
-  state.records[id]={};
+  var na={id:id,name:f.charAt(0).toUpperCase()+f.slice(1)+' '+o.last.trim().charAt(0).toUpperCase()+'.',site:o.site,div:o.div,band:o.band,num:+o.num||0,pos:pos,guardian:o.guardian.trim(),contact:contact,method:contact.indexOf('@')>=0?'email':'text',pod:o.pod&&PODS[o.pod]?o.pod:autoPod(o.site,o.div)};
+  state.athletes.push(na); state.records[id]={}; sset('roster/'+id,na);
 }
 var resetArmed=false;
 document.addEventListener('click',function(e){
@@ -990,8 +1289,36 @@ document.addEventListener('click',function(e){
   else if(act==='skill'){state.skill=el.getAttribute('data-tid');save();render();}
   else if(act==='tab'){state.tab=el.getAttribute('data-tab');save();render();window.scrollTo(0,0);}
   else if(act==='sess'){var s=state.site;state.current[s]=clamp(state.current[s]+(+el.getAttribute('data-d')),1,8);save();render();}
-  else if(act==='publish'){var key=state.site+'-'+state.div,n=state.current[state.site];state.published[key]=state.published[key]||[];if(state.published[key].indexOf(n)<0)state.published[key].push(n);save();render();toast('Session '+n+' updates sent to '+siteRoster().length+' '+DIVS[state.div]+' families');}
+  else if(act==='publish'){var key=state.site+'-'+state.div,n=state.current[state.site];state.published[key]=state.published[key]||[];if(state.published[key].indexOf(n)<0)state.published[key].push(n);
+    var sl=sentList(key);if(sl.indexOf(n)<0)sl.push(n);sset('sent/'+key,{sessions:sl});pushFeed({t:'sent',key:key,n:n,count:siteRoster().length});save();render();toast('Session '+n+' updates sent to '+siteRoster().length+' '+DIVS[state.div]+' families');}
   else if(act==='logoclear'){state.logo='';save();render();toast('Logo removed');}
+  else if(act==='gohome'){location.hash='coach';state.tab='home';save();render();window.scrollTo(0,0);}
+  else if(act==='ack'){ack(el.getAttribute('data-id'));toast('Got it. '+HEAD+' can see you read it.');}
+  else if(act==='tpreset'){startPreset(TPRESETS[+el.getAttribute('data-i')]);toast(TPRESETS[+el.getAttribute('data-i')].label+' started on every trainer\'s phone');}
+  else if(act==='tpause'){var t1=timerDoc();setTimer(Object.assign({},t1,{running:false,left:timerLeft(t1)}));}
+  else if(act==='tresume'){var t2=timerDoc();setTimer(Object.assign({},t2,{running:true,start:Date.now()-(t2.dur-timerLeft(t2))*1000,left:null}));}
+  else if(act==='tplus'){var t3=timerDoc();setTimer(Object.assign({},t3,t3.running?{dur:t3.dur+60}:{dur:t3.dur+60,left:timerLeft(t3)+60}));}
+  else if(act==='treset'){var t4=timerDoc();setTimer(Object.assign({},t4,{running:true,start:Date.now(),left:null}));}
+  else if(act==='tstop'){setTimer({phase:'idle',label:'',dur:0,running:false,left:0,start:0,color:''});}
+  else if(act==='tnext'){var t5=timerDoc(),ix=-1;TPRESETS.forEach(function(p,i){if(t5&&p.id===t5.phase)ix=i;});var np=TPRESETS[(ix+1)%TPRESETS.length];startPreset(np);toast('Next: '+np.label);}
+  else if(act==='tcustom'){var mins=parseFloat($('#tmMin').value),lb=($('#tmLabel').value||'').trim()||'Custom timer';if(!(mins>0&&mins<=60)){toast('Enter minutes between 0.25 and 60.');return;}startPreset({id:'custom',label:lb,sec:Math.round(mins*60),color:'#D4C618'});toast(lb+' started');}
+  else if(act==='msgto'){state.msgTo=el.getAttribute('data-c');save();render();var ta0=$('#msgText');if(ta0){ta0.focus();$('#composer').scrollIntoView({block:'center'});}}
+  else if(act==='tpl'||act==='gtpl'){var ta1=$('#msgText'),kidSel=$('#msgKid'),kk=kidSel&&kidSel.value?findAth(kidSel.value):null;
+    if(act==='tpl'){if(!kk){toast('Pick the athlete first.');if(kidSel)kidSel.focus();return;}ta1.value=KTPL[el.getAttribute('data-k')][1].replace('{k}',label(kk));
+      var pc=podCoach(kk.pod),ts=$('#msgTo');if(ts&&TRAINERS.indexOf(pc)>=0){ts.value=pc;state.msgTo=pc;}}
+    else ta1.value=GTPL[+el.getAttribute('data-i')][1];}
+  else if(act==='sendmsg'){var to=$('#msgTo').value,txt=($('#msgText').value||'').trim(),kid=$('#msgKid').value;if(!txt){toast('Write a message or tap a quick message first.');return;}sendMsg(to,kid,txt);state.msgTo=to;save();$('#msgText').value='';toast('Sent to '+(to==='all'?'all trainers':to));}
+  else if(act==='diag'){openDiag(el.getAttribute('data-id'));}
+  else if(act==='flag'){var fa=findAth(diagId),fv=el.getAttribute('data-f'),m=Object.assign({},(sget('live/flags')||{}).map||{});if(fv)m[fa.id]={f:fv,at:Date.now(),by:HEAD};else delete m[fa.id];sset('live/flags',{map:m});toast(fv?'#'+fa.num+' flagged "'+FLAGS[fv].label+'" on '+podCoach(fa.pod)+'\'s screen':'Flag cleared');}
+  else if(act==='dsend'){var da=findAth(diagId),dk=el.getAttribute('data-k'),dc=podCoach(da.pod);sendMsg(TRAINERS.indexOf(dc)>=0?dc:'all',da.id,KTPL[dk][1].replace('{k}',label(da)));toast('Sent to '+(TRAINERS.indexOf(dc)>=0?dc:'all trainers'));}
+  else if(act==='savenote'){var na=findAth(diagId),nt=($('#diagNote').value||'').trim();sset('notes/'+na.id,{text:nt,at:Date.now(),by:HEAD});toast('Diagnosis saved for #'+na.num);}
+  else if(act==='feedf'){state.feedF=el.getAttribute('data-c');save();render();}
+  else if(act==='boardf'){state.boardF=el.getAttribute('data-f');save();render();}
+  else if(act==='clearlive'){
+    if(el.getAttribute('data-armed')!=='1'){el.setAttribute('data-armed','1');el.textContent='Tap again to clear';setTimeout(function(){var b=$('#clearLiveBtn');if(b){b.removeAttribute('data-armed');b.textContent='Clear feed, messages & flags';}},3000);return;}
+    Object.keys(store.docs).forEach(function(k){if(/^(feed|msgs|acks)\//.test(k))sset(k,k.indexOf('feed/')===0?{events:[]}:k.indexOf('acks/')===0?{read:{}}:{items:[]});});
+    sset('live/flags',{map:{}});toast('Feed, messages and flags cleared');
+  }
   else if(act==='copy'){
     var pre=$('#msg_'+el.getAttribute('data-id')), txt=pre?pre.textContent:'';
     var ok=function(){el.textContent='Copied';setTimeout(function(){el.textContent='Copy message';},1500);};
@@ -1001,10 +1328,10 @@ document.addEventListener('click',function(e){
   else if(act==='qrate'||act==='qaway'){
     var qa=byId(el.getAttribute('data-id')), qn=state.current[qa.site];
     state.records[qa.id]=state.records[qa.id]||{};
-    var qr=state.records[qa.id][qn]||freshRec(qa,qn); qr.c=qr.c||{};
-    if(act==='qaway'){qr.present=!qr.present;}
-    else{var qt=el.getAttribute('data-tid');qr.r[qt]=+el.getAttribute('data-v');delete qr.c[qt];qr.coach=state.coach;if(qr._autoWork!==false)qr.work=suggestWork(qr.r,SESS[qn-1].foc);}
-    state.records[qa.id][qn]=qr; save(); render();
+    var qex=rec(qa,qn), qr=qex?JSON.parse(JSON.stringify(qex)):freshRec(qa,qn); qr.c=qr.c||{};
+    if(act==='qaway'){qr.present=!qr.present;pushFeed({t:'absent',aid:qa.id,n:qn,here:qr.present});}
+    else{var qt=el.getAttribute('data-tid');qr.r[qt]=+el.getAttribute('data-v');delete qr.c[qt];qr.coach=state.coach;if(qr._autoWork!==false)qr.work=suggestWork(qr.r,SESS[qn-1].foc);pushFeed({t:'rate',aid:qa.id,n:qn,tid:qt,v:qr.r[qt]});}
+    state.records[qa.id][qn]=qr; sset('ratings/'+qa.id+'_'+qn,qr); save(); render();
   }
   else if(act==='import'){
     var lines=($('#csvIn').value||'').split(/\r?\n/).map(function(l){return l.trim();}).filter(Boolean), added=0, bad=0;
@@ -1014,7 +1341,7 @@ document.addEventListener('click',function(e){
       addAthlete({first:c[0],last:c[1],div:dv,band:c[3],num:c[4],pos:c[5],site:c[6].toLowerCase(),guardian:c[7],contact:c.slice(8).join(',')});added++;});
     save();render();toast('Added '+added+' athlete'+(added===1?'':'s')+(bad?'. '+bad+' row'+(bad===1?'':'s')+' skipped: check Boys/Girls, age group and site.':''));
   }
-  else if(act==='open'){openSheet(el.getAttribute('data-id'));}
+  else if(act==='open'){sheetKind='rate';openSheet(el.getAttribute('data-id'));}
   else if(act==='close'){closeSheet();}
   else if(act==='present'){readSheetInputs();draft.present=!draft.present;renderSheet();}
   else if(act==='rate'){
@@ -1033,6 +1360,9 @@ document.addEventListener('click',function(e){
       if(!draft.work)draft.work=suggestWork(draft.r,S.foc);}
     draft.coach=state.coach; var auto=!!draft._autoWork; delete draft._autoWork; if(!auto)draft._autoWork=false;
     state.records[draftA.id]=state.records[draftA.id]||{};state.records[draftA.id][draftN]=draft;
+    sset('ratings/'+draftA.id+'_'+draftN,JSON.parse(JSON.stringify(draft)));
+    if(!draft.present)pushFeed({t:'absent',aid:draftA.id,n:draftN,here:false});
+    else{var fr={};S.foc.forEach(function(id){fr[id]=draft.r[id];});pushFeed({t:'save',aid:draftA.id,n:draftN,r:fr,work:draft.work||'',shout:draft.shout?1:0,tests:S.test&&draft.t?Object.keys(draft.t).length:0});}
     var nm=label(draftA), aid=draftA.id, goNext=el.getAttribute('data-next')==='1';
     save(); closeSheet(); render();
     var nt=goNext?nextTodo(aid):null;
@@ -1041,20 +1371,22 @@ document.addEventListener('click',function(e){
   }
   else if(act==='reset'){
     if(!resetArmed){resetArmed=true;el.textContent='Tap again to reset';setTimeout(function(){resetArmed=false;var b=$('#resetBtn');if(b)b.textContent='Reset demo data';},3000);return;}
-    resetArmed=false;el.textContent='Reset demo data';var keepLogo=state.logo;state=makeDemo();state.logo=keepLogo;save();render();toast('Demo data reset');
+    resetArmed=false;el.textContent='Reset demo data';var keepLogo=state.logo;state=makeDemo();state.logo=keepLogo;if(!store.db){store.docs={};try{localStorage.removeItem(LS_LIVE);}catch(_){}}save();render();toast('Demo data reset');
   }
 });
 document.addEventListener('submit',function(e){
   if(e.target.id!=='addForm')return; e.preventDefault();
   var g=function(id){return $('#'+id).value;};
-  addAthlete({first:g('nf_first'),last:g('nf_last'),div:g('nf_div'),band:g('nf_band'),num:g('nf_num'),pos:g('nf_pos'),site:g('nf_site'),guardian:g('nf_g'),contact:g('nf_c')});
+  addAthlete({first:g('nf_first'),last:g('nf_last'),div:g('nf_div'),band:g('nf_band'),num:g('nf_num'),pos:g('nf_pos'),pod:g('nf_pod'),site:g('nf_site'),guardian:g('nf_g'),contact:g('nf_c')});
   save();render();toast('Added #'+g('nf_num')+' '+g('nf_first')+' to the roster');
 });
 document.addEventListener('change',function(e){
   var t=e.target, p=t.getAttribute&&t.getAttribute('data-pick');
   if(p==='pPick'){state.parentChild=t.value;save();render();}
   if(p==='aPick'){state.athleteChild=t.value;save();render();}
-  if(p==='coach'){state.coach=t.value;save();}
+  if(p==='coach'){state.coach=t.value;seenMsg=null;save();onLiveChange();render();}
+  if(p==='msgTo'){state.msgTo=t.value;save();}
+  if(p==='pod'){var cfg=Object.assign({},(sget('live/config')||{}).podCoach||state.podCoach);cfg[t.id.replace('pod-','')]=t.value;sset('live/config',{podCoach:cfg});toast(PODS[t.id.replace('pod-','')].name+' pod → '+t.value);}
   if(t.id==='logoIn'&&t.files&&t.files[0]){
     var f=t.files[0];
     if(f.size>400*1024){toast('That file is '+Math.round(f.size/1024)+' KB. Use a logo under 400 KB.');t.value='';return;}
@@ -1063,7 +1395,8 @@ document.addEventListener('change',function(e){
 });
 $('#sheet').addEventListener('click',function(e){if(e.target.id==='sheet')closeSheet();});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('#sheet').hidden)closeSheet();});
-window.addEventListener('hashchange',render);
+window.addEventListener('hashchange',function(){seenMsg=null;onLiveChange();render();});
 render();
+initLive();
 })();
 </script>
