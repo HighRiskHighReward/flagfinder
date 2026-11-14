@@ -11,14 +11,16 @@ Taken from hrx2performance.com: black sections, gold accents (#D4C618, #C7B426, 
 Audiowide headlines and Poppins text. The logo can be uploaded in Coach → Brand (the site's logo is on a CDN this build sandbox cannot reach).
 
 ## Portals
-- **Head** (`#head`): head instructor command center. Shared camp timer (instruction/demo, drill circuit, water, rotate, custom; pause, +1 min, next phase) that runs on every trainer's phone; live feed of trainer entries; trainer status; messages to one trainer or all, with an athlete attached and read receipts; athlete board (needs-attention filter) with a per-kid diagnosis (profile, strengths, growth areas, coaching cue, tests, today's entries, head notes, flags like "Down today" that show on the trainer's screen); admin (pod assignments, parent-update status, clear live data).
+- **Head** (`#head`): private to the artifact owner (the head instructor). Trainers do not see the tab, and `#head` shows "This portal is private" to anyone else. Four tabs:
+  - *Today*: shared camp timer, live feed of trainer entries, trainer status, messages to trainers with read receipts, athlete board.
+  - *Players*: search by number, name, position, pod or parent. Each player opens a profile: edit player info (number, name, positions, pod, division, age, site), private parent contact, your inputs (camp goal, note for parents, private diagnosis), on-field flags and focus messages, rate them yourself, diagnosis, and previews of their pre- and post-session emails. Add or import athletes.
+  - *Parent emails*: pre-session (theme, the kid's focus today, how to help, arrival and what to bring) and post-session (shout-out, strength, work-on with home drill, tests, your note, goal, mission, Fall 2027 outlook) emails, personal to each family. Add a message for every family, select families, open in the email app, copy, copy all addresses, download a mail-merge CSV, mark as sent (post-session also unlocks the update in the parent portal). Email history.
+  - *Settings*: pods and trainers, who sees what, parent portal status, brand and logo, clear live data.
 - **Coach** (`#coach`, opens first). Boys | Girls tabs, then site and session.
   - *Home*: synced timer (also pinned to the bottom of the screen), messages from the head instructor (phone buzzes, "Got it" sends a read receipt), My pod with flags, latest updates from all trainers.
   - *Rate today*: 3 focus categories per session; the other 12 carry over. Each card reads "#7 Mason T. QB".
     "Save · next" moves through the roster. *By station* rates the whole group on one category.
-  - *Send updates*: a personal message per family, with where the kid is now, the next level, a home drill and the Fall 2027 outlook.
-  - *Families*: roster sorted by jersey number with preferred position; add one athlete or paste a registration export (9 columns).
-  - *Brand*: colors and logo upload.
+  - *Roster*: read-only roster (number, name, positions, pod, age). No parent contacts.
 - **Parent** (`#parent`): grade ring, latest update, growth plan, **Fall 2027 season outlook** (readiness level, readiness by area,
   position fit, August targets, 6-week summer plan for Jul 5–Aug 15), 4 pillar grades, full 15-category breakdown (Now → Next), tests, trend.
 - **Athlete** (`#athlete`): number, level/XP, kid-friendly plan, personal bests, badges, road to fall.
@@ -37,7 +39,7 @@ Plus 4 measured tests: 20-yard dash, 5-10-5 shuttle, broad jump, push-ups in 30 
 - Fall 2027 readiness: Fall-ready 88+, On track 78+, Developing 68+, Foundation below that.
 
 ## Live sync
-The page uses the artifact's shared database: timer, messages, read receipts, flags, head notes, ratings, sent status, feed and added athletes sync to every device that has the page open. Only the owner/Editors can change the timer, flags, messages and notes; Contributors (trainers) can write ratings, feed and read receipts. Without the database (local file, preview) everything runs on one device, and tabs on that device stay in sync.
+The page uses the artifact's shared database: timer, messages, read receipts, flags, head notes, ratings, sent status, feed and added athletes sync to every device that has the page open. Storage rules: `hq/` (parent contacts, head notes and goals, email log) is readable and writable by the owner only; Editors and trainers get nothing. Timer, flags, messages, player info and sent status are writable by the owner only. Contributors (trainers) write ratings, feed and read receipts. Without the database (local file, preview) everything runs on one device, and tabs on that device stay in sync.
 
 ## Identifying kids
 Every athlete has a pod (pinnie color: Red, Blue, Green, White) run by one trainer, plus jersey number, name and preferred position.
